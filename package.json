@@ -2,6 +2,9 @@
   "name": "envloadr",
   "version": "0.0.0",
   "description": "Simplifies the process of loading environment variables from files",
+  "bin": {
+    "envloadr": "bin/cli.js"
+  },
   "engines": {
     "node": ">=22.14.0"
   },
