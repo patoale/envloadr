@@ -1,0 +1,24 @@
+/**
+ * For a detailed explanation regarding each configuration property, visit:
+ * https://jestjs.io/docs/configuration
+ */
+
+/** @type {import('ts-jest').JestConfigWithTsJest} **/
+export default {
+  clearMocks: true,
+  collectCoverage: true,
+  collectCoverageFrom: ['<rootDir>/src/**/*.ts'],
+  coverageProvider: 'v8',
+  coverageReporters: ['text'],
+  moduleNameMapper: {
+    '^@/(.*)$': '<rootDir>/src/$1',
+    '^@test/(.*)$': '<rootDir>/test/$1',
+  },
+  roots: ['<rootDir>/test'],
+  testEnvironment: 'node',
+  testMatch: ['**/*.(spec|test).ts'],
+  transform: {
+    '^.+\\.ts$': ['ts-jest', {}],
+  },
+  verbose: true,
+};
