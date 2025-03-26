@@ -1,6 +1,7 @@
 // @ts-check
 
 import eslint from '@eslint/js';
+import prettierConfigRecommended from 'eslint-plugin-prettier/recommended';
 import globals from 'globals';
 import tseslint from 'typescript-eslint';
 
@@ -51,4 +52,5 @@ export default tseslint.config(
     },
     extends: [tseslint.configs.disableTypeChecked],
   },
+  prettierConfigRecommended,
 );
