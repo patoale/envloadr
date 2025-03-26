@@ -17,6 +17,9 @@ importers:
       eslint:
         specifier: 9.23.0
         version: 9.23.0
+      globals:
+        specifier: 16.0.0
+        version: 16.0.0
       rimraf:
         specifier: 6.0.1
         version: 6.0.1
@@ -379,6 +382,10 @@ packages:
 
   globals@14.0.0:
     resolution: {integrity: sha512-oahGvuMGQlPw/ivIYBjVSrWAfWLBeku5tpPE2fOPLi+WHffIWbuh2tCjhyQhTBPMf5E9jDEH4FOmTYgYwbKwtQ==}
+    engines: {node: '>=18'}
+
+  globals@16.0.0:
+    resolution: {integrity: sha512-iInW14XItCXET01CQFqudPOWP2jYMl7T+QRQT+UNcR/iQncN/F0UNpgd76iFkBPgNQb4+X3LV9tLJYzwh+Gl3A==}
     engines: {node: '>=18'}
 
   globby@11.1.0:
@@ -1077,6 +1084,8 @@ snapshots:
       path-scurry: 2.0.0
 
   globals@14.0.0: {}
+
+  globals@16.0.0: {}
 
   globby@11.1.0:
     dependencies:
