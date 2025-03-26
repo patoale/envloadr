@@ -9,6 +9,9 @@
     "node": ">=22.14.0"
   },
   "scripts": {},
+  "devDependencies": {
+    "typescript": "5.8.2"
+  },
   "repository": {
     "type": "git",
     "url": "https://github.com/patoale/envloadr.git"
