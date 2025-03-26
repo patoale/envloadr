@@ -1,0 +1,31 @@
+{
+  "name": "envloadr",
+  "version": "0.0.0",
+  "description": "Simplifies the process of loading environment variables from files",
+  "engines": {
+    "node": ">=22.14.0"
+  },
+  "scripts": {},
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/patoale/envloadr.git"
+  },
+  "keywords": [
+    "env",
+    "environment",
+    "vars",
+    "variables",
+    "files",
+    ".env",
+    "cli",
+    "command-line",
+    "config"
+  ],
+  "author": "Alejandro Pato",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/patoale/envloadr/issues"
+  },
+  "homepage": "https://github.com/patoale/envloadr#readme",
+  "packageManager": "pnpm@10.6.5"
+}
