@@ -13,6 +13,7 @@
     "lint": "eslint src test",
     "lint:fix": "pnpm lint --fix",
     "prepare": "husky",
+    "test": "jest",
     "ts:check": "tsc"
   },
   "devDependencies": {
