@@ -10,7 +10,7 @@
   },
   "scripts": {
     "build": "rimraf dist && tsc -p tsconfig.build.json && tsc-alias -p tsconfig.build.json",
-    "lint": "eslint src",
+    "lint": "eslint src test",
     "lint:fix": "pnpm lint --fix",
     "prepare": "husky",
     "ts:check": "tsc"
@@ -23,6 +23,7 @@
     "@types/node": "22.13.13",
     "eslint": "9.23.0",
     "eslint-config-prettier": "10.1.1",
+    "eslint-plugin-jest": "28.11.0",
     "eslint-plugin-prettier": "5.2.5",
     "globals": "16.0.0",
     "husky": "9.1.7",
