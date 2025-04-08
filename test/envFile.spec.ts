@@ -1,5 +1,5 @@
 import fs from 'fs';
-import { KEY_VALUE_SEPARATOR } from '@/config';
+import { ENV_FILE_COMMENT_PREFIX, KEY_VALUE_SEPARATOR } from '@/config';
 import { parseEnvFile } from '@/envFile';
 
 describe('Environment file parser', () => {
@@ -54,6 +54,24 @@ describe('Environment file parser', () => {
     const expectedEnv = {
       KEY: 'value with spaces',
       DATABASE: 'prod environment',
+    };
+
+    readFileSyncSpy.mockReturnValue(fileContent);
+
+    expect(parseEnvFile('.env.mock', false)).toEqual(expectedEnv);
+  });
+
+  it(`should ignore lines when they start with ${ENV_FILE_COMMENT_PREFIX}`, () => {
+    const fileContent = [
+      `${ENV_FILE_COMMENT_PREFIX} This is a comment`,
+      `KEY${KEY_VALUE_SEPARATOR}value`,
+      `DATABASE${KEY_VALUE_SEPARATOR}production`,
+      `${ENV_FILE_COMMENT_PREFIX} Another comment`,
+    ].join('\n');
+
+    const expectedEnv = {
+      KEY: 'value',
+      DATABASE: 'production',
     };
 
     readFileSyncSpy.mockReturnValue(fileContent);
