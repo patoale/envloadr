@@ -28,4 +28,20 @@ describe('Environment file parser', () => {
 
     expect(parseEnvFile('.env.mock', false)).toEqual(envVars);
   });
+
+  it('should read env vars correctly when exists spaces around the key-value separator', () => {
+    const fileContent = [
+      `KEY ${KEY_VALUE_SEPARATOR} value`,
+      `DATABASE  ${KEY_VALUE_SEPARATOR}  production`,
+    ].join('\n');
+
+    const expectedEnv = {
+      KEY: 'value',
+      DATABASE: 'production',
+    };
+
+    readFileSyncSpy.mockReturnValue(fileContent);
+
+    expect(parseEnvFile('.env.mock', false)).toEqual(expectedEnv);
+  });
 });
