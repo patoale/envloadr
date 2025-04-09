@@ -132,4 +132,20 @@ describe('Environment file parser', () => {
 
     expect(parseEnvFile('.env.mock', false)).toEqual(expectedEnv);
   });
+
+  it('should read the value of env vars correctly when it contains special characters', () => {
+    const fileContent = [
+      `KEY${KEY_VALUE_SEPARATOR}multi\\nline\\value`,
+      `DATABASE${KEY_VALUE_SEPARATOR}path\\to\\file`,
+    ].join('\n');
+
+    const expectedEnv = {
+      KEY: 'multi\\nline\\value',
+      DATABASE: 'path\\to\\file',
+    };
+
+    readFileSyncSpy.mockReturnValue(fileContent);
+
+    expect(parseEnvFile('.env.mock', false)).toEqual(expectedEnv);
+  });
 });
