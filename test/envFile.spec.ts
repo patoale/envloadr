@@ -93,4 +93,20 @@ describe('Environment file parser', () => {
       `Error parsing line 2 of ".env.mock": Invalid variable separator, expected "NAME${KEY_VALUE_SEPARATOR}VALUE" format`,
     );
   });
+
+  it('should read the value of env vars as an empty string when it is missing', () => {
+    const fileContent = [
+      `KEY${KEY_VALUE_SEPARATOR}value`,
+      `DATABASE${KEY_VALUE_SEPARATOR}`,
+    ].join('\n');
+
+    const expectedEnv = {
+      KEY: 'value',
+      DATABASE: '',
+    };
+
+    readFileSyncSpy.mockReturnValue(fileContent);
+
+    expect(parseEnvFile('.env.mock', false)).toEqual(expectedEnv);
+  });
 });
