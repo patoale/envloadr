@@ -20,7 +20,7 @@ describe('Environment file parser', () => {
       `API_KEY${KEY_VALUE_SEPARATOR}12345`,
     ].join('\n');
 
-    const envVars = {
+    const expectedEnv = {
       KEY: 'value',
       DATABASE: 'production',
       API_KEY: '12345',
@@ -28,7 +28,7 @@ describe('Environment file parser', () => {
 
     readFileSyncSpy.mockReturnValue(fileContent);
 
-    expect(parseEnvFile('.env.mock', false)).toEqual(envVars);
+    expect(parseEnvFile('.env.mock', false)).toEqual(expectedEnv);
   });
 
   it('should read env vars correctly when exists spaces around the key-value separator', () => {
