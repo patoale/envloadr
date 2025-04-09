@@ -14,19 +14,21 @@ describe('Environment file parser', () => {
   });
 
   it('should read env vars correctly when key-value pairs are well-formed', () => {
-    const envVars = {
+    const fileContent = [
+      `KEY${KEY_VALUE_SEPARATOR}value`,
+      `DATABASE${KEY_VALUE_SEPARATOR}production`,
+      `API_KEY${KEY_VALUE_SEPARATOR}12345`,
+    ].join('\n');
+
+    const expectedEnv = {
       KEY: 'value',
       DATABASE: 'production',
       API_KEY: '12345',
     };
 
-    readFileSyncSpy.mockReturnValue(
-      Object.entries(envVars)
-        .map(([key, value]) => `${key}${KEY_VALUE_SEPARATOR}${value}`)
-        .join('\n'),
-    );
+    readFileSyncSpy.mockReturnValue(fileContent);
 
-    expect(parseEnvFile('.env.mock', false)).toEqual(envVars);
+    expect(parseEnvFile('.env.mock', false)).toEqual(expectedEnv);
   });
 
   it('should read env vars correctly when exists spaces around the key-value separator', () => {
