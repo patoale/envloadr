@@ -148,4 +148,19 @@ describe('Environment file parser', () => {
 
     expect(parseEnvFile('.env.mock', false)).toEqual(expectedEnv);
   });
+
+  it('should throw an error when the key is missing in key-value pair', () => {
+    const fileContent = [
+      `KEY${KEY_VALUE_SEPARATOR}value`,
+      `${KEY_VALUE_SEPARATOR}value`,
+    ].join('\n');
+
+    readFileSyncSpy.mockReturnValue(fileContent);
+
+    expect(() => {
+      parseEnvFile('.env.mock', false);
+    }).toThrow(
+      `Error parsing line 2 of ".env.mock": Variable name not found, expected "NAME${KEY_VALUE_SEPARATOR}VALUE" format`,
+    );
+  });
 });
