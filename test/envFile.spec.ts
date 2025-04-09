@@ -109,4 +109,14 @@ describe('Environment file parser', () => {
 
     expect(parseEnvFile('.env.mock', false)).toEqual(expectedEnv);
   });
+
+  it('should read no env vars when the .env file is empty', () => {
+    const fileContent = '';
+
+    const expectedEnv = {};
+
+    readFileSyncSpy.mockReturnValue(fileContent);
+
+    expect(parseEnvFile('.env.mock', false)).toEqual(expectedEnv);
+  });
 });
