@@ -164,4 +164,19 @@ describe('Environment file parser', () => {
       `Error parsing line 2 of ".env.mock": Variable name not found, expected "NAME${KEY_VALUE_SEPARATOR}VALUE" format`,
     );
   });
+
+  it('should throw an error when the separator is missing in key-value pair', () => {
+    const fileContent = [
+      `KEY${KEY_VALUE_SEPARATOR}value`,
+      `DATABASEproduction`,
+    ].join('\n');
+
+    readFileSyncSpy.mockReturnValue(fileContent);
+
+    expect(() => {
+      parseEnvFile('.env.mock', false);
+    }).toThrow(
+      `Error parsing line 2 of ".env.mock": Invalid variable separator, expected "NAME${KEY_VALUE_SEPARATOR}VALUE" format`,
+    );
+  });
 });
