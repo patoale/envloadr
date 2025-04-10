@@ -179,4 +179,18 @@ describe('Environment file parser', () => {
       `Error parsing line 2 of ".env.mock": Invalid variable separator, expected "NAME${KEY_VALUE_SEPARATOR}VALUE" format`,
     );
   });
+
+  it('should throw an error when the env file is unreadable', () => {
+    readFileSyncSpy.mockImplementation(() => {
+      const error: NodeJS.ErrnoException = new Error(
+        'No such file or directory',
+      );
+      error.code = 'ENOENT';
+      throw error;
+    });
+
+    expect(() => {
+      parseEnvFile('.env.mock', false);
+    }).toThrow(/^Error parsing "\.env\.mock": /);
+  });
 });
