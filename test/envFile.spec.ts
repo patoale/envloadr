@@ -123,8 +123,7 @@ describe('Environment file parser', () => {
   });
 
   it('should read the value of env vars correctly when it is long', () => {
-    const fileContent =
-      'LONG_KEY=longvaluehere1234567890abcdefghijklmnopqrstuvwx';
+    const fileContent = `LONG_KEY${KEY_VALUE_SEPARATOR}longvaluehere1234567890abcdefghijklmnopqrstuvwx`;
 
     const expectedEnv = {
       LONG_KEY: 'longvaluehere1234567890abcdefghijklmnopqrstuvwx',
