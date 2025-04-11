@@ -208,4 +208,20 @@ describe('Environment file parser', () => {
       `Error parsing line 2 of ".env": Repeated variable separator, expected "NAME${KEY_VALUE_SEPARATOR}VALUE" format`,
     );
   });
+
+  it('should read a key-value separator as a value when the value is enclosed in quotes', () => {
+    const fileContent = [
+      `KEY${KEY_VALUE_SEPARATOR}'value${KEY_VALUE_SEPARATOR}value'`,
+      `SERVER_LOG${KEY_VALUE_SEPARATOR}"https://localhost:8080/logs?level${KEY_VALUE_SEPARATOR}info"`,
+    ].join('\n');
+
+    const expectedEnv = {
+      KEY: `value${KEY_VALUE_SEPARATOR}value`,
+      SERVER_LOG: `https://localhost:8080/logs?level${KEY_VALUE_SEPARATOR}info`,
+    };
+
+    readFileSyncSpy.mockReturnValue(fileContent);
+
+    expect(parseEnvFile('.env.mock', false)).toEqual(expectedEnv);
+  });
 });
