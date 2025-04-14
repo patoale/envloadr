@@ -210,7 +210,7 @@ describe('Environment file parser', () => {
     expect(parseEnvFile('.env.mock', false)).toEqual(expectedEnv);
   });
 
-  it('should ignore lines when they are empty or contain only whitespace', () => {
+  it('should ignore lines when they are blank or contain only whitespaces', () => {
     const fileContent = [
       '\t',
       `KEY${KEY_VALUE_SEPARATOR}value`,
