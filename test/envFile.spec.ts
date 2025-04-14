@@ -194,7 +194,7 @@ describe('Environment file parser', () => {
     }).toThrow(/^Error parsing "\.env\.mock": /);
   });
 
-  it('should read the key-value separators as part of the value when they are after the first one', () => {
+  it('should read key-value separators after the first as part of the value when multiple exist in a line', () => {
     const fileContent = [
       `SEPARATOR${KEY_VALUE_SEPARATOR}${KEY_VALUE_SEPARATOR}${KEY_VALUE_SEPARATOR}`,
       `SERVER_LOG${KEY_VALUE_SEPARATOR}https://localhost:8080/logs?level${KEY_VALUE_SEPARATOR}info`,
