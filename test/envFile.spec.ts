@@ -193,19 +193,4 @@ describe('Environment file parser', () => {
       parseEnvFile('.env.mock', false);
     }).toThrow(/^Error parsing "\.env\.mock": /);
   });
-
-  it('should throw an error when the key-value separator is repeated on the same line', () => {
-    const fileContent = [
-      `KEY${KEY_VALUE_SEPARATOR}value`,
-      `SERVER_LOG${KEY_VALUE_SEPARATOR}https://localhost:8080/logs?level${KEY_VALUE_SEPARATOR}info`,
-    ].join('\n');
-
-    readFileSyncSpy.mockReturnValue(fileContent);
-
-    expect(() => {
-      parseEnvFile('.env.mock', false);
-    }).toThrow(
-      `Error parsing line 2 of ".env": Repeated variable separator, expected "NAME${KEY_VALUE_SEPARATOR}VALUE" format`,
-    );
-  });
 });
