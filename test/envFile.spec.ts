@@ -209,4 +209,23 @@ describe('Environment file parser', () => {
 
     expect(parseEnvFile('.env.mock', false)).toEqual(expectedEnv);
   });
+
+  it('should ignore lines when they are empty or contain only whitespace', () => {
+    const fileContent = [
+      '\t',
+      `KEY${KEY_VALUE_SEPARATOR}value`,
+      '',
+      `DATABASE${KEY_VALUE_SEPARATOR}production`,
+      '   ',
+    ].join('\n');
+
+    const expectedEnv = {
+      KEY: 'value',
+      DATABASE: 'production',
+    };
+
+    readFileSyncSpy.mockReturnValue(fileContent);
+
+    expect(parseEnvFile('.env.mock', false)).toEqual(expectedEnv);
+  });
 });
