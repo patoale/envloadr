@@ -193,4 +193,20 @@ describe('Environment file parser', () => {
       parseEnvFile('.env.mock', false);
     }).toThrow(/^Error parsing "\.env\.mock": /);
   });
+
+  it('should read the key-value separators as part of the value when they are after the first one', () => {
+    const fileContent = [
+      `SEPARATOR${KEY_VALUE_SEPARATOR}${KEY_VALUE_SEPARATOR}${KEY_VALUE_SEPARATOR}`,
+      `SERVER_LOG${KEY_VALUE_SEPARATOR}https://localhost:8080/logs?level${KEY_VALUE_SEPARATOR}info`,
+    ].join('\n');
+
+    const expectedEnv = {
+      SEPARATOR: `${KEY_VALUE_SEPARATOR}${KEY_VALUE_SEPARATOR}`,
+      SERVER_LOG: `https://localhost:8080/logs?level${KEY_VALUE_SEPARATOR}info`,
+    };
+
+    readFileSyncSpy.mockReturnValue(fileContent);
+
+    expect(parseEnvFile('.env.mock', false)).toEqual(expectedEnv);
+  });
 });
