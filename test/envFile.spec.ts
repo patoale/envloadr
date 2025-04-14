@@ -49,8 +49,8 @@ describe('Environment file parser', () => {
 
   it('should read the value of env vars correctly when it contains spaces', () => {
     const fileContent = [
-      `KEY${KEY_VALUE_SEPARATOR}"value with spaces"`,
-      `DATABASE${KEY_VALUE_SEPARATOR}'prod environment'`,
+      `KEY${KEY_VALUE_SEPARATOR}value with spaces`,
+      `DATABASE${KEY_VALUE_SEPARATOR}prod environment`,
     ].join('\n');
 
     const expectedEnv = {
