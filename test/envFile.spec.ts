@@ -228,4 +228,20 @@ describe('Environment file parser', () => {
 
     expect(parseEnvFile('.env.mock', false)).toEqual(expectedEnv);
   });
+
+  it('should remove the surrounding double quotes from the env var value when it is enclosed in double quotes', () => {
+    const fileContent = [
+      `KEY${KEY_VALUE_SEPARATOR}"value with spaces"`,
+      `DATABASE${KEY_VALUE_SEPARATOR}"production"`,
+    ].join('\n');
+
+    const expectedEnv = {
+      KEY: 'value with spaces',
+      DATABASE: 'production',
+    };
+
+    readFileSyncSpy.mockReturnValue(fileContent);
+
+    expect(parseEnvFile('.env.mock', false)).toEqual(expectedEnv);
+  });
 });
