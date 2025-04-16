@@ -294,4 +294,20 @@ describe('Environment file parser', () => {
 
     expect(parseEnvFile('.env.mock', false)).toEqual(expectedEnv);
   });
+
+  it('should read any single quote as part of the env var value when the value starts but does not end with a single quote', () => {
+    const fileContent = [
+      `KEY${KEY_VALUE_SEPARATOR}'value with spaces`,
+      `DATABASE${KEY_VALUE_SEPARATOR}'path to'/data`,
+    ].join('\n');
+
+    const expectedEnv = {
+      KEY: "'value with spaces",
+      DATABASE: "'path to'/data",
+    };
+
+    readFileSyncSpy.mockReturnValue(fileContent);
+
+    expect(parseEnvFile('.env.mock', false)).toEqual(expectedEnv);
+  });
 });
