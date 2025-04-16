@@ -31,7 +31,7 @@ describe('Environment file parser', () => {
     expect(parseEnvFile('.env.mock', false)).toEqual(expectedEnv);
   });
 
-  it('should read env vars correctly when exists spaces around the key-value separator', () => {
+  it('should read env vars correctly when exists spaces around the key-value separators', () => {
     const fileContent = [
       `KEY ${KEY_VALUE_SEPARATOR} value`,
       `DATABASE  ${KEY_VALUE_SEPARATOR}  production`,
@@ -47,7 +47,7 @@ describe('Environment file parser', () => {
     expect(parseEnvFile('.env.mock', false)).toEqual(expectedEnv);
   });
 
-  it('should read the value of env vars correctly when it contains spaces', () => {
+  it('should read the value correctly when values contain spaces', () => {
     const fileContent = [
       `KEY${KEY_VALUE_SEPARATOR}value with spaces`,
       `DATABASE${KEY_VALUE_SEPARATOR}prod environment`,
@@ -81,7 +81,7 @@ describe('Environment file parser', () => {
     expect(parseEnvFile('.env.mock', false)).toEqual(expectedEnv);
   });
 
-  it('should throw an error when key-value pairs contain an invalid separator', () => {
+  it('should throw an error when any key-value pair contains an invalid separator', () => {
     const fileContent = [
       `KEY${KEY_VALUE_SEPARATOR}value`,
       'DATABASE:value',
@@ -96,7 +96,7 @@ describe('Environment file parser', () => {
     );
   });
 
-  it('should read the value of env vars as an empty string when it is missing', () => {
+  it('should read the value as an empty string when the value is missing from key-value pairs', () => {
     const fileContent = [
       `KEY${KEY_VALUE_SEPARATOR}value`,
       `DATABASE${KEY_VALUE_SEPARATOR}`,
@@ -122,7 +122,7 @@ describe('Environment file parser', () => {
     expect(parseEnvFile('.env.mock', false)).toEqual(expectedEnv);
   });
 
-  it('should read the value of env vars correctly when it is long', () => {
+  it('should read the value correctly when values are long', () => {
     const fileContent = `LONG_KEY${KEY_VALUE_SEPARATOR}longvaluehere1234567890abcdefghijklmnopqrstuvwx`;
 
     const expectedEnv = {
@@ -134,7 +134,7 @@ describe('Environment file parser', () => {
     expect(parseEnvFile('.env.mock', false)).toEqual(expectedEnv);
   });
 
-  it('should read the value of env vars correctly when it contains special characters', () => {
+  it('should read the value correctly when values contain special characters', () => {
     const fileContent = [
       `KEY${KEY_VALUE_SEPARATOR}multi\\nline\\value`,
       `DATABASE${KEY_VALUE_SEPARATOR}path\\\\to\\\\file`,
@@ -150,7 +150,7 @@ describe('Environment file parser', () => {
     expect(parseEnvFile('.env.mock', false)).toEqual(expectedEnv);
   });
 
-  it('should throw an error when the key is missing in key-value pair', () => {
+  it('should throw an error when any key is missing from key-value pairs', () => {
     const fileContent = [
       `KEY${KEY_VALUE_SEPARATOR}value`,
       `${KEY_VALUE_SEPARATOR}value`,
@@ -165,7 +165,7 @@ describe('Environment file parser', () => {
     );
   });
 
-  it('should throw an error when the separator is missing in key-value pair', () => {
+  it('should throw an error when any separator is missing from key-value pairs', () => {
     const fileContent = [
       `KEY${KEY_VALUE_SEPARATOR}value`,
       `DATABASEproduction`,
@@ -194,7 +194,7 @@ describe('Environment file parser', () => {
     }).toThrow(/^Error parsing "\.env\.mock": /);
   });
 
-  it('should read key-value separators after the first as part of the value when multiple exist in a line', () => {
+  it('should read all key-value separators as part of the value when multiple separators appear after the first on the same line', () => {
     const fileContent = [
       `SEPARATOR${KEY_VALUE_SEPARATOR}${KEY_VALUE_SEPARATOR}${KEY_VALUE_SEPARATOR}`,
       `SERVER_LOG${KEY_VALUE_SEPARATOR}https://localhost:8080/logs?level${KEY_VALUE_SEPARATOR}info`,
@@ -229,7 +229,7 @@ describe('Environment file parser', () => {
     expect(parseEnvFile('.env.mock', false)).toEqual(expectedEnv);
   });
 
-  it('should remove the surrounding double quotes from the env var value when it is enclosed in double quotes', () => {
+  it('should remove the surrounding double quotes from the value when values are enclosed in double quotes', () => {
     const fileContent = [
       `KEY${KEY_VALUE_SEPARATOR}"value with spaces"`,
       `DATABASE${KEY_VALUE_SEPARATOR}"production"`,
@@ -245,7 +245,7 @@ describe('Environment file parser', () => {
     expect(parseEnvFile('.env.mock', false)).toEqual(expectedEnv);
   });
 
-  it('should read any double quote as part of the env var value when the value does not ends with a double quote', () => {
+  it('should read any double quote as part of the value when values start with but do not end with a double quote', () => {
     const fileContent = [
       `KEY${KEY_VALUE_SEPARATOR}"value with spaces`,
       `DATABASE${KEY_VALUE_SEPARATOR}"path to"/data`,
@@ -261,7 +261,7 @@ describe('Environment file parser', () => {
     expect(parseEnvFile('.env.mock', false)).toEqual(expectedEnv);
   });
 
-  it('should read any double quote as part of the env var value when the value does not starts with a double quote', () => {
+  it('should read any double quote as part of the value when values do not start with a double quote', () => {
     const fileContent = [
       `KEY${KEY_VALUE_SEPARATOR}value with spaces"`,
       `DATABASE${KEY_VALUE_SEPARATOR}path/to/"my data"`,
@@ -279,7 +279,7 @@ describe('Environment file parser', () => {
     expect(parseEnvFile('.env.mock', false)).toEqual(expectedEnv);
   });
 
-  it('should remove the surrounding single quotes from the env var value when it is enclosed in single quotes', () => {
+  it('should remove the surrounding single quotes from the value when values are enclosed in single quotes', () => {
     const fileContent = [
       `KEY${KEY_VALUE_SEPARATOR}'value with spaces'`,
       `DATABASE${KEY_VALUE_SEPARATOR}'production'`,
@@ -295,7 +295,7 @@ describe('Environment file parser', () => {
     expect(parseEnvFile('.env.mock', false)).toEqual(expectedEnv);
   });
 
-  it('should read any single quote as part of the env var value when the value starts but does not end with a single quote', () => {
+  it('should read any single quote as part of the value when values start with but do not end with a single quote', () => {
     const fileContent = [
       `KEY${KEY_VALUE_SEPARATOR}'value with spaces`,
       `DATABASE${KEY_VALUE_SEPARATOR}'path to'/data`,
@@ -311,7 +311,7 @@ describe('Environment file parser', () => {
     expect(parseEnvFile('.env.mock', false)).toEqual(expectedEnv);
   });
 
-  it('should read any single quote as part of the env var value when the value does not start with a single quote', () => {
+  it('should read any single quote as part of the value when values do not start with a single quote', () => {
     const fileContent = [
       `KEY${KEY_VALUE_SEPARATOR}value with spaces'`,
       `DATABASE${KEY_VALUE_SEPARATOR}path/to/'my data'`,
