@@ -13,6 +13,8 @@ describe('Environment file parser', () => {
     readFileSyncSpy.mockRestore();
   });
 
+  // Genral format validation
+
   it('should read env vars correctly when key-value pairs are well-formed', () => {
     const fileContent = [
       `KEY${KEY_VALUE_SEPARATOR}value`,
@@ -81,21 +83,6 @@ describe('Environment file parser', () => {
     expect(parseEnvFile('.env.mock', false)).toEqual(expectedEnv);
   });
 
-  it('should throw an error when any key-value pair contains an invalid separator', () => {
-    const fileContent = [
-      `KEY${KEY_VALUE_SEPARATOR}value`,
-      'DATABASE:value',
-    ].join('\n');
-
-    readFileSyncSpy.mockReturnValue(fileContent);
-
-    expect(() => {
-      parseEnvFile('.env.mock', false);
-    }).toThrow(
-      `Error parsing line 2 of ".env.mock": Invalid variable separator, expected "NAME${KEY_VALUE_SEPARATOR}VALUE" format`,
-    );
-  });
-
   it('should read the value as an empty string when the value is missing from key-value pairs', () => {
     const fileContent = [
       `KEY${KEY_VALUE_SEPARATOR}value`,
@@ -122,11 +109,18 @@ describe('Environment file parser', () => {
     expect(parseEnvFile('.env.mock', false)).toEqual(expectedEnv);
   });
 
-  it('should read the value correctly when values are long', () => {
-    const fileContent = `LONG_KEY${KEY_VALUE_SEPARATOR}longvaluehere1234567890abcdefghijklmnopqrstuvwx`;
+  it('should ignore lines when they are blank or contain only whitespaces', () => {
+    const fileContent = [
+      '\t',
+      `KEY${KEY_VALUE_SEPARATOR}value`,
+      '',
+      `DATABASE${KEY_VALUE_SEPARATOR}production`,
+      '   ',
+    ].join('\n');
 
     const expectedEnv = {
-      LONG_KEY: 'longvaluehere1234567890abcdefghijklmnopqrstuvwx',
+      KEY: 'value',
+      DATABASE: 'production',
     };
 
     readFileSyncSpy.mockReturnValue(fileContent);
@@ -134,20 +128,21 @@ describe('Environment file parser', () => {
     expect(parseEnvFile('.env.mock', false)).toEqual(expectedEnv);
   });
 
-  it('should read the value correctly when values contain special characters', () => {
-    const fileContent = [
-      `KEY${KEY_VALUE_SEPARATOR}multi\\nline\\value`,
-      `DATABASE${KEY_VALUE_SEPARATOR}path\\\\to\\\\file`,
-    ].join('\n');
+  // Error handling
 
-    const expectedEnv = {
-      KEY: 'multi\\nline\\value',
-      DATABASE: 'path\\\\to\\\\file',
-    };
+  it('should throw an error when any key-value pair contains an invalid separator', () => {
+    const fileContent = [
+      `KEY${KEY_VALUE_SEPARATOR}value`,
+      'DATABASE:value',
+    ].join('\n');
 
     readFileSyncSpy.mockReturnValue(fileContent);
 
-    expect(parseEnvFile('.env.mock', false)).toEqual(expectedEnv);
+    expect(() => {
+      parseEnvFile('.env.mock', false);
+    }).toThrow(
+      `Error parsing line 2 of ".env.mock": Invalid variable separator, expected "NAME${KEY_VALUE_SEPARATOR}VALUE" format`,
+    );
   });
 
   it('should throw an error when any key is missing from key-value pairs', () => {
@@ -194,6 +189,36 @@ describe('Environment file parser', () => {
     }).toThrow(/^Error parsing "\.env\.mock": /);
   });
 
+  // Special value handling
+
+  it('should read the value correctly when values are long', () => {
+    const fileContent = `LONG_KEY${KEY_VALUE_SEPARATOR}longvaluehere1234567890abcdefghijklmnopqrstuvwx`;
+
+    const expectedEnv = {
+      LONG_KEY: 'longvaluehere1234567890abcdefghijklmnopqrstuvwx',
+    };
+
+    readFileSyncSpy.mockReturnValue(fileContent);
+
+    expect(parseEnvFile('.env.mock', false)).toEqual(expectedEnv);
+  });
+
+  it('should read the value correctly when values contain special characters', () => {
+    const fileContent = [
+      `KEY${KEY_VALUE_SEPARATOR}multi\\nline\\value`,
+      `DATABASE${KEY_VALUE_SEPARATOR}path\\\\to\\\\file`,
+    ].join('\n');
+
+    const expectedEnv = {
+      KEY: 'multi\\nline\\value',
+      DATABASE: 'path\\\\to\\\\file',
+    };
+
+    readFileSyncSpy.mockReturnValue(fileContent);
+
+    expect(parseEnvFile('.env.mock', false)).toEqual(expectedEnv);
+  });
+
   it('should read all key-value separators as part of the value when multiple separators appear after the first on the same line', () => {
     const fileContent = [
       `SEPARATOR${KEY_VALUE_SEPARATOR}${KEY_VALUE_SEPARATOR}${KEY_VALUE_SEPARATOR}`,
@@ -210,24 +235,7 @@ describe('Environment file parser', () => {
     expect(parseEnvFile('.env.mock', false)).toEqual(expectedEnv);
   });
 
-  it('should ignore lines when they are blank or contain only whitespaces', () => {
-    const fileContent = [
-      '\t',
-      `KEY${KEY_VALUE_SEPARATOR}value`,
-      '',
-      `DATABASE${KEY_VALUE_SEPARATOR}production`,
-      '   ',
-    ].join('\n');
-
-    const expectedEnv = {
-      KEY: 'value',
-      DATABASE: 'production',
-    };
-
-    readFileSyncSpy.mockReturnValue(fileContent);
-
-    expect(parseEnvFile('.env.mock', false)).toEqual(expectedEnv);
-  });
+  // Quote handling
 
   it('should remove the surrounding double quotes from the value when values are enclosed in double quotes', () => {
     const fileContent = [
