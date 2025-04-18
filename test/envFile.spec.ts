@@ -336,4 +336,33 @@ describe('Environment file parser', () => {
 
     expect(parseEnvFile('.env.mock', false)).toEqual(expectedEnv);
   });
+
+  // Verbose
+
+  describe('if verbose flag is activated', () => {
+    it('should display all the parsing process details when key-value pairs are well-formed', () => {
+      const logSpy = jest.spyOn(console, 'log').mockImplementation();
+
+      const fileContent = [
+        `KEY_1${KEY_VALUE_SEPARATOR}value_1`,
+        `KEY_2${KEY_VALUE_SEPARATOR}value_2`,
+      ].join('\n');
+
+      readFileSyncSpy.mockReturnValue(fileContent);
+      parseEnvFile('.env.mock', true);
+
+      expect(logSpy).toHaveBeenCalledTimes(3);
+      expect(logSpy).toHaveBeenNthCalledWith(1, 'Parsing file ".env.mock"');
+      expect(logSpy).toHaveBeenNthCalledWith(
+        2,
+        'Successfully parsed: KEY_1 = value_1',
+      );
+      expect(logSpy).toHaveBeenNthCalledWith(
+        3,
+        'Successfully parsed: KEY_2 = value_2',
+      );
+
+      logSpy.mockRestore();
+    });
+  });
 });
