@@ -364,5 +364,19 @@ describe('Environment file parser', () => {
 
       logSpy.mockRestore();
     });
+
+    it('should display only the filename being parsed when env file is empty', () => {
+      const logSpy = jest.spyOn(console, 'log').mockImplementation();
+
+      const fileContent = '';
+
+      readFileSyncSpy.mockReturnValue(fileContent);
+      parseEnvFile('.env.mock', true);
+
+      expect(logSpy).toHaveBeenCalledTimes(1);
+      expect(logSpy).toHaveBeenCalledWith('Parsing file ".env.mock"');
+
+      logSpy.mockRestore();
+    });
   });
 });
