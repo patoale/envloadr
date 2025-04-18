@@ -419,5 +419,36 @@ describe('Environment file parser', () => {
         'Successfully parsed: KEY = value',
       );
     });
+
+    it('should not display the surrounding quotes of the env var value when values are enclosed in quotes', () => {
+      const fileContent = [
+        `KEY_1${KEY_VALUE_SEPARATOR}"value_1"`,
+        `KEY_2${KEY_VALUE_SEPARATOR}'value_2'`,
+        `KEY_3${KEY_VALUE_SEPARATOR}"value_'3'"`,
+        `KEY_4${KEY_VALUE_SEPARATOR}'value_"4"'`,
+      ].join('\n');
+
+      readFileSyncSpy.mockReturnValue(fileContent);
+      parseEnvFile('.env.mock', true);
+
+      expect(logSpy).toHaveBeenCalledTimes(5);
+      expect(logSpy).toHaveBeenNthCalledWith(1, 'Parsing file ".env.mock"');
+      expect(logSpy).toHaveBeenNthCalledWith(
+        2,
+        'Successfully parsed: KEY_1 = value_1',
+      );
+      expect(logSpy).toHaveBeenNthCalledWith(
+        3,
+        'Successfully parsed: KEY_2 = value_2',
+      );
+      expect(logSpy).toHaveBeenNthCalledWith(
+        4,
+        "Successfully parsed: KEY_3 = value_'3'",
+      );
+      expect(logSpy).toHaveBeenNthCalledWith(
+        5,
+        'Successfully parsed: KEY_4 = value_"4"',
+      );
+    });
   });
 });
