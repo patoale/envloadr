@@ -380,5 +380,23 @@ describe('Environment file parser', () => {
       expect(logSpy).toHaveBeenCalledTimes(1);
       expect(logSpy).toHaveBeenCalledWith('Parsing file ".env.mock"');
     });
+
+    it('should not display anything when the env file is unreadable', () => {
+      readFileSyncSpy.mockImplementation(() => {
+        const error: NodeJS.ErrnoException = new Error(
+          'No such file or directory',
+        );
+        error.code = 'ENOENT';
+        throw error;
+      });
+
+      try {
+        parseEnvFile('.env.mock', true);
+      } catch {
+        /* empty */
+      }
+
+      expect(logSpy).not.toHaveBeenCalled();
+    });
   });
 });
