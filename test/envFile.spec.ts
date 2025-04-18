@@ -398,5 +398,26 @@ describe('Environment file parser', () => {
 
       expect(logSpy).not.toHaveBeenCalled();
     });
+
+    it('should stop displaying parsing process details when an error occurs in the middle of the process', () => {
+      const fileContent = [
+        `KEY${KEY_VALUE_SEPARATOR}value`,
+        `DATABASE:production`,
+      ].join('\n');
+
+      readFileSyncSpy.mockReturnValue(fileContent);
+      try {
+        parseEnvFile('.env.mock', true);
+      } catch {
+        /* empty */
+      }
+
+      expect(logSpy).toHaveBeenCalledTimes(2);
+      expect(logSpy).toHaveBeenNthCalledWith(1, 'Parsing file ".env.mock"');
+      expect(logSpy).toHaveBeenNthCalledWith(
+        2,
+        'Successfully parsed: KEY = value',
+      );
+    });
   });
 });
