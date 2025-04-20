@@ -504,4 +504,25 @@ describe('Environment file parser', () => {
       parseEnvFile('.env.mock', { override: false, verbose: false }),
     ).toEqual(expectedEnv);
   });
+
+  describe('if overrides flag is activated', () => {
+    it('should override the value of env vars when their names are duplicated one time', () => {
+      const fileContent = [
+        `KEY_1${KEY_VALUE_SEPARATOR}value_1a`,
+        `KEY_2${KEY_VALUE_SEPARATOR}value_2`,
+        `KEY_1${KEY_VALUE_SEPARATOR}value_1b`,
+      ].join('\n');
+
+      const expectedEnv = {
+        KEY_1: 'value_1b',
+        KEY_2: 'value_2',
+      };
+
+      readFileSyncSpy.mockReturnValue(fileContent);
+
+      expect(
+        parseEnvFile('.env.mock', { override: true, verbose: false }),
+      ).toEqual(expectedEnv);
+    });
+  });
 });
