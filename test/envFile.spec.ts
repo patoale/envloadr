@@ -30,7 +30,9 @@ describe('Environment file parser', () => {
 
     readFileSyncSpy.mockReturnValue(fileContent);
 
-    expect(parseEnvFile('.env.mock', false)).toEqual(expectedEnv);
+    expect(
+      parseEnvFile('.env.mock', { override: false, verbose: false }),
+    ).toEqual(expectedEnv);
   });
 
   it('should read env vars correctly when exists spaces around the key-value separators', () => {
@@ -46,7 +48,9 @@ describe('Environment file parser', () => {
 
     readFileSyncSpy.mockReturnValue(fileContent);
 
-    expect(parseEnvFile('.env.mock', false)).toEqual(expectedEnv);
+    expect(
+      parseEnvFile('.env.mock', { override: false, verbose: false }),
+    ).toEqual(expectedEnv);
   });
 
   it('should read the value correctly when values contain spaces', () => {
@@ -62,7 +66,9 @@ describe('Environment file parser', () => {
 
     readFileSyncSpy.mockReturnValue(fileContent);
 
-    expect(parseEnvFile('.env.mock', false)).toEqual(expectedEnv);
+    expect(
+      parseEnvFile('.env.mock', { override: false, verbose: false }),
+    ).toEqual(expectedEnv);
   });
 
   it(`should ignore lines when they start with ${ENV_FILE_COMMENT_PREFIX}`, () => {
@@ -80,7 +86,9 @@ describe('Environment file parser', () => {
 
     readFileSyncSpy.mockReturnValue(fileContent);
 
-    expect(parseEnvFile('.env.mock', false)).toEqual(expectedEnv);
+    expect(
+      parseEnvFile('.env.mock', { override: false, verbose: false }),
+    ).toEqual(expectedEnv);
   });
 
   it('should read the value as an empty string when the value is missing from key-value pairs', () => {
@@ -96,7 +104,9 @@ describe('Environment file parser', () => {
 
     readFileSyncSpy.mockReturnValue(fileContent);
 
-    expect(parseEnvFile('.env.mock', false)).toEqual(expectedEnv);
+    expect(
+      parseEnvFile('.env.mock', { override: false, verbose: false }),
+    ).toEqual(expectedEnv);
   });
 
   it('should read no env vars when the env file is empty', () => {
@@ -106,7 +116,9 @@ describe('Environment file parser', () => {
 
     readFileSyncSpy.mockReturnValue(fileContent);
 
-    expect(parseEnvFile('.env.mock', false)).toEqual(expectedEnv);
+    expect(
+      parseEnvFile('.env.mock', { override: false, verbose: false }),
+    ).toEqual(expectedEnv);
   });
 
   it('should ignore lines when they are blank or contain only whitespaces', () => {
@@ -125,7 +137,9 @@ describe('Environment file parser', () => {
 
     readFileSyncSpy.mockReturnValue(fileContent);
 
-    expect(parseEnvFile('.env.mock', false)).toEqual(expectedEnv);
+    expect(
+      parseEnvFile('.env.mock', { override: false, verbose: false }),
+    ).toEqual(expectedEnv);
   });
 
   // Error handling
@@ -138,9 +152,9 @@ describe('Environment file parser', () => {
 
     readFileSyncSpy.mockReturnValue(fileContent);
 
-    expect(() => {
-      parseEnvFile('.env.mock', false);
-    }).toThrow(
+    expect(() =>
+      parseEnvFile('.env.mock', { override: false, verbose: false }),
+    ).toThrow(
       `Error parsing line 2 of ".env.mock": Invalid variable separator, expected "NAME${KEY_VALUE_SEPARATOR}VALUE" format`,
     );
   });
@@ -153,9 +167,9 @@ describe('Environment file parser', () => {
 
     readFileSyncSpy.mockReturnValue(fileContent);
 
-    expect(() => {
-      parseEnvFile('.env.mock', false);
-    }).toThrow(
+    expect(() =>
+      parseEnvFile('.env.mock', { override: false, verbose: false }),
+    ).toThrow(
       `Error parsing line 2 of ".env.mock": Variable name not found, expected "NAME${KEY_VALUE_SEPARATOR}VALUE" format`,
     );
   });
@@ -168,9 +182,9 @@ describe('Environment file parser', () => {
 
     readFileSyncSpy.mockReturnValue(fileContent);
 
-    expect(() => {
-      parseEnvFile('.env.mock', false);
-    }).toThrow(
+    expect(() =>
+      parseEnvFile('.env.mock', { override: false, verbose: false }),
+    ).toThrow(
       `Error parsing line 2 of ".env.mock": Invalid variable separator, expected "NAME${KEY_VALUE_SEPARATOR}VALUE" format`,
     );
   });
@@ -184,9 +198,9 @@ describe('Environment file parser', () => {
       throw error;
     });
 
-    expect(() => {
-      parseEnvFile('.env.mock', false);
-    }).toThrow(/^Error parsing "\.env\.mock": /);
+    expect(() =>
+      parseEnvFile('.env.mock', { override: false, verbose: false }),
+    ).toThrow(/^Error parsing "\.env\.mock": /);
   });
 
   // Special value handling
@@ -200,7 +214,9 @@ describe('Environment file parser', () => {
 
     readFileSyncSpy.mockReturnValue(fileContent);
 
-    expect(parseEnvFile('.env.mock', false)).toEqual(expectedEnv);
+    expect(
+      parseEnvFile('.env.mock', { override: false, verbose: false }),
+    ).toEqual(expectedEnv);
   });
 
   it('should read the value correctly when values contain special characters', () => {
@@ -216,7 +232,9 @@ describe('Environment file parser', () => {
 
     readFileSyncSpy.mockReturnValue(fileContent);
 
-    expect(parseEnvFile('.env.mock', false)).toEqual(expectedEnv);
+    expect(
+      parseEnvFile('.env.mock', { override: false, verbose: false }),
+    ).toEqual(expectedEnv);
   });
 
   it('should read all key-value separators as part of the value when multiple separators appear after the first on the same line', () => {
@@ -232,7 +250,9 @@ describe('Environment file parser', () => {
 
     readFileSyncSpy.mockReturnValue(fileContent);
 
-    expect(parseEnvFile('.env.mock', false)).toEqual(expectedEnv);
+    expect(
+      parseEnvFile('.env.mock', { override: false, verbose: false }),
+    ).toEqual(expectedEnv);
   });
 
   // Quote handling
@@ -250,7 +270,9 @@ describe('Environment file parser', () => {
 
     readFileSyncSpy.mockReturnValue(fileContent);
 
-    expect(parseEnvFile('.env.mock', false)).toEqual(expectedEnv);
+    expect(
+      parseEnvFile('.env.mock', { override: false, verbose: false }),
+    ).toEqual(expectedEnv);
   });
 
   it('should read any double quote as part of the value when values start with but do not end with a double quote', () => {
@@ -266,7 +288,9 @@ describe('Environment file parser', () => {
 
     readFileSyncSpy.mockReturnValue(fileContent);
 
-    expect(parseEnvFile('.env.mock', false)).toEqual(expectedEnv);
+    expect(
+      parseEnvFile('.env.mock', { override: false, verbose: false }),
+    ).toEqual(expectedEnv);
   });
 
   it('should read any double quote as part of the value when values do not start with a double quote', () => {
@@ -284,7 +308,9 @@ describe('Environment file parser', () => {
 
     readFileSyncSpy.mockReturnValue(fileContent);
 
-    expect(parseEnvFile('.env.mock', false)).toEqual(expectedEnv);
+    expect(
+      parseEnvFile('.env.mock', { override: false, verbose: false }),
+    ).toEqual(expectedEnv);
   });
 
   it('should remove the surrounding single quotes from the value when values are enclosed in single quotes', () => {
@@ -300,7 +326,9 @@ describe('Environment file parser', () => {
 
     readFileSyncSpy.mockReturnValue(fileContent);
 
-    expect(parseEnvFile('.env.mock', false)).toEqual(expectedEnv);
+    expect(
+      parseEnvFile('.env.mock', { override: false, verbose: false }),
+    ).toEqual(expectedEnv);
   });
 
   it('should read any single quote as part of the value when values start with but do not end with a single quote', () => {
@@ -316,7 +344,9 @@ describe('Environment file parser', () => {
 
     readFileSyncSpy.mockReturnValue(fileContent);
 
-    expect(parseEnvFile('.env.mock', false)).toEqual(expectedEnv);
+    expect(
+      parseEnvFile('.env.mock', { override: false, verbose: false }),
+    ).toEqual(expectedEnv);
   });
 
   it('should read any single quote as part of the value when values do not start with a single quote', () => {
@@ -334,7 +364,9 @@ describe('Environment file parser', () => {
 
     readFileSyncSpy.mockReturnValue(fileContent);
 
-    expect(parseEnvFile('.env.mock', false)).toEqual(expectedEnv);
+    expect(
+      parseEnvFile('.env.mock', { override: false, verbose: false }),
+    ).toEqual(expectedEnv);
   });
 
   // Verbose
@@ -357,7 +389,7 @@ describe('Environment file parser', () => {
       ].join('\n');
 
       readFileSyncSpy.mockReturnValue(fileContent);
-      parseEnvFile('.env.mock', true);
+      parseEnvFile('.env.mock', { override: false, verbose: true });
 
       expect(logSpy).toHaveBeenCalledTimes(3);
       expect(logSpy).toHaveBeenNthCalledWith(1, 'Parsing file ".env.mock"');
@@ -375,7 +407,7 @@ describe('Environment file parser', () => {
       const fileContent = '';
 
       readFileSyncSpy.mockReturnValue(fileContent);
-      parseEnvFile('.env.mock', true);
+      parseEnvFile('.env.mock', { override: false, verbose: true });
 
       expect(logSpy).toHaveBeenCalledTimes(1);
       expect(logSpy).toHaveBeenCalledWith('Parsing file ".env.mock"');
@@ -391,7 +423,7 @@ describe('Environment file parser', () => {
       });
 
       try {
-        parseEnvFile('.env.mock', true);
+        parseEnvFile('.env.mock', { override: false, verbose: true });
       } catch {
         /* empty */
       }
@@ -407,7 +439,7 @@ describe('Environment file parser', () => {
 
       readFileSyncSpy.mockReturnValue(fileContent);
       try {
-        parseEnvFile('.env.mock', true);
+        parseEnvFile('.env.mock', { override: false, verbose: true });
       } catch {
         /* empty */
       }
@@ -429,7 +461,7 @@ describe('Environment file parser', () => {
       ].join('\n');
 
       readFileSyncSpy.mockReturnValue(fileContent);
-      parseEnvFile('.env.mock', true);
+      parseEnvFile('.env.mock', { override: false, verbose: true });
 
       expect(logSpy).toHaveBeenCalledTimes(5);
       expect(logSpy).toHaveBeenNthCalledWith(1, 'Parsing file ".env.mock"');
