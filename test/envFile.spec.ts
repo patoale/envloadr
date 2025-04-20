@@ -483,4 +483,25 @@ describe('Environment file parser', () => {
       );
     });
   });
+
+  // Override duplicated vars
+
+  it('should keep the original value of env vars when their names are duplicated', () => {
+    const fileContent = [
+      `KEY_1${KEY_VALUE_SEPARATOR}value_1`,
+      `KEY_2${KEY_VALUE_SEPARATOR}value_2`,
+      `KEY_1${KEY_VALUE_SEPARATOR}value_3`,
+    ].join('\n');
+
+    const expectedEnv = {
+      KEY_1: 'value_1',
+      KEY_2: 'value_2',
+    };
+
+    readFileSyncSpy.mockReturnValue(fileContent);
+
+    expect(
+      parseEnvFile('.env.mock', { override: false, verbose: false }),
+    ).toEqual(expectedEnv);
+  });
 });
