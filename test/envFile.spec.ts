@@ -17,15 +17,15 @@ describe('Environment file parser', () => {
 
   it('should read env vars correctly when key-value pairs are well-formed', () => {
     const fileContent = [
-      `KEY${KEY_VALUE_SEPARATOR}value`,
-      `DATABASE${KEY_VALUE_SEPARATOR}production`,
-      `API_KEY${KEY_VALUE_SEPARATOR}12345`,
+      `KEY_1${KEY_VALUE_SEPARATOR}value_1`,
+      `KEY_2${KEY_VALUE_SEPARATOR}value_2`,
+      `KEY_3${KEY_VALUE_SEPARATOR}value_3`,
     ].join('\n');
 
     const expectedEnv = {
-      KEY: 'value',
-      DATABASE: 'production',
-      API_KEY: '12345',
+      KEY_1: 'value_1',
+      KEY_2: 'value_2',
+      KEY_3: 'value_3',
     };
 
     readFileSyncSpy.mockReturnValue(fileContent);
@@ -35,13 +35,13 @@ describe('Environment file parser', () => {
 
   it('should read env vars correctly when exists spaces around the key-value separators', () => {
     const fileContent = [
-      `KEY ${KEY_VALUE_SEPARATOR} value`,
-      `DATABASE  ${KEY_VALUE_SEPARATOR}  production`,
+      `KEY_1 ${KEY_VALUE_SEPARATOR} value_1`,
+      `KEY_2  ${KEY_VALUE_SEPARATOR}  value_2`,
     ].join('\n');
 
     const expectedEnv = {
-      KEY: 'value',
-      DATABASE: 'production',
+      KEY_1: 'value_1',
+      KEY_2: 'value_2',
     };
 
     readFileSyncSpy.mockReturnValue(fileContent);
@@ -51,13 +51,13 @@ describe('Environment file parser', () => {
 
   it('should read the value correctly when values contain spaces', () => {
     const fileContent = [
-      `KEY${KEY_VALUE_SEPARATOR}value with spaces`,
-      `DATABASE${KEY_VALUE_SEPARATOR}prod environment`,
+      `KEY_1${KEY_VALUE_SEPARATOR}value_1 with spaces`,
+      `KEY_2${KEY_VALUE_SEPARATOR}value_2  with  spaces`,
     ].join('\n');
 
     const expectedEnv = {
-      KEY: 'value with spaces',
-      DATABASE: 'prod environment',
+      KEY_1: 'value_1 with spaces',
+      KEY_2: 'value_2  with  spaces',
     };
 
     readFileSyncSpy.mockReturnValue(fileContent);
@@ -68,14 +68,14 @@ describe('Environment file parser', () => {
   it(`should ignore lines when they start with ${ENV_FILE_COMMENT_PREFIX}`, () => {
     const fileContent = [
       `${ENV_FILE_COMMENT_PREFIX} This is a comment`,
-      `KEY${KEY_VALUE_SEPARATOR}value`,
-      `DATABASE${KEY_VALUE_SEPARATOR}production`,
+      `KEY_1${KEY_VALUE_SEPARATOR}value_1`,
+      `KEY_2${KEY_VALUE_SEPARATOR}value_2`,
       `${ENV_FILE_COMMENT_PREFIX} Another comment`,
     ].join('\n');
 
     const expectedEnv = {
-      KEY: 'value',
-      DATABASE: 'production',
+      KEY_1: 'value_1',
+      KEY_2: 'value_2',
     };
 
     readFileSyncSpy.mockReturnValue(fileContent);
@@ -85,13 +85,13 @@ describe('Environment file parser', () => {
 
   it('should read the value as an empty string when the value is missing from key-value pairs', () => {
     const fileContent = [
-      `KEY${KEY_VALUE_SEPARATOR}value`,
-      `DATABASE${KEY_VALUE_SEPARATOR}`,
+      `KEY_1${KEY_VALUE_SEPARATOR}value_1`,
+      `KEY_2${KEY_VALUE_SEPARATOR}`,
     ].join('\n');
 
     const expectedEnv = {
-      KEY: 'value',
-      DATABASE: '',
+      KEY_1: 'value_1',
+      KEY_2: '',
     };
 
     readFileSyncSpy.mockReturnValue(fileContent);
@@ -112,15 +112,15 @@ describe('Environment file parser', () => {
   it('should ignore lines when they are blank or contain only whitespaces', () => {
     const fileContent = [
       '\t',
-      `KEY${KEY_VALUE_SEPARATOR}value`,
+      `KEY_1${KEY_VALUE_SEPARATOR}value_1`,
       '',
-      `DATABASE${KEY_VALUE_SEPARATOR}production`,
+      `KEY_2${KEY_VALUE_SEPARATOR}value_2`,
       '   ',
     ].join('\n');
 
     const expectedEnv = {
-      KEY: 'value',
-      DATABASE: 'production',
+      KEY_1: 'value_1',
+      KEY_2: 'value_2',
     };
 
     readFileSyncSpy.mockReturnValue(fileContent);
@@ -132,8 +132,8 @@ describe('Environment file parser', () => {
 
   it('should throw an error when any key-value pair contains an invalid separator', () => {
     const fileContent = [
-      `KEY${KEY_VALUE_SEPARATOR}value`,
-      'DATABASE:value',
+      `KEY_1${KEY_VALUE_SEPARATOR}value_1`,
+      'KEY_2:value_2',
     ].join('\n');
 
     readFileSyncSpy.mockReturnValue(fileContent);
@@ -147,8 +147,8 @@ describe('Environment file parser', () => {
 
   it('should throw an error when any key is missing from key-value pairs', () => {
     const fileContent = [
-      `KEY${KEY_VALUE_SEPARATOR}value`,
-      `${KEY_VALUE_SEPARATOR}value`,
+      `KEY_1${KEY_VALUE_SEPARATOR}value_1`,
+      `${KEY_VALUE_SEPARATOR}value_2`,
     ].join('\n');
 
     readFileSyncSpy.mockReturnValue(fileContent);
@@ -162,8 +162,8 @@ describe('Environment file parser', () => {
 
   it('should throw an error when any separator is missing from key-value pairs', () => {
     const fileContent = [
-      `KEY${KEY_VALUE_SEPARATOR}value`,
-      `DATABASEproduction`,
+      `KEY_1${KEY_VALUE_SEPARATOR}value_1`,
+      `KEY_2value_2`,
     ].join('\n');
 
     readFileSyncSpy.mockReturnValue(fileContent);
@@ -192,10 +192,10 @@ describe('Environment file parser', () => {
   // Special value handling
 
   it('should read the value correctly when values are long', () => {
-    const fileContent = `LONG_KEY${KEY_VALUE_SEPARATOR}longvaluehere1234567890abcdefghijklmnopqrstuvwx`;
+    const fileContent = `KEY_1${KEY_VALUE_SEPARATOR}longvaluehere1234567890abcdefghijklmnopqrstuvwx`;
 
     const expectedEnv = {
-      LONG_KEY: 'longvaluehere1234567890abcdefghijklmnopqrstuvwx',
+      KEY_1: 'longvaluehere1234567890abcdefghijklmnopqrstuvwx',
     };
 
     readFileSyncSpy.mockReturnValue(fileContent);
@@ -205,13 +205,13 @@ describe('Environment file parser', () => {
 
   it('should read the value correctly when values contain special characters', () => {
     const fileContent = [
-      `KEY${KEY_VALUE_SEPARATOR}multi\\nline\\value`,
-      `DATABASE${KEY_VALUE_SEPARATOR}path\\\\to\\\\file`,
+      `KEY_1${KEY_VALUE_SEPARATOR}value_1\\nmulti\\line`,
+      `KEY_2${KEY_VALUE_SEPARATOR}value_2\\\\path\\\\to\\\\file`,
     ].join('\n');
 
     const expectedEnv = {
-      KEY: 'multi\\nline\\value',
-      DATABASE: 'path\\\\to\\\\file',
+      KEY_1: 'value_1\\nmulti\\line',
+      KEY_2: 'value_2\\\\path\\\\to\\\\file',
     };
 
     readFileSyncSpy.mockReturnValue(fileContent);
@@ -221,13 +221,13 @@ describe('Environment file parser', () => {
 
   it('should read all key-value separators as part of the value when multiple separators appear after the first on the same line', () => {
     const fileContent = [
-      `SEPARATOR${KEY_VALUE_SEPARATOR}${KEY_VALUE_SEPARATOR}${KEY_VALUE_SEPARATOR}`,
-      `SERVER_LOG${KEY_VALUE_SEPARATOR}https://localhost:8080/logs?level${KEY_VALUE_SEPARATOR}info`,
+      `KEY_1${KEY_VALUE_SEPARATOR}${KEY_VALUE_SEPARATOR}${KEY_VALUE_SEPARATOR}`,
+      `KEY_2${KEY_VALUE_SEPARATOR}value_2${KEY_VALUE_SEPARATOR}value`,
     ].join('\n');
 
     const expectedEnv = {
-      SEPARATOR: `${KEY_VALUE_SEPARATOR}${KEY_VALUE_SEPARATOR}`,
-      SERVER_LOG: `https://localhost:8080/logs?level${KEY_VALUE_SEPARATOR}info`,
+      KEY_1: `${KEY_VALUE_SEPARATOR}${KEY_VALUE_SEPARATOR}`,
+      KEY_2: `value_2${KEY_VALUE_SEPARATOR}value`,
     };
 
     readFileSyncSpy.mockReturnValue(fileContent);
@@ -239,13 +239,13 @@ describe('Environment file parser', () => {
 
   it('should remove the surrounding double quotes from the value when values are enclosed in double quotes', () => {
     const fileContent = [
-      `KEY${KEY_VALUE_SEPARATOR}"value with spaces"`,
-      `DATABASE${KEY_VALUE_SEPARATOR}"production"`,
+      `KEY_1${KEY_VALUE_SEPARATOR}"value_1"`,
+      `KEY_2${KEY_VALUE_SEPARATOR}"value_2 with spaces"`,
     ].join('\n');
 
     const expectedEnv = {
-      KEY: 'value with spaces',
-      DATABASE: 'production',
+      KEY_1: 'value_1',
+      KEY_2: 'value_2 with spaces',
     };
 
     readFileSyncSpy.mockReturnValue(fileContent);
@@ -255,13 +255,13 @@ describe('Environment file parser', () => {
 
   it('should read any double quote as part of the value when values start with but do not end with a double quote', () => {
     const fileContent = [
-      `KEY${KEY_VALUE_SEPARATOR}"value with spaces`,
-      `DATABASE${KEY_VALUE_SEPARATOR}"path to"/data`,
+      `KEY_1${KEY_VALUE_SEPARATOR}"value_1`,
+      `KEY_2${KEY_VALUE_SEPARATOR}"value_2"value`,
     ].join('\n');
 
     const expectedEnv = {
-      KEY: '"value with spaces',
-      DATABASE: '"path to"/data',
+      KEY_1: '"value_1',
+      KEY_2: '"value_2"value',
     };
 
     readFileSyncSpy.mockReturnValue(fileContent);
@@ -271,15 +271,15 @@ describe('Environment file parser', () => {
 
   it('should read any double quote as part of the value when values do not start with a double quote', () => {
     const fileContent = [
-      `KEY${KEY_VALUE_SEPARATOR}value with spaces"`,
-      `DATABASE${KEY_VALUE_SEPARATOR}path/to/"my data"`,
-      `API_KEY${KEY_VALUE_SEPARATOR}1234"5"6789`,
+      `KEY_1${KEY_VALUE_SEPARATOR}value_1"`,
+      `KEY_2${KEY_VALUE_SEPARATOR}value_2"quoted"`,
+      `KEY_3${KEY_VALUE_SEPARATOR}value_3"quoted"value`,
     ].join('\n');
 
     const expectedEnv = {
-      KEY: 'value with spaces"',
-      DATABASE: 'path/to/"my data"',
-      API_KEY: '1234"5"6789',
+      KEY_1: 'value_1"',
+      KEY_2: 'value_2"quoted"',
+      KEY_3: 'value_3"quoted"value',
     };
 
     readFileSyncSpy.mockReturnValue(fileContent);
@@ -289,13 +289,13 @@ describe('Environment file parser', () => {
 
   it('should remove the surrounding single quotes from the value when values are enclosed in single quotes', () => {
     const fileContent = [
-      `KEY${KEY_VALUE_SEPARATOR}'value with spaces'`,
-      `DATABASE${KEY_VALUE_SEPARATOR}'production'`,
+      `KEY_1${KEY_VALUE_SEPARATOR}'value_1'`,
+      `KEY_2${KEY_VALUE_SEPARATOR}'value_2 with spaces'`,
     ].join('\n');
 
     const expectedEnv = {
-      KEY: 'value with spaces',
-      DATABASE: 'production',
+      KEY_1: 'value_1',
+      KEY_2: 'value_2 with spaces',
     };
 
     readFileSyncSpy.mockReturnValue(fileContent);
@@ -305,13 +305,13 @@ describe('Environment file parser', () => {
 
   it('should read any single quote as part of the value when values start with but do not end with a single quote', () => {
     const fileContent = [
-      `KEY${KEY_VALUE_SEPARATOR}'value with spaces`,
-      `DATABASE${KEY_VALUE_SEPARATOR}'path to'/data`,
+      `KEY_1${KEY_VALUE_SEPARATOR}'value_1`,
+      `KEY_2${KEY_VALUE_SEPARATOR}'value_2'value`,
     ].join('\n');
 
     const expectedEnv = {
-      KEY: "'value with spaces",
-      DATABASE: "'path to'/data",
+      KEY_1: "'value_1",
+      KEY_2: "'value_2'value",
     };
 
     readFileSyncSpy.mockReturnValue(fileContent);
@@ -321,15 +321,15 @@ describe('Environment file parser', () => {
 
   it('should read any single quote as part of the value when values do not start with a single quote', () => {
     const fileContent = [
-      `KEY${KEY_VALUE_SEPARATOR}value with spaces'`,
-      `DATABASE${KEY_VALUE_SEPARATOR}path/to/'my data'`,
-      `API_KEY${KEY_VALUE_SEPARATOR}1234'5'6789`,
+      `KEY_1${KEY_VALUE_SEPARATOR}value_1'`,
+      `KEY_2${KEY_VALUE_SEPARATOR}value_2'quoted'`,
+      `KEY_3${KEY_VALUE_SEPARATOR}value_3'quoted'value`,
     ].join('\n');
 
     const expectedEnv = {
-      KEY: "value with spaces'",
-      DATABASE: "path/to/'my data'",
-      API_KEY: "1234'5'6789",
+      KEY_1: "value_1'",
+      KEY_2: "value_2'quoted'",
+      KEY_3: "value_3'quoted'value",
     };
 
     readFileSyncSpy.mockReturnValue(fileContent);
@@ -401,8 +401,8 @@ describe('Environment file parser', () => {
 
     it('should stop displaying parsing process details when an error occurs in the middle of the process', () => {
       const fileContent = [
-        `KEY${KEY_VALUE_SEPARATOR}value`,
-        `DATABASE:production`,
+        `KEY_1${KEY_VALUE_SEPARATOR}value_1`,
+        `KEY_2:value_2`,
       ].join('\n');
 
       readFileSyncSpy.mockReturnValue(fileContent);
@@ -416,7 +416,7 @@ describe('Environment file parser', () => {
       expect(logSpy).toHaveBeenNthCalledWith(1, 'Parsing file ".env.mock"');
       expect(logSpy).toHaveBeenNthCalledWith(
         2,
-        'Successfully parsed: KEY = value',
+        'Successfully parsed: KEY_1 = value_1',
       );
     });
 
