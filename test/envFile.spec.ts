@@ -241,11 +241,13 @@ describe('Environment file parser', () => {
     const fileContent = [
       `KEY_1${KEY_VALUE_SEPARATOR}${KEY_VALUE_SEPARATOR}${KEY_VALUE_SEPARATOR}`,
       `KEY_2${KEY_VALUE_SEPARATOR}value_2${KEY_VALUE_SEPARATOR}value`,
+      `KEY_3${KEY_VALUE_SEPARATOR}value_3 ${KEY_VALUE_SEPARATOR}  value`,
     ].join('\n');
 
     const expectedEnv = {
       KEY_1: `${KEY_VALUE_SEPARATOR}${KEY_VALUE_SEPARATOR}`,
       KEY_2: `value_2${KEY_VALUE_SEPARATOR}value`,
+      KEY_3: `value_3 ${KEY_VALUE_SEPARATOR}  value`,
     };
 
     readFileSyncSpy.mockReturnValue(fileContent);
