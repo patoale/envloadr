@@ -484,6 +484,38 @@ describe('Environment file parser', () => {
     });
   });
 
+  describe('if override and verbose flags are activated', () => {
+    it('should display that the env var has overridden its value when parsing env vars that have already been parsed', () => {
+      const logSpy = jest.spyOn(console, 'log').mockImplementation();
+
+      const fileContent = [
+        `KEY_1${KEY_VALUE_SEPARATOR}value_1a`,
+        `KEY_2${KEY_VALUE_SEPARATOR}value_2`,
+        `KEY_1${KEY_VALUE_SEPARATOR}value_1b`,
+      ].join('\n');
+
+      readFileSyncSpy.mockReturnValue(fileContent);
+      parseEnvFile('.env.mock', { override: true, verbose: true });
+
+      expect(logSpy).toHaveBeenCalledTimes(4);
+      expect(logSpy).toHaveBeenNthCalledWith(1, 'Parsing file ".env.mock"');
+      expect(logSpy).toHaveBeenNthCalledWith(
+        2,
+        'Successfully parsed: KEY_1 = value_1a',
+      );
+      expect(logSpy).toHaveBeenNthCalledWith(
+        3,
+        'Successfully parsed: KEY_2 = value_2',
+      );
+      expect(logSpy).toHaveBeenNthCalledWith(
+        4,
+        'Successfully overridden: KEY_1 = value_1b',
+      );
+
+      logSpy.mockRestore();
+    });
+  });
+
   // Override duplicated vars
 
   it('should keep the original value of env vars when their names are duplicated', () => {
