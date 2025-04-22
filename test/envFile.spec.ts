@@ -76,7 +76,7 @@ describe('Environment file parser', () => {
       `${ENV_FILE_COMMENT_PREFIX} This is a comment`,
       `KEY_1${KEY_VALUE_SEPARATOR}value_1`,
       `KEY_2${KEY_VALUE_SEPARATOR}value_2`,
-      `${ENV_FILE_COMMENT_PREFIX} Another comment`,
+      `  ${ENV_FILE_COMMENT_PREFIX} A comment with spaces`,
     ].join('\n');
 
     const expectedEnv = {
