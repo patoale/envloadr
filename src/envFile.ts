@@ -67,3 +67,8 @@ export function parseEnvFile(
 
   return result;
 }
+
+export declare function parseEnvFiles(
+  pathnames: string[],
+  options: { override: boolean; verbose: boolean },
+): Env;
