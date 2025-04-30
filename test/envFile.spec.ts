@@ -585,8 +585,17 @@ describe('Environment file parser', () => {
 });
 
 describe('parseEnvFiles', () => {
+  let readFileSyncSpy: jest.SpyInstance;
+
+  beforeEach(() => {
+    readFileSyncSpy = jest.spyOn(fs, 'readFileSync');
+  });
+
+  afterEach(() => {
+    readFileSyncSpy.mockRestore();
+  });
+
   it('should read files in the order they are provided', () => {
-    const readFileSyncSpy = jest.spyOn(fs, 'readFileSync');
     const logSpy = jest.spyOn(console, 'log').mockImplementation();
 
     const filenames = ['.mock1.env', '.mock3.env', '.mock2.env', '.mock4.env'];
@@ -605,12 +614,9 @@ describe('parseEnvFiles', () => {
     });
 
     logSpy.mockRestore();
-    readFileSyncSpy.mockRestore();
   });
 
   it('should throw an error when a error occurs in any env file', () => {
-    const readFileSyncSpy = jest.spyOn(fs, 'readFileSync');
-
     const files = {
       mock1: {
         name: '.mock1.env',
@@ -646,7 +652,5 @@ describe('parseEnvFiles', () => {
     ).toThrow(
       `Error parsing line 3 of "${files.mock2.name}": Invalid variable separator, expected "NAME${KEY_VALUE_SEPARATOR}VALUE" format`,
     );
-
-    readFileSyncSpy.mockRestore();
   });
 });
