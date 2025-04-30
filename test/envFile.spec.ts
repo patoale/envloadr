@@ -640,13 +640,12 @@ describe('parseEnvFiles', () => {
     };
 
     readFileSyncSpy.mockImplementation(
-      (path) =>
-        Object.values(files).find((file) => path === file.name)!.content,
+      (path) => Object.values(files).find(({ name }) => path === name)!.content,
     );
 
     expect(() =>
       parseEnvFiles(
-        Object.values(files).map((file) => file.name),
+        Object.values(files).map(({ name }) => name),
         { override: false, verbose: false },
       ),
     ).toThrow(
