@@ -699,4 +699,52 @@ describe('parseEnvFiles', () => {
       ),
     ).toEqual(expectedEnv);
   });
+
+  describe('if override flag is activated', () => {
+    it('should override the value of env vars to the last appearance when their names are duplicated in different files', () => {
+      const files = {
+        mock1: {
+          name: '.mock1.env',
+          content: [
+            `KEY_1${KEY_VALUE_SEPARATOR}value_1a`,
+            `KEY_2${KEY_VALUE_SEPARATOR}value_2a`,
+          ].join('\n'),
+        },
+        mock2: {
+          name: '.mock2.env',
+          content: [
+            `KEY_3${KEY_VALUE_SEPARATOR}value_3`,
+            `KEY_2${KEY_VALUE_SEPARATOR}value_2b`,
+          ].join('\n'),
+        },
+        mock3: {
+          name: '.mock3.env',
+          content: [
+            `KEY_2${KEY_VALUE_SEPARATOR}value_2c`,
+            `KEY_4${KEY_VALUE_SEPARATOR}value_4`,
+            `KEY_1${KEY_VALUE_SEPARATOR}value_1b`,
+          ].join('\n'),
+        },
+      };
+
+      const expectedEnv = {
+        KEY_1: 'value_1b',
+        KEY_2: 'value_2c',
+        KEY_3: 'value_3',
+        KEY_4: 'value_4',
+      };
+
+      readFileSyncSpy.mockImplementation(
+        (path: string) =>
+          Object.values(files).find(({ name }) => path === name)!.content,
+      );
+
+      expect(
+        parseEnvFiles(
+          Object.values(files).map(({ name }) => name),
+          { override: true, verbose: false },
+        ),
+      ).toEqual(expectedEnv);
+    });
+  });
 });
