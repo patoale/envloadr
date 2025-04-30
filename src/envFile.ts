@@ -68,7 +68,18 @@ export function parseEnvFile(
   return result;
 }
 
-export declare function parseEnvFiles(
+export function parseEnvFiles(
   pathnames: string[],
   options: { override: boolean; verbose: boolean },
-): Env;
+): Env {
+  return pathnames
+    .map((pathname) => parseEnvFile(pathname, options))
+    .reduce<Env>((result, env) => {
+      Object.entries(env).forEach(([key, value]) => {
+        if (key in result && !options.override) return;
+        result[key] = value;
+      });
+
+      return result;
+    }, {});
+}
