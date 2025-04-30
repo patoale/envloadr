@@ -1,6 +1,6 @@
 import fs from 'fs';
 import { ENV_FILE_COMMENT_PREFIX, KEY_VALUE_SEPARATOR } from '@/config';
-import { parseEnvFile } from '@/envFile';
+import { parseEnvFile, parseEnvFiles } from '@/envFile';
 
 describe('Environment file parser', () => {
   let readFileSyncSpy: jest.SpyInstance;
@@ -581,5 +581,30 @@ describe('Environment file parser', () => {
         parseEnvFile('.env.mock', { override: true, verbose: false }),
       ).toEqual(expectedEnv);
     });
+  });
+});
+
+describe('parseEnvFiles', () => {
+  it('should read files in the order they are provided', () => {
+    const readFileSyncSpy = jest.spyOn(fs, 'readFileSync');
+    const logSpy = jest.spyOn(console, 'log').mockImplementation();
+
+    const filenames = ['.mock1.env', '.mock3.env', '.mock2.env', '.mock4.env'];
+    const fileContent = '';
+
+    readFileSyncSpy.mockReturnValue(fileContent);
+
+    parseEnvFiles(filenames, { override: false, verbose: true });
+
+    expect(logSpy).toHaveBeenCalledTimes(4);
+    filenames.forEach((filename, i) => {
+      expect(logSpy).toHaveBeenNthCalledWith(
+        i + 1,
+        `Parsing file "${filename}"`,
+      );
+    });
+
+    logSpy.mockRestore();
+    readFileSyncSpy.mockRestore();
   });
 });
