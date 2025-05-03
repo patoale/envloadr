@@ -5,3 +5,4 @@ export const KEY_VALUE_SEPARATOR = '=';
 // ### CLI parser
 export const CLI_FLAG_LONG_PREFIX = '--';
 export const CLI_FLAG_SHORT_PREFIX = '-';
+export const CLI_FLAG_VALUE_SEPARATOR = '=';
