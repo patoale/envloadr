@@ -6,3 +6,4 @@ export const KEY_VALUE_SEPARATOR = '=';
 export const CLI_FLAG_LONG_PREFIX = '--';
 export const CLI_FLAG_SHORT_PREFIX = '-';
 export const CLI_FLAG_VALUE_SEPARATOR = '=';
+export const CLI_OPTION_VALUES_SEPARATOR = ',';
