@@ -7,3 +7,5 @@ export interface OptionSpec {
     primitiveType: 'boolean' | 'string';
   };
 }
+
+export type SpecSchema = Record<string, OptionSpec>;
