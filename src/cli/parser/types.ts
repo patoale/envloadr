@@ -12,7 +12,7 @@ type OptionType<T extends OptionSpecType | undefined> = T extends OptionSpecType
   : boolean;
 
 type Options<T extends SpecSchema> = {
-  [K in keyof T]: OptionType<T[K]['type']>;
+  [K in keyof T]?: OptionType<T[K]['type']>;
 };
 
 export type Input<T extends SpecSchema> = {
