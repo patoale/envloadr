@@ -15,7 +15,7 @@ type Options<T extends SpecSchema> = {
   [K in keyof T]?: OptionType<T[K]['type']>;
 };
 
-export type Input<T extends SpecSchema> = {
+export type Args<T extends SpecSchema> = {
   command: {
     name: string;
     args: string[];
