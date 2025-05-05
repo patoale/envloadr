@@ -48,4 +48,20 @@ describe('parse', () => {
 
     expect(parse(input, schema).command.args).toHaveLength(0);
   });
+
+  it('should return a list with the target command args when the input includes the target command with args', () => {
+    const input = [
+      'target-command',
+      'target-command-arg1',
+      'target-command-arg2',
+      'target-command-arg3',
+    ];
+    const expectedCommandArgs = [
+      'target-command-arg1',
+      'target-command-arg2',
+      'target-command-arg3',
+    ];
+
+    expect(parse(input, schema).command.args).toEqual(expectedCommandArgs);
+  });
 });
