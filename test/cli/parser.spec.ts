@@ -42,4 +42,10 @@ describe('parse', () => {
       'Error parsing CLI input: Missing target command',
     );
   });
+
+  it('should return an empty list of target command args when the input contains the target command without any args', () => {
+    const input = ['command-target'];
+
+    expect(parse(input, schema).command.args).toHaveLength(0);
+  });
 });
