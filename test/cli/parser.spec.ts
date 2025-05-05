@@ -64,4 +64,10 @@ describe('parse', () => {
 
     expect(parse(input, schema).command.args).toEqual(expectedCommandArgs);
   });
+
+  it('should not return any option when the input does not contain any option', () => {
+    const input = ['target-command'];
+
+    expect(parse(input, schema).options).toBeUndefined();
+  });
 });
