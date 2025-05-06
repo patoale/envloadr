@@ -79,4 +79,20 @@ describe('parse', () => {
 
     expect(parse(input, schema).options).toEqual(expectedOptions);
   });
+
+  it('should return the correct options when the input contains multiple options', () => {
+    const input = [
+      '--flagA',
+      '--flagB=valueB',
+      '--flagC=valueC',
+      'command-target',
+    ];
+    const expectedOptions = {
+      flagA: true,
+      flagB: ['valueB'],
+      flagC: 'valueC',
+    };
+
+    expect(parse(input, schema).options).toEqual(expectedOptions);
+  });
 });
