@@ -95,4 +95,19 @@ describe('parse', () => {
 
     expect(parse(input, schema).options).toEqual(expectedOptions);
   });
+
+  it('should return the same options for different inputs when both contain the same options, but in a different order', () => {
+    const inputA = ['--flagA', '--flagC=value', 'command-target'];
+    const inputB = ['--flagC=value', '--flagA', 'command-target'];
+    const expectedOptions = {
+      flagA: true,
+      flagC: 'value',
+    };
+
+    const { options: resultOptionsA } = parse(inputA, schema);
+    const { options: resultOptionsB } = parse(inputB, schema);
+
+    expect(resultOptionsA).toEqual(resultOptionsB);
+    expect(resultOptionsA).toEqual(expectedOptions);
+  });
 });
