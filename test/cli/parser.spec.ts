@@ -159,4 +159,19 @@ describe('parse', () => {
 
     expect(parse(input, schema)).toEqual(expectedArgs);
   });
+
+  it('should treat an option as the target command when the option has an invalid flag prefix', () => {
+    const input = ['-fa', '++flagB=valueB', '--flagC=valueC', 'command-target'];
+    const expectedArgs = {
+      command: {
+        name: '++flagB=valueB',
+        args: ['--flagC=valueC', 'command-target'],
+      },
+      options: {
+        flagA: true,
+      },
+    };
+
+    expect(parse(input, schema)).toEqual(expectedArgs);
+  });
 });
