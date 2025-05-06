@@ -125,4 +125,14 @@ describe('parse', () => {
     expect(resultOptionsA).toEqual(resultOptionsB);
     expect(resultOptionsA).toEqual(expectedOptions);
   });
+
+  it('should return the correct options when the input mixes long and short flags', () => {
+    const input = ['-fa', '--flagC=value', 'command-target'];
+    const expectedOptions = {
+      flagA: true,
+      flagC: 'value',
+    };
+
+    expect(parse(input, schema).options).toEqual(expectedOptions);
+  });
 });
