@@ -70,4 +70,13 @@ describe('parse', () => {
 
     expect(parse(input, schema).options).toBeUndefined();
   });
+
+  it('should return the correct option when the input contains only one option', () => {
+    const input = ['--flagA', 'command-target'];
+    const expectedOptions = {
+      flagA: true,
+    };
+
+    expect(parse(input, schema).options).toEqual(expectedOptions);
+  });
 });
