@@ -135,4 +135,13 @@ describe('parse', () => {
 
     expect(parse(input, schema).options).toEqual(expectedOptions);
   });
+
+  it('should throw an error when the input contains an unknown flag', () => {
+    const unknownFlag = 'flagZ';
+    const input = ['-fa', `--${unknownFlag}`, 'command-target'];
+
+    expect(() => parse(input, schema)).toThrow(
+      `Error parsing CLI input: Unknown option "${unknownFlag}"`,
+    );
+  });
 });
