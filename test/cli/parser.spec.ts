@@ -110,4 +110,19 @@ describe('parse', () => {
     expect(resultOptionsA).toEqual(resultOptionsB);
     expect(resultOptionsA).toEqual(expectedOptions);
   });
+
+  it('should return the same options for different inputs when one uses long flags and the other uses short flags', () => {
+    const inputA = ['--flagA', '--flagB=value', 'command-target'];
+    const inputB = ['-fa', '-fb=value', 'command-target'];
+    const expectedOptions = {
+      flagA: true,
+      flagB: ['value'],
+    };
+
+    const { options: resultOptionsA } = parse(inputA, schema);
+    const { options: resultOptionsB } = parse(inputB, schema);
+
+    expect(resultOptionsA).toEqual(resultOptionsB);
+    expect(resultOptionsA).toEqual(expectedOptions);
+  });
 });
