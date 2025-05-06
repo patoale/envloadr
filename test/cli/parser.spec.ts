@@ -144,4 +144,19 @@ describe('parse', () => {
       `Error parsing CLI input: Unknown option "${unknownFlag}"`,
     );
   });
+
+  it('should treat an option as the target command when the option has no flag prefix', () => {
+    const input = ['-fa', 'flagB=valueB', '--flagC=valueC', 'command-target'];
+    const expectedArgs = {
+      command: {
+        name: 'flagB=valueB',
+        args: ['--flagC=valueC', 'command-target'],
+      },
+      options: {
+        flagA: true,
+      },
+    };
+
+    expect(parse(input, schema)).toEqual(expectedArgs);
+  });
 });
