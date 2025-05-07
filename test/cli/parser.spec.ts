@@ -220,7 +220,7 @@ describe('parse', () => {
     expect(parse(input, schema)).toEqual(expectedArgs);
   });
 
-  it('should throw an error when the option requires a value but it is missing', () => {
+  it('should throw an error when a option requires a value but the value is missing', () => {
     const noValuedFlag = 'flagC';
     const input = [`${CLI_FLAG_LONG_PREFIX}${noValuedFlag}`, 'command-target'];
 
@@ -229,7 +229,7 @@ describe('parse', () => {
     );
   });
 
-  it('should throw an error when a non-valuable option has a value', () => {
+  it('should throw an error when a value is provided to a non-valuable option', () => {
     const valuedFlag = 'help';
     const input = [
       `${CLI_FLAG_LONG_PREFIX}${valuedFlag}${CLI_FLAG_VALUE_SEPARATOR}value`,
