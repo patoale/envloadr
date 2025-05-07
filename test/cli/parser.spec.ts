@@ -174,4 +174,13 @@ describe('parse', () => {
 
     expect(parse(input, schema)).toEqual(expectedArgs);
   });
+
+  it('should throw an error when the option requires a value but it is missing', () => {
+    const noValuedFlag = 'flagC';
+    const input = [`--${noValuedFlag}`, 'command-target'];
+
+    expect(() => parse(input, schema)).toThrow(
+      `Error parsing CLI input: Expected value for option "${noValuedFlag}"`,
+    );
+  });
 });
