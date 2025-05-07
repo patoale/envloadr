@@ -1,4 +1,8 @@
-import { CLI_FLAG_LONG_PREFIX, CLI_FLAG_SHORT_PREFIX } from '@/config';
+import {
+  CLI_FLAG_LONG_PREFIX,
+  CLI_FLAG_SHORT_PREFIX,
+  CLI_FLAG_VALUE_SEPARATOR,
+} from '@/config';
 import { parse } from '@/cli/parser';
 
 const schema = {
@@ -84,8 +88,8 @@ describe('parse', () => {
   it('should return the correct options when the input contains multiple options', () => {
     const input = [
       `${CLI_FLAG_LONG_PREFIX}flagA`,
-      `${CLI_FLAG_LONG_PREFIX}flagB=valueB`,
-      `${CLI_FLAG_LONG_PREFIX}flagC=valueC`,
+      `${CLI_FLAG_LONG_PREFIX}flagB${CLI_FLAG_VALUE_SEPARATOR}valueB`,
+      `${CLI_FLAG_LONG_PREFIX}flagC${CLI_FLAG_VALUE_SEPARATOR}valueC`,
       'command-target',
     ];
     const expectedOptions = {
@@ -100,11 +104,11 @@ describe('parse', () => {
   it('should return the same options for different inputs when both contain the same options, but in a different order', () => {
     const inputA = [
       `${CLI_FLAG_LONG_PREFIX}flagA`,
-      `${CLI_FLAG_LONG_PREFIX}flagC=value`,
+      `${CLI_FLAG_LONG_PREFIX}flagC${CLI_FLAG_VALUE_SEPARATOR}value`,
       'command-target',
     ];
     const inputB = [
-      `${CLI_FLAG_LONG_PREFIX}flagC=value`,
+      `${CLI_FLAG_LONG_PREFIX}flagC${CLI_FLAG_VALUE_SEPARATOR}value`,
       `${CLI_FLAG_LONG_PREFIX}flagA`,
       'command-target',
     ];
@@ -123,12 +127,12 @@ describe('parse', () => {
   it('should return the same options for different inputs when one uses long flags and the other uses short flags', () => {
     const inputA = [
       `${CLI_FLAG_LONG_PREFIX}flagA`,
-      `${CLI_FLAG_LONG_PREFIX}flagB=value`,
+      `${CLI_FLAG_LONG_PREFIX}flagB${CLI_FLAG_VALUE_SEPARATOR}value`,
       'command-target',
     ];
     const inputB = [
       `${CLI_FLAG_SHORT_PREFIX}fa`,
-      `${CLI_FLAG_SHORT_PREFIX}fb=value`,
+      `${CLI_FLAG_SHORT_PREFIX}fb${CLI_FLAG_VALUE_SEPARATOR}value`,
       'command-target',
     ];
     const expectedOptions = {
@@ -146,7 +150,7 @@ describe('parse', () => {
   it('should return the correct options when the input mixes long and short flags', () => {
     const input = [
       '-fa',
-      `${CLI_FLAG_LONG_PREFIX}flagC=value`,
+      `${CLI_FLAG_LONG_PREFIX}flagC${CLI_FLAG_VALUE_SEPARATOR}value`,
       'command-target',
     ];
     const expectedOptions = {
@@ -173,14 +177,17 @@ describe('parse', () => {
   it('should treat an option as the target command when the option has no flag prefix', () => {
     const input = [
       `${CLI_FLAG_SHORT_PREFIX}fa`,
-      'flagB=valueB',
-      `${CLI_FLAG_LONG_PREFIX}flagC=valueC`,
+      `flagB${CLI_FLAG_VALUE_SEPARATOR}valueB`,
+      `${CLI_FLAG_LONG_PREFIX}flagC${CLI_FLAG_VALUE_SEPARATOR}valueC`,
       'command-target',
     ];
     const expectedArgs = {
       command: {
-        name: 'flagB=valueB',
-        args: [`${CLI_FLAG_LONG_PREFIX}flagC=valueC`, 'command-target'],
+        name: `flagB${CLI_FLAG_VALUE_SEPARATOR}valueB`,
+        args: [
+          `${CLI_FLAG_LONG_PREFIX}flagC${CLI_FLAG_VALUE_SEPARATOR}valueC`,
+          'command-target',
+        ],
       },
       options: {
         flagA: true,
@@ -193,14 +200,17 @@ describe('parse', () => {
   it('should treat an option as the target command when the option has an invalid flag prefix', () => {
     const input = [
       `${CLI_FLAG_SHORT_PREFIX}fa`,
-      '++flagB=valueB',
-      `${CLI_FLAG_LONG_PREFIX}flagC=valueC`,
+      `++flagB${CLI_FLAG_VALUE_SEPARATOR}valueB`,
+      `${CLI_FLAG_LONG_PREFIX}flagC${CLI_FLAG_VALUE_SEPARATOR}valueC`,
       'command-target',
     ];
     const expectedArgs = {
       command: {
-        name: '++flagB=valueB',
-        args: [`${CLI_FLAG_LONG_PREFIX}flagC=valueC`, 'command-target'],
+        name: `++flagB${CLI_FLAG_VALUE_SEPARATOR}valueB`,
+        args: [
+          `${CLI_FLAG_LONG_PREFIX}flagC${CLI_FLAG_VALUE_SEPARATOR}valueC`,
+          'command-target',
+        ],
       },
       options: {
         flagA: true,
@@ -222,7 +232,7 @@ describe('parse', () => {
   it('should throw an error when a non-valuable option has a value', () => {
     const valuedFlag = 'help';
     const input = [
-      `${CLI_FLAG_LONG_PREFIX}${valuedFlag}=value`,
+      `${CLI_FLAG_LONG_PREFIX}${valuedFlag}${CLI_FLAG_VALUE_SEPARATOR}value`,
       'command-target',
     ];
 
