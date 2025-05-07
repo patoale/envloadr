@@ -1,4 +1,4 @@
-import { CLI_FLAG_LONG_PREFIX } from '@/config';
+import { CLI_FLAG_LONG_PREFIX, CLI_FLAG_SHORT_PREFIX } from '@/config';
 import { parse } from '@/cli/parser';
 
 const schema = {
@@ -126,7 +126,11 @@ describe('parse', () => {
       `${CLI_FLAG_LONG_PREFIX}flagB=value`,
       'command-target',
     ];
-    const inputB = ['-fa', '-fb=value', 'command-target'];
+    const inputB = [
+      `${CLI_FLAG_SHORT_PREFIX}fa`,
+      `${CLI_FLAG_SHORT_PREFIX}fb=value`,
+      'command-target',
+    ];
     const expectedOptions = {
       flagA: true,
       flagB: ['value'],
@@ -168,7 +172,7 @@ describe('parse', () => {
 
   it('should treat an option as the target command when the option has no flag prefix', () => {
     const input = [
-      '-fa',
+      `${CLI_FLAG_SHORT_PREFIX}fa`,
       'flagB=valueB',
       `${CLI_FLAG_LONG_PREFIX}flagC=valueC`,
       'command-target',
@@ -188,7 +192,7 @@ describe('parse', () => {
 
   it('should treat an option as the target command when the option has an invalid flag prefix', () => {
     const input = [
-      '-fa',
+      `${CLI_FLAG_SHORT_PREFIX}fa`,
       '++flagB=valueB',
       `${CLI_FLAG_LONG_PREFIX}flagC=valueC`,
       'command-target',
