@@ -183,4 +183,13 @@ describe('parse', () => {
       `Error parsing CLI input: Expected value for option "${noValuedFlag}"`,
     );
   });
+
+  it('should throw an error when a non-valuable option has a value', () => {
+    const valuedFlag = 'help';
+    const input = [`--${valuedFlag}=value`, 'command-target'];
+
+    expect(() => parse(input, schema)).toThrow(
+      `Error parsing CLI input: Unexpected value for option "${valuedFlag}"`,
+    );
+  });
 });
