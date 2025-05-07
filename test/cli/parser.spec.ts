@@ -1,3 +1,4 @@
+import { CLI_FLAG_LONG_PREFIX } from '@/config';
 import { parse } from '@/cli/parser';
 
 const schema = {
@@ -72,7 +73,7 @@ describe('parse', () => {
   });
 
   it('should return the correct option when the input contains only one option', () => {
-    const input = ['--flagA', 'command-target'];
+    const input = [`${CLI_FLAG_LONG_PREFIX}flagA`, 'command-target'];
     const expectedOptions = {
       flagA: true,
     };
@@ -82,9 +83,9 @@ describe('parse', () => {
 
   it('should return the correct options when the input contains multiple options', () => {
     const input = [
-      '--flagA',
-      '--flagB=valueB',
-      '--flagC=valueC',
+      `${CLI_FLAG_LONG_PREFIX}flagA`,
+      `${CLI_FLAG_LONG_PREFIX}flagB=valueB`,
+      `${CLI_FLAG_LONG_PREFIX}flagC=valueC`,
       'command-target',
     ];
     const expectedOptions = {
@@ -97,8 +98,16 @@ describe('parse', () => {
   });
 
   it('should return the same options for different inputs when both contain the same options, but in a different order', () => {
-    const inputA = ['--flagA', '--flagC=value', 'command-target'];
-    const inputB = ['--flagC=value', '--flagA', 'command-target'];
+    const inputA = [
+      `${CLI_FLAG_LONG_PREFIX}flagA`,
+      `${CLI_FLAG_LONG_PREFIX}flagC=value`,
+      'command-target',
+    ];
+    const inputB = [
+      `${CLI_FLAG_LONG_PREFIX}flagC=value`,
+      `${CLI_FLAG_LONG_PREFIX}flagA`,
+      'command-target',
+    ];
     const expectedOptions = {
       flagA: true,
       flagC: 'value',
@@ -112,7 +121,11 @@ describe('parse', () => {
   });
 
   it('should return the same options for different inputs when one uses long flags and the other uses short flags', () => {
-    const inputA = ['--flagA', '--flagB=value', 'command-target'];
+    const inputA = [
+      `${CLI_FLAG_LONG_PREFIX}flagA`,
+      `${CLI_FLAG_LONG_PREFIX}flagB=value`,
+      'command-target',
+    ];
     const inputB = ['-fa', '-fb=value', 'command-target'];
     const expectedOptions = {
       flagA: true,
@@ -127,7 +140,11 @@ describe('parse', () => {
   });
 
   it('should return the correct options when the input mixes long and short flags', () => {
-    const input = ['-fa', '--flagC=value', 'command-target'];
+    const input = [
+      '-fa',
+      `${CLI_FLAG_LONG_PREFIX}flagC=value`,
+      'command-target',
+    ];
     const expectedOptions = {
       flagA: true,
       flagC: 'value',
@@ -138,7 +155,11 @@ describe('parse', () => {
 
   it('should throw an error when the input contains an unknown flag', () => {
     const unknownFlag = 'flagZ';
-    const input = ['-fa', `--${unknownFlag}`, 'command-target'];
+    const input = [
+      '-fa',
+      `${CLI_FLAG_LONG_PREFIX}${unknownFlag}`,
+      'command-target',
+    ];
 
     expect(() => parse(input, schema)).toThrow(
       `Error parsing CLI input: Unknown option "${unknownFlag}"`,
@@ -146,11 +167,16 @@ describe('parse', () => {
   });
 
   it('should treat an option as the target command when the option has no flag prefix', () => {
-    const input = ['-fa', 'flagB=valueB', '--flagC=valueC', 'command-target'];
+    const input = [
+      '-fa',
+      'flagB=valueB',
+      `${CLI_FLAG_LONG_PREFIX}flagC=valueC`,
+      'command-target',
+    ];
     const expectedArgs = {
       command: {
         name: 'flagB=valueB',
-        args: ['--flagC=valueC', 'command-target'],
+        args: [`${CLI_FLAG_LONG_PREFIX}flagC=valueC`, 'command-target'],
       },
       options: {
         flagA: true,
@@ -161,11 +187,16 @@ describe('parse', () => {
   });
 
   it('should treat an option as the target command when the option has an invalid flag prefix', () => {
-    const input = ['-fa', '++flagB=valueB', '--flagC=valueC', 'command-target'];
+    const input = [
+      '-fa',
+      '++flagB=valueB',
+      `${CLI_FLAG_LONG_PREFIX}flagC=valueC`,
+      'command-target',
+    ];
     const expectedArgs = {
       command: {
         name: '++flagB=valueB',
-        args: ['--flagC=valueC', 'command-target'],
+        args: [`${CLI_FLAG_LONG_PREFIX}flagC=valueC`, 'command-target'],
       },
       options: {
         flagA: true,
@@ -177,7 +208,7 @@ describe('parse', () => {
 
   it('should throw an error when the option requires a value but it is missing', () => {
     const noValuedFlag = 'flagC';
-    const input = [`--${noValuedFlag}`, 'command-target'];
+    const input = [`${CLI_FLAG_LONG_PREFIX}${noValuedFlag}`, 'command-target'];
 
     expect(() => parse(input, schema)).toThrow(
       `Error parsing CLI input: Expected value for option "${noValuedFlag}"`,
@@ -186,7 +217,10 @@ describe('parse', () => {
 
   it('should throw an error when a non-valuable option has a value', () => {
     const valuedFlag = 'help';
-    const input = [`--${valuedFlag}=value`, 'command-target'];
+    const input = [
+      `${CLI_FLAG_LONG_PREFIX}${valuedFlag}=value`,
+      'command-target',
+    ];
 
     expect(() => parse(input, schema)).toThrow(
       `Error parsing CLI input: Unexpected value for option "${valuedFlag}"`,
