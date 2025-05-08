@@ -240,4 +240,13 @@ describe('parse', () => {
       `Error parsing CLI input: Unexpected value for option "${valuedFlag}"`,
     );
   });
+
+  it('should treat the combination of a flag and its value as a unique flag when the flag-value separator is missing', () => {
+    const unseparatedOption = 'flagCvalue';
+    const input = [`${CLI_FLAG_LONG_PREFIX}flagCvalue`, 'command-target'];
+
+    expect(() => parse(input, schema)).toThrow(
+      `Error parsing CLI input: Unknown option "${unseparatedOption}"`,
+    );
+  });
 });
