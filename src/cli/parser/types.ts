@@ -1,14 +1,13 @@
-import type { OptionSpecType, PrimitiveType, SpecSchema } from '@/cli/types';
+import type { OptionSpecType, SpecSchema } from '@/cli/types';
 
-type PrimitiveTypeMap = Record<PrimitiveType, unknown> & {
+type OptionSpecTypeMap = Record<OptionSpecType, unknown> & {
   boolean: boolean;
   string: string;
+  stringArray: string[];
 };
 
 type OptionType<T extends OptionSpecType | undefined> = T extends OptionSpecType
-  ? T['isArray'] extends true
-    ? PrimitiveTypeMap[T['primitiveType']][]
-    : PrimitiveTypeMap[T['primitiveType']]
+  ? OptionSpecTypeMap[T]
   : boolean;
 
 type Options<T extends SpecSchema> = {
