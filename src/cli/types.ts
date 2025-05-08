@@ -1,9 +1,4 @@
-export type PrimitiveType = 'boolean' | 'string';
-
-export type OptionSpecType = {
-  isArray: boolean;
-  primitiveType: PrimitiveType;
-};
+export type OptionSpecType = 'boolean' | 'string' | 'stringArray';
 
 export interface OptionSpec {
   description: string;

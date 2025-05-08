@@ -10,27 +10,18 @@ const schema = {
     description: 'Option A',
     longFlag: 'flagA',
     shortFlag: 'fa',
-    type: {
-      isArray: false,
-      primitiveType: 'boolean',
-    },
+    type: 'boolean',
   },
   flagB: {
     description: 'Option B',
     longFlag: 'flagB',
     shortFlag: 'fb',
-    type: {
-      isArray: true,
-      primitiveType: 'string',
-    },
+    type: 'stringArray',
   },
   flagC: {
     description: 'Option C',
     longFlag: 'flagC',
-    type: {
-      isArray: false,
-      primitiveType: 'string',
-    },
+    type: 'string',
   },
   help: {
     description: 'Help option',
