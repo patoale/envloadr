@@ -268,4 +268,16 @@ describe('parse', () => {
 
     expect(parse(input, schema).options).toEqual(expectedOptions);
   });
+
+  it('should return an array containing a single value for multi-valued options when only one value is provided to those options', () => {
+    const input = [
+      `${CLI_FLAG_LONG_PREFIX}flagB${CLI_FLAG_VALUE_SEPARATOR}value`,
+      'command-target',
+    ];
+    const expectedOptions = {
+      flagB: ['value'],
+    };
+
+    expect(parse(input, schema).options).toEqual(expectedOptions);
+  });
 });
