@@ -2,6 +2,7 @@ import {
   CLI_FLAG_LONG_PREFIX,
   CLI_FLAG_SHORT_PREFIX,
   CLI_FLAG_VALUE_SEPARATOR,
+  CLI_OPTION_VALUES_SEPARATOR,
 } from '@/config';
 import { parse } from '@/cli/parser';
 
@@ -254,5 +255,17 @@ describe('parse', () => {
     expect(() => parse(input, schema)).toThrow(
       `Error parsing CLI input: Unknown option "${invalidSeparatedOption}"`,
     );
+  });
+
+  it('should return an array containing multiple values for multi-valued options when multiple values are provided to those options', () => {
+    const input = [
+      `${CLI_FLAG_LONG_PREFIX}flagB${CLI_FLAG_VALUE_SEPARATOR}${['value1', 'value2', 'value3', 'value4'].join(CLI_OPTION_VALUES_SEPARATOR)}`,
+      'command-target',
+    ];
+    const expectedOptions = {
+      flagB: ['value1', 'value2', 'value3', 'value4'],
+    };
+
+    expect(parse(input, schema).options).toEqual(expectedOptions);
   });
 });
