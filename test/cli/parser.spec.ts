@@ -347,4 +347,16 @@ describe('parse', () => {
     expect(expectedOptions).toHaveProperty('flagA', true);
     expect(typeof expectedOptions!.flagA).toBe('boolean');
   });
+
+  it('should throw an error when an invalid value is provided to a boolean option', () => {
+    const invalidBoolFlag = 'flagA';
+    const input = [
+      `${CLI_FLAG_LONG_PREFIX}${invalidBoolFlag}${CLI_FLAG_VALUE_SEPARATOR}value`,
+      'command-target',
+    ];
+
+    expect(() => parse(input, schema)).toThrow(
+      `Error parsing CLI input: Invalid value for boolean option "${invalidBoolFlag}"`,
+    );
+  });
 });
