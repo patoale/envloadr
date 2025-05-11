@@ -338,4 +338,13 @@ describe('parse', () => {
     expect(expectedOptions).toHaveProperty('flagA', false);
     expect(typeof expectedOptions!.flagA).toBe('boolean');
   });
+
+  it('should return "true" for boolean options when their values are omitted', () => {
+    const input = [`${CLI_FLAG_LONG_PREFIX}flagA`, 'command-target'];
+
+    const { options: expectedOptions } = parse(input, schema);
+
+    expect(expectedOptions).toHaveProperty('flagA', true);
+    expect(typeof expectedOptions!.flagA).toBe('boolean');
+  });
 });
