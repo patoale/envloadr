@@ -32,6 +32,8 @@ const schema = {
 } as const;
 
 describe('parse', () => {
+  // Target Command Validation
+
   it('should throw an error when the input does not contain the target command', () => {
     const input: string[] = [];
 
@@ -61,6 +63,8 @@ describe('parse', () => {
 
     expect(parse(input, schema).command.args).toEqual(expectedCommandArgs);
   });
+
+  // Handling Options
 
   it('should not return any option when the input does not contain any option', () => {
     const input = ['target-command'];
@@ -152,6 +156,8 @@ describe('parse', () => {
 
     expect(parse(input, schema).options).toEqual(expectedOptions);
   });
+
+  // Errors and Option Validation
 
   it('should throw an error when the input contains an unknown flag', () => {
     const unknownFlag = 'flagZ';
@@ -256,6 +262,8 @@ describe('parse', () => {
       `Error parsing CLI input: Unknown option "${invalidSeparatedOption}"`,
     );
   });
+
+  // Multi-Valued Options
 
   it('should return an array containing multiple values for multi-valued options when multiple values are provided to those options', () => {
     const input = [
