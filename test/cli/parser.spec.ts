@@ -292,4 +292,16 @@ describe('parse', () => {
 
     expect(parse(input, schema).options).toEqual(expectedOptions);
   });
+
+  it('should treat the values of multi-valued options as single values when those values have an invalid separator', () => {
+    const input = [
+      `${CLI_FLAG_LONG_PREFIX}flagB${CLI_FLAG_VALUE_SEPARATOR}value1;value2;value3${CLI_OPTION_VALUES_SEPARATOR}value4`,
+      'command-target',
+    ];
+    const expectedOptions = {
+      flagB: ['value1;value2;value3', 'value4'],
+    };
+
+    expect(parse(input, schema).options).toEqual(expectedOptions);
+  });
 });
