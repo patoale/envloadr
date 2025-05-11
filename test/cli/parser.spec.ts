@@ -326,4 +326,16 @@ describe('parse', () => {
     expect(expectedOptions).toHaveProperty('flagA', true);
     expect(typeof expectedOptions!.flagA).toBe('boolean');
   });
+
+  it('should accept "false" as an option value when the option has a boolean type', () => {
+    const input = [
+      `${CLI_FLAG_LONG_PREFIX}flagA${CLI_FLAG_VALUE_SEPARATOR}false`,
+      'command-target',
+    ];
+
+    const { options: expectedOptions } = parse(input, schema);
+
+    expect(expectedOptions).toHaveProperty('flagA', false);
+    expect(typeof expectedOptions!.flagA).toBe('boolean');
+  });
 });
