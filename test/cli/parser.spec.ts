@@ -263,6 +263,17 @@ describe('parse', () => {
     );
   });
 
+  it('should throw an error when a flag is missing', () => {
+    const input = [
+      `${CLI_FLAG_LONG_PREFIX}${CLI_FLAG_VALUE_SEPARATOR}value`,
+      'command-target',
+    ];
+
+    expect(() => parse(input, schema)).toThrow(
+      'Error parsing CLI input: Missing option flag',
+    );
+  });
+
   // Multi-Valued Options
 
   it('should return an array containing multiple values for multi-valued options when multiple values are provided to those options', () => {
