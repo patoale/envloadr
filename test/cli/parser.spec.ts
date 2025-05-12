@@ -382,4 +382,16 @@ describe('parse', () => {
 
     expect(parse(input, schema).options).toEqual(expectedOptions);
   });
+
+  it('should accept an array of strings as an option value when the option has a "stringArray" type', () => {
+    const input = [
+      `${CLI_FLAG_LONG_PREFIX}flagB${CLI_FLAG_VALUE_SEPARATOR}${['value1', 'value2', 'value3', 'value4'].join(CLI_OPTION_VALUES_SEPARATOR)}`,
+      'command-target',
+    ];
+    const expectedOptions = {
+      flagB: ['value1', 'value2', 'value3', 'value4'],
+    };
+
+    expect(parse(input, schema).options).toEqual(expectedOptions);
+  });
 });
