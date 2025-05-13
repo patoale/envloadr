@@ -10,7 +10,7 @@ type OptionType<T extends OptionSpecType | undefined> = T extends OptionSpecType
   ? OptionSpecTypeMap[T]
   : boolean;
 
-type Options<T extends SpecSchema> = {
+export type Options<T extends SpecSchema> = {
   [K in keyof T]?: OptionType<T[K]['type']>;
 };
 
