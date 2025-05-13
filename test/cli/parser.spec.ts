@@ -373,6 +373,8 @@ describe('parse', () => {
     );
   });
 
+  // String option handling
+
   it('should accept a string as an option value when the option has a "string" type', () => {
     const input = [
       `${CLI_FLAG_LONG_PREFIX}flagC${CLI_FLAG_VALUE_SEPARATOR}value`,
@@ -384,6 +386,8 @@ describe('parse', () => {
 
     expect(parse(input, schema).options).toEqual(expectedOptions);
   });
+
+  // String array option handling
 
   it('should accept an array of strings as an option value when the option has a "stringArray" type', () => {
     const input = [
