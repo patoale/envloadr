@@ -396,4 +396,15 @@ describe('parse', () => {
 
     expect(parse(input, schema).options).toEqual(expectedOptions);
   });
+
+  // Untyped option handling
+
+  it('should return "true" as an option value when the option has no type', () => {
+    const input = [`${CLI_FLAG_LONG_PREFIX}flagD`, 'command-target'];
+    const expectedOptions = {
+      flagD: true,
+    };
+
+    expect(parse(input, schema).options).toEqual(expectedOptions);
+  });
 });
