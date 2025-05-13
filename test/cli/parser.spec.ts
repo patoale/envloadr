@@ -32,7 +32,7 @@ const schema = {
 } as const;
 
 describe('parse', () => {
-  // Target Command Validation
+  // Target command validation
 
   it('should throw an error when the input does not contain the target command', () => {
     const input: string[] = [];
@@ -64,7 +64,7 @@ describe('parse', () => {
     expect(parse(input, schema).command.args).toEqual(expectedCommandArgs);
   });
 
-  // Handling Options
+  // Handling options
 
   it('should not return any option when the input does not contain any option', () => {
     const input = ['target-command'];
@@ -157,7 +157,7 @@ describe('parse', () => {
     expect(parse(input, schema).options).toEqual(expectedOptions);
   });
 
-  // Errors and Option Validation
+  // Errors and option validation
 
   it('should throw an error when the input contains an unknown flag', () => {
     const unknownFlag = 'flagZ';
@@ -274,7 +274,7 @@ describe('parse', () => {
     );
   });
 
-  // Multi-Valued Options
+  // Multi-valued options
 
   it('should return an array containing multiple values for multi-valued options when multiple values are provided to those options', () => {
     const input = [
@@ -326,7 +326,7 @@ describe('parse', () => {
     expect(parse(input, schema).options).toEqual(expectedOptions);
   });
 
-  // Boolean Option Handling
+  // Boolean option handling
 
   it('should accept "true" as an option value when the option has a boolean type', () => {
     const input = [
@@ -373,6 +373,8 @@ describe('parse', () => {
     );
   });
 
+  // String option handling
+
   it('should accept a string as an option value when the option has a "string" type', () => {
     const input = [
       `${CLI_FLAG_LONG_PREFIX}flagC${CLI_FLAG_VALUE_SEPARATOR}value`,
@@ -384,6 +386,8 @@ describe('parse', () => {
 
     expect(parse(input, schema).options).toEqual(expectedOptions);
   });
+
+  // String array option handling
 
   it('should accept an array of strings as an option value when the option has a "stringArray" type', () => {
     const input = [
