@@ -24,10 +24,10 @@ const schema = {
     longFlag: 'flagC',
     type: 'string',
   },
-  help: {
-    description: 'Help option',
-    longFlag: 'help',
-    shortFlag: 'h',
+  flagD: {
+    description: 'Option D',
+    longFlag: 'flagD',
+    shortFlag: 'fd',
   },
 } as const;
 
@@ -228,7 +228,7 @@ describe('parse', () => {
   });
 
   it('should throw an error when a value is provided to a non-valuable option', () => {
-    const valuedFlag = 'help';
+    const valuedFlag = 'flagD';
     const input = [
       `${CLI_FLAG_LONG_PREFIX}${valuedFlag}${CLI_FLAG_VALUE_SEPARATOR}value`,
       'command-target',
