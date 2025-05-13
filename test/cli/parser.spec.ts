@@ -157,6 +157,23 @@ describe('parse', () => {
     expect(parse(input, schema).options).toEqual(expectedOptions);
   });
 
+  it('should return the last value of an option when that option is repeated', () => {
+    const input = [
+      `${CLI_FLAG_SHORT_PREFIX}fa${CLI_FLAG_VALUE_SEPARATOR}true`,
+      `${CLI_FLAG_LONG_PREFIX}flagB${CLI_FLAG_VALUE_SEPARATOR}${['value1', 'value2', 'value3'].join(CLI_OPTION_VALUES_SEPARATOR)}`,
+      `${CLI_FLAG_SHORT_PREFIX}fb${CLI_FLAG_VALUE_SEPARATOR}value4`,
+      `${CLI_FLAG_LONG_PREFIX}flagA${CLI_FLAG_VALUE_SEPARATOR}false`,
+      `${CLI_FLAG_SHORT_PREFIX}fb${CLI_FLAG_VALUE_SEPARATOR}${['value5', 'value6'].join(CLI_OPTION_VALUES_SEPARATOR)}`,
+      'command-target',
+    ];
+    const expectedOptions = {
+      flagA: false,
+      flagB: ['value5', 'value6'],
+    };
+
+    expect(parse(input, schema).options).toEqual(expectedOptions);
+  });
+
   // Errors and option validation
 
   it('should throw an error when the input contains an unknown flag', () => {
