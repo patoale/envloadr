@@ -145,7 +145,7 @@ describe('parse', () => {
 
   it('should return the correct options when the input mixes long and short flags', () => {
     const input = [
-      '-fa',
+      `${CLI_FLAG_SHORT_PREFIX}fa`,
       `${CLI_FLAG_LONG_PREFIX}flagC${CLI_FLAG_VALUE_SEPARATOR}value`,
       'command-target',
     ];
@@ -179,7 +179,7 @@ describe('parse', () => {
   it('should throw an error when the input contains an unknown flag', () => {
     const unknownFlag = 'flagZ';
     const input = [
-      '-fa',
+      `${CLI_FLAG_SHORT_PREFIX}fa`,
       `${CLI_FLAG_LONG_PREFIX}${unknownFlag}`,
       'command-target',
     ];
