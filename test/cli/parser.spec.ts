@@ -354,11 +354,11 @@ describe('parse', () => {
 
   it('should return "true" for boolean options when their values are omitted', () => {
     const input = [`${CLI_FLAG_LONG_PREFIX}flagA`, 'command-target'];
+    const expectedOptions = {
+      flagA: true,
+    };
 
-    const { options: expectedOptions } = parse(input, schema);
-
-    expect(expectedOptions).toHaveProperty('flagA', true);
-    expect(typeof expectedOptions!.flagA).toBe('boolean');
+    expect(parse(input, schema).options).toEqual(expectedOptions);
   });
 
   it('should throw an error when an invalid value is provided to a boolean option', () => {
