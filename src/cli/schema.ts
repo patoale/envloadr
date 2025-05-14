@@ -12,4 +12,10 @@ export default {
     longFlag: 'help',
     shortFlag: 'h',
   },
+  noOverride: {
+    description:
+      'Prevents overwriting, ensuring repeated variables keep their initial value',
+    longFlag: 'no-override',
+    type: 'boolean',
+  },
 } as const;
