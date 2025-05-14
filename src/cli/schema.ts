@@ -1,5 +1,5 @@
 export default {
-  file: {
+  files: {
     description:
       'Specifies the filepath(s) to load environment variables from (default: .env)',
     longFlag: 'file',
