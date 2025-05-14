@@ -88,7 +88,7 @@ function parseOptions<T extends SpecSchema>(inputOptions: string[], schema: T) {
     result[name] = value;
   });
 
-  return { ...result } as Options<T>;
+  return result as Options<T>;
 }
 
 function parseCommand(command: string) {
