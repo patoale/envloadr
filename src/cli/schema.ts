@@ -6,4 +6,10 @@ export default {
     shortFlag: 'f',
     type: 'stringArray',
   },
+  help: {
+    description:
+      'Displays help information about the available options and their usage',
+    longFlag: 'help',
+    shortFlag: 'h',
+  },
 } as const;
