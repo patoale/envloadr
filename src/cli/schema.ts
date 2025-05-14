@@ -18,4 +18,11 @@ export default {
     longFlag: 'no-override',
     type: 'boolean',
   },
+  verbose: {
+    description:
+      'Enables detailed console output during the loading of environment variables',
+    longFlag: 'verbose',
+    shortFlag: 'v',
+    type: 'boolean',
+  },
 } as const;
