@@ -66,8 +66,8 @@ function parseOption(inputOption: string, schema: SpecSchema) {
     throw new Error(`Error parsing CLI input: Unknown option "${flag}"`);
   }
 
-  const [name, { type }] = optionPair;
-  if (!type && value) {
+  const [name, { param }] = optionPair;
+  if (!param && value) {
     throw new Error(
       `Error parsing CLI input: Unexpected value for option "${flag}"`,
     );
@@ -75,7 +75,7 @@ function parseOption(inputOption: string, schema: SpecSchema) {
 
   return {
     name,
-    value: type ? parseValue(value, type, flag) : true,
+    value: param ? parseValue(value, param.type, flag) : true,
   };
 }
 

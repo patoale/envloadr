@@ -11,18 +11,24 @@ const schema = {
     description: 'Option A',
     longFlag: 'flagA',
     shortFlag: 'fa',
-    type: 'boolean',
+    param: {
+      type: 'boolean',
+    },
   },
   flagB: {
     description: 'Option B',
     longFlag: 'flagB',
     shortFlag: 'fb',
-    type: 'stringArray',
+    param: {
+      type: 'stringArray',
+    },
   },
   flagC: {
     description: 'Option C',
     longFlag: 'flagC',
-    type: 'string',
+    param: {
+      type: 'string',
+    },
   },
   flagD: {
     description: 'Option D',
