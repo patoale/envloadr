@@ -4,8 +4,7 @@ import {
   CLI_FLAG_VALUE_SEPARATOR,
   CLI_OPTION_VALUES_SEPARATOR,
 } from '@/config';
-import type { OptionSpecType, SpecSchema } from '@/cli/types';
-import type { Args, Options } from './types';
+import type { Args, Options, OptionSpecType, SpecSchema } from './types';
 
 function classifyArgs(args: string[]) {
   const options = [];
