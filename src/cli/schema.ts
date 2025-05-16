@@ -4,7 +4,10 @@ export default {
       'Specifies the filepath(s) to load environment variables from (default: .env)',
     longFlag: 'file',
     shortFlag: 'f',
-    type: 'stringArray',
+    param: {
+      type: 'stringArray',
+      name: 'file',
+    },
   },
   help: {
     description:
@@ -16,13 +19,17 @@ export default {
     description:
       'Prevents overwriting, ensuring repeated variables keep their initial value',
     longFlag: 'no-override',
-    type: 'boolean',
+    param: {
+      type: 'boolean',
+    },
   },
   verbose: {
     description:
       'Enables detailed console output during the loading of environment variables',
     longFlag: 'verbose',
     shortFlag: 'v',
-    type: 'boolean',
+    param: {
+      type: 'boolean',
+    },
   },
 } as const;
