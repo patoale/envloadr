@@ -5,8 +5,8 @@ export default {
     longFlag: 'file',
     shortFlag: 'f',
     param: {
+      alias: 'file',
       type: 'stringArray',
-      name: 'file',
     },
   },
   help: {
@@ -19,17 +19,13 @@ export default {
     description:
       'Prevents overwriting, ensuring repeated variables keep their initial value',
     longFlag: 'no-override',
-    param: {
-      type: 'boolean',
-    },
+    param: 'boolean',
   },
   verbose: {
     description:
       'Enables detailed console output during the loading of environment variables',
     longFlag: 'verbose',
     shortFlag: 'v',
-    param: {
-      type: 'boolean',
-    },
+    param: 'boolean',
   },
 } as const;

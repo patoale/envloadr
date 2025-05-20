@@ -4,7 +4,7 @@ import {
   CLI_FLAG_VALUE_SEPARATOR,
   CLI_OPTION_VALUES_SEPARATOR,
 } from '@/config';
-import type { Args, Options, OptionSpecType, SpecSchema } from './types';
+import type { Args, Options, OptionSpecParam, SpecSchema } from './types';
 
 function classifyArgs(args: string[]) {
   const options = [];
@@ -35,10 +35,10 @@ function parseBoolean(value: string, flag: string) {
 
 function parseValue(
   value: string | undefined,
-  type: OptionSpecType,
+  param: OptionSpecParam,
   flag: string,
 ) {
-  if (type === 'boolean') {
+  if (param === 'boolean') {
     if (!value) return true;
     return parseBoolean(value, flag);
   } else {
@@ -48,7 +48,7 @@ function parseValue(
       );
     }
 
-    if (type === 'string') return value;
+    if (param.type === 'string') return value;
     return value.split(CLI_OPTION_VALUES_SEPARATOR);
   }
 }
@@ -75,7 +75,7 @@ function parseOption(inputOption: string, schema: SpecSchema) {
 
   return {
     name,
-    value: param ? parseValue(value, param.type, flag) : true,
+    value: param ? parseValue(value, param, flag) : true,
   };
 }
 

@@ -1,9 +1,11 @@
-export type OptionSpecType = 'boolean' | 'string' | 'stringArray';
+type BooleanType = 'boolean';
 
-type OptionSpecParam = {
-  type: OptionSpecType;
-  name?: string;
+type AliasedParam = {
+  alias: string;
+  type: 'string' | 'stringArray';
 };
+
+export type OptionSpecParam = BooleanType | AliasedParam;
 
 export interface OptionSpec {
   description: string;
@@ -14,14 +16,17 @@ export interface OptionSpec {
 
 export type SpecSchema = Record<string, OptionSpec>;
 
-type OptionSpecTypeMap = Record<OptionSpecType, unknown> & {
+type OptionSpecTypeMap = {
   boolean: boolean;
   string: string;
   stringArray: string[];
 };
 
-type OptionType<T extends OptionSpecParam | undefined> =
-  T extends OptionSpecParam ? OptionSpecTypeMap[T['type']] : boolean;
+type OptionType<T extends OptionSpecParam | undefined> = T extends BooleanType
+  ? OptionSpecTypeMap[T]
+  : T extends AliasedParam
+    ? OptionSpecTypeMap[T['type']]
+    : boolean;
 
 export type Options<T extends SpecSchema> = {
   [K in keyof T]?: OptionType<T[K]['param']>;
