@@ -155,5 +155,23 @@ describe('buildHelp', () => {
 
       expect(buildHelp(inputSchema)).toBe(expectedMessage);
     });
+
+    it('should return the correct message when the options schema contains an untyped option', () => {
+      const inputSchema = {
+        flag: {
+          description: 'Option description',
+          longFlag: 'flag',
+          shortFlag: 'f',
+        },
+      } as const;
+      const expectedMessage = [
+        'Usage: envloadr [<options>] <target-command> [<args>]',
+        '\nOptions:',
+        `\t${CLI_FLAG_LONG_PREFIX}flag, ${CLI_FLAG_SHORT_PREFIX}f`,
+        '\t\tOption description',
+      ].join('\n');
+
+      expect(buildHelp(inputSchema)).toBe(expectedMessage);
+    });
   });
 });
