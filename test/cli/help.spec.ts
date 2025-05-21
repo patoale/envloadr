@@ -26,4 +26,25 @@ describe('buildHelp', () => {
 
     expect(buildHelp(inputSchema)).toBe(expectedMessage);
   });
+
+  it('should return the correct message when the options schema contains a string option', () => {
+    const inputSchema = {
+      flag: {
+        description: 'Option description',
+        longFlag: 'flag',
+        param: {
+          alias: 'value',
+          type: 'string',
+        },
+      },
+    } as const;
+    const expectedMessage = [
+      'Usage: envloadr [<options>] <target-command> [<args>]',
+      '\nOptions:',
+      '\t--flag=<value>',
+      '\t\tOption description',
+    ].join('\n');
+
+    expect(buildHelp(inputSchema)).toBe(expectedMessage);
+  });
 });
