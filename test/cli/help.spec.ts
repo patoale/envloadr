@@ -174,4 +174,51 @@ describe('buildHelp', () => {
       expect(buildHelp(inputSchema)).toBe(expectedMessage);
     });
   });
+
+  it('should return the correct message when the options schema contains multiple options of different types', () => {
+    const inputSchema = {
+      flagA: {
+        description: 'Option A description',
+        longFlag: 'flagA',
+        shortFlag: 'fa',
+        param: 'boolean',
+      },
+      flagB: {
+        description: 'Option B description',
+        longFlag: 'flagB',
+        shortFlag: 'fb',
+        param: {
+          alias: 'valueB',
+          type: 'stringArray',
+        },
+      },
+      flagC: {
+        description: 'Option C description',
+        longFlag: 'flagC',
+        param: {
+          alias: 'valueC',
+          type: 'string',
+        },
+      },
+      flagD: {
+        description: 'Option D description',
+        longFlag: 'flagD',
+        shortFlag: 'fd',
+      },
+    } as const;
+    const expectedMessage = [
+      'Usage: envloadr [<options>] <target-command> [<args>]',
+      '\nOptions:',
+      `\t${CLI_FLAG_LONG_PREFIX}flagA[${CLI_FLAG_VALUE_SEPARATOR}true|false], ${CLI_FLAG_SHORT_PREFIX}fa[${CLI_FLAG_VALUE_SEPARATOR}true|false]`,
+      '\t\tOption A description',
+      `\t${CLI_FLAG_LONG_PREFIX}flagB${CLI_FLAG_VALUE_SEPARATOR}<valueB${CLI_OPTION_VALUES_SEPARATOR}valueB${CLI_OPTION_VALUES_SEPARATOR}...>, ${CLI_FLAG_SHORT_PREFIX}fb${CLI_FLAG_VALUE_SEPARATOR}<valueB${CLI_OPTION_VALUES_SEPARATOR}valueB${CLI_OPTION_VALUES_SEPARATOR}...>`,
+      '\t\tOption B description',
+      `\t${CLI_FLAG_LONG_PREFIX}flagC${CLI_FLAG_VALUE_SEPARATOR}<valueC>`,
+      '\t\tOption C description',
+      `\t${CLI_FLAG_LONG_PREFIX}flagD, ${CLI_FLAG_SHORT_PREFIX}fd`,
+      '\t\tOption D description',
+    ].join('\n');
+
+    expect(buildHelp(inputSchema)).toBe(expectedMessage);
+  });
 });
