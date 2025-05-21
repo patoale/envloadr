@@ -1,3 +1,9 @@
+import {
+  CLI_FLAG_LONG_PREFIX,
+  CLI_FLAG_SHORT_PREFIX,
+  CLI_FLAG_VALUE_SEPARATOR,
+  CLI_OPTION_VALUES_SEPARATOR,
+} from '@/config';
 import { buildHelp } from '@/cli/help';
 
 describe('buildHelp', () => {
@@ -20,7 +26,7 @@ describe('buildHelp', () => {
     const expectedMessage = [
       'Usage: envloadr [<options>] <target-command> [<args>]',
       '\nOptions:',
-      '\t--flag[=true|false]',
+      `\t${CLI_FLAG_LONG_PREFIX}flag[${CLI_FLAG_VALUE_SEPARATOR}true|false]`,
       '\t\tOption description',
     ].join('\n');
 
@@ -41,7 +47,7 @@ describe('buildHelp', () => {
     const expectedMessage = [
       'Usage: envloadr [<options>] <target-command> [<args>]',
       '\nOptions:',
-      '\t--flag=<value>',
+      `\t${CLI_FLAG_LONG_PREFIX}flag${CLI_FLAG_VALUE_SEPARATOR}<value>`,
       '\t\tOption description',
     ].join('\n');
 
@@ -62,7 +68,7 @@ describe('buildHelp', () => {
     const expectedMessage = [
       'Usage: envloadr [<options>] <target-command> [<args>]',
       '\nOptions:',
-      '\t--flag=<value,value,...>',
+      `\t${CLI_FLAG_LONG_PREFIX}flag${CLI_FLAG_VALUE_SEPARATOR}<value${CLI_OPTION_VALUES_SEPARATOR}value${CLI_OPTION_VALUES_SEPARATOR}...>`,
       '\t\tOption description',
     ].join('\n');
 
@@ -82,7 +88,7 @@ describe('buildHelp', () => {
       const expectedMessage = [
         'Usage: envloadr [<options>] <target-command> [<args>]',
         '\nOptions:',
-        '\t--flag[=true|false], -f[=true|false]',
+        `\t${CLI_FLAG_LONG_PREFIX}flag[${CLI_FLAG_VALUE_SEPARATOR}true|false], ${CLI_FLAG_SHORT_PREFIX}f[${CLI_FLAG_VALUE_SEPARATOR}true|false]`,
         '\t\tOption description',
       ].join('\n');
 
@@ -104,7 +110,7 @@ describe('buildHelp', () => {
       const expectedMessage = [
         'Usage: envloadr [<options>] <target-command> [<args>]',
         '\nOptions:',
-        '\t--flag=<value>, -f=<value>',
+        `\t${CLI_FLAG_LONG_PREFIX}flag${CLI_FLAG_VALUE_SEPARATOR}<value>, ${CLI_FLAG_SHORT_PREFIX}f${CLI_FLAG_VALUE_SEPARATOR}<value>`,
         '\t\tOption description',
       ].join('\n');
 
@@ -126,7 +132,7 @@ describe('buildHelp', () => {
       const expectedMessage = [
         'Usage: envloadr [<options>] <target-command> [<args>]',
         '\nOptions:',
-        '\t--flag=<value,value,...>, -f=<value,value,...>',
+        `\t${CLI_FLAG_LONG_PREFIX}flag${CLI_FLAG_VALUE_SEPARATOR}<value${CLI_OPTION_VALUES_SEPARATOR}value${CLI_OPTION_VALUES_SEPARATOR}...>, ${CLI_FLAG_SHORT_PREFIX}f${CLI_FLAG_VALUE_SEPARATOR}<value${CLI_OPTION_VALUES_SEPARATOR}value${CLI_OPTION_VALUES_SEPARATOR}...>`,
         '\t\tOption description',
       ].join('\n');
 
