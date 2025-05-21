@@ -8,4 +8,22 @@ describe('buildHelp', () => {
 
     expect(buildHelp(schema)).toBe(expectedhelp);
   });
+
+  it('should return the correct message when the options schema contains a boolean option', () => {
+    const inputSchema = {
+      flag: {
+        description: 'Option description',
+        longFlag: 'flag',
+        param: 'boolean',
+      },
+    } as const;
+    const expectedMessage = [
+      'Usage: envloadr [<options>] <target-command> [<args>]',
+      '\nOptions:',
+      '\t--flag[=true|false]',
+      '\t\tOption description',
+    ].join('\n');
+
+    expect(buildHelp(inputSchema)).toBe(expectedMessage);
+  });
 });
