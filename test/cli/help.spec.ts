@@ -75,6 +75,23 @@ describe('buildHelp', () => {
     expect(buildHelp(inputSchema)).toBe(expectedMessage);
   });
 
+  it('should return the correct message when the options schema contains an untyped option', () => {
+    const inputSchema = {
+      flag: {
+        description: 'Option description',
+        longFlag: 'flag',
+      },
+    } as const;
+    const expectedMessage = [
+      'Usage: envloadr [<options>] <target-command> [<args>]',
+      '\nOptions:',
+      `\t${CLI_FLAG_LONG_PREFIX}flag`,
+      '\t\tOption description',
+    ].join('\n');
+
+    expect(buildHelp(inputSchema)).toBe(expectedMessage);
+  });
+
   describe('if option specifications have shortFlag defined', () => {
     it('should return the correct message when the options schema contains a boolean option', () => {
       const inputSchema = {
