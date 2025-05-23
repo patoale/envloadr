@@ -70,6 +70,14 @@ describe('parse', () => {
     expect(parse(input, schema).command.args).toEqual(expectedCommandArgs);
   });
 
+  it('should throw an error when the target command is a blank string', () => {
+    const input: string[] = ['    '];
+
+    expect(() => parse(input, schema)).toThrow(
+      'Error parsing CLI input: Invalid target command',
+    );
+  });
+
   // Handling options
 
   it('should not return any option when the input does not contain any option', () => {
