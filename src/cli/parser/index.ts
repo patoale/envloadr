@@ -6,6 +6,10 @@ import {
 } from '@/config';
 import type { Args, Options, OptionSpecParam, SpecSchema } from './types';
 
+function isBlankString(str: string) {
+  return str.trim().length === 0;
+}
+
 function classifyArgs(args: string[]) {
   const options = [];
   let command = undefined;
@@ -107,6 +111,9 @@ export function parse<T extends SpecSchema>(
   const { options, command } = classifyArgs(input);
   if (!command) {
     throw new Error('Error parsing CLI input: Missing target command');
+  }
+  if (isBlankString(command)) {
+    throw new Error('Error parsing CLI input: Invalid target command');
   }
 
   if (options.length === 0) {
