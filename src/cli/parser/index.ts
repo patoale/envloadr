@@ -47,7 +47,7 @@ function parseValue(
 ) {
   if (param === 'boolean') return parseBoolean(value, flag);
   else {
-    if (!value) {
+    if (value === undefined) {
       throw new Error(
         `Error parsing CLI input: Expected value for option "${flag}"`,
       );
@@ -70,12 +70,12 @@ function parseOption(inputOption: string, schema: SpecSchema) {
   const optionPair = Object.entries(schema).find(
     ([, { longFlag, shortFlag }]) => flag === longFlag || flag === shortFlag,
   );
-  if (!optionPair) {
+  if (optionPair === undefined) {
     throw new Error(`Error parsing CLI input: Unknown option "${flag}"`);
   }
 
   const [name, { param }] = optionPair;
-  if (!param && value) {
+  if (param === undefined && value !== undefined) {
     throw new Error(
       `Error parsing CLI input: Unexpected value for option "${flag}"`,
     );
@@ -112,7 +112,7 @@ export function parse<T extends SpecSchema>(
   schema: T,
 ): Args<T> {
   const { options, command } = classifyArgs(input);
-  if (!command) {
+  if (command === undefined) {
     throw new Error('Error parsing CLI input: Missing target command');
   }
   if (isBlankString(command)) {
