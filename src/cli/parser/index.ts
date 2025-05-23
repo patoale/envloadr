@@ -63,6 +63,9 @@ function parseOption(inputOption: string, schema: SpecSchema) {
   if (!flag) {
     throw new Error('Error parsing CLI input: Missing option flag');
   }
+  if (isBlankString(flag)) {
+    throw new Error('Error parsing CLI input: Invalid option flag');
+  }
 
   const optionPair = Object.entries(schema).find(
     ([, { longFlag, shortFlag }]) => flag === longFlag || flag === shortFlag,
