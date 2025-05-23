@@ -305,6 +305,17 @@ describe('parse', () => {
     );
   });
 
+  it('should throw an error when an option contains a blank flag', () => {
+    const input = [
+      `${CLI_FLAG_LONG_PREFIX}   ${CLI_FLAG_VALUE_SEPARATOR}value`,
+      'command-target',
+    ];
+
+    expect(() => parse(input, schema)).toThrow(
+      'Error parsing CLI input: Invalid option flag',
+    );
+  });
+
   // Multi-valued options
 
   it('should return an array containing multiple values for multi-valued options when multiple values are provided to those options', () => {
