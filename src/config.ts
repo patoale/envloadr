@@ -9,6 +9,6 @@ export const CLI_FLAG_VALUE_SEPARATOR = '=';
 export const CLI_OPTION_VALUES_SEPARATOR = ',';
 
 // ### Default values
-export const DEFAULT_ENV_FILE_PATH = './env';
+export const DEFAULT_ENV_FILE_PATH = './.env';
 export const DEFAULT_OVERRIDE = true;
 export const DEFAULT_VERBOSE = false;
