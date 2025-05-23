@@ -24,10 +24,13 @@ function classifyArgs(args: string[]) {
   return { options, command };
 }
 
-function parseBoolean(value: string, flag: string) {
+function parseBoolean(value: string | undefined, flag: string) {
+  if (value === undefined) return true;
+
   const valueLower = value.toLowerCase();
   if (valueLower === 'true') return true;
   if (valueLower === 'false') return false;
+
   throw new Error(
     `Error parsing CLI input: Invalid value for boolean option "${flag}"`,
   );
@@ -38,10 +41,8 @@ function parseValue(
   param: OptionSpecParam,
   flag: string,
 ) {
-  if (param === 'boolean') {
-    if (!value) return true;
-    return parseBoolean(value, flag);
-  } else {
+  if (param === 'boolean') return parseBoolean(value, flag);
+  else {
     if (!value) {
       throw new Error(
         `Error parsing CLI input: Expected value for option "${flag}"`,
