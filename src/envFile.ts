@@ -5,7 +5,9 @@ import { type Env } from './types';
 function isSkippableLine(line: string) {
   const trimmedLine = line.trim();
 
-  return !trimmedLine || trimmedLine.startsWith(ENV_FILE_COMMENT_PREFIX);
+  return (
+    trimmedLine.length === 0 || trimmedLine.startsWith(ENV_FILE_COMMENT_PREFIX)
+  );
 }
 
 function isQuotedValue(value: string) {
@@ -43,7 +45,7 @@ export function parseEnvFile(
     }
 
     const key = line.slice(0, separatorIndex).trim();
-    if (!key) {
+    if (key.length === 0) {
       throw new Error(
         `Error parsing line ${i + 1} of "${pathname}": Variable name not found, expected "NAME${KEY_VALUE_SEPARATOR}VALUE" format`,
       );

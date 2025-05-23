@@ -60,7 +60,7 @@ function parseValue(
 
 function parseOption(inputOption: string, schema: SpecSchema) {
   const [flag, value] = inputOption.split(CLI_FLAG_VALUE_SEPARATOR);
-  if (!flag) {
+  if (flag.length === 0) {
     throw new Error('Error parsing CLI input: Missing option flag');
   }
   if (isBlankString(flag)) {
