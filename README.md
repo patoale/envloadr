@@ -54,7 +54,7 @@ To use **envloadr**, you can add it to your `package.json` scripts like this:
 ```json
 {
   "scripts": {
-    "start": "envloadr -- node app.js"
+    "start": "envloadr node app.js"
   }
 }
 ```
@@ -63,7 +63,7 @@ This will automatically load the environment variables from the `./.env` file an
 ```json
 {
   "scripts": {
-    "start": "envloadr --file=.env.prod -- node app.js"
+    "start": "envloadr --file=.env.prod node app.js"
   }
 }
 ```
