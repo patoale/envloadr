@@ -37,15 +37,36 @@ Since **envloadr** loads environment variables in the parent process, child scri
 "start": "envloadr --file=.env.prod db:up && node --env-file=.env.prod start.js",
 ```
 
-## ⌨️ How to use command line options
+## ⌨️ How to use
 
-Some command line options are simple strings, such as the env file pathname `./.env` in the following example:
-
-```sh
-$ envloadr --file=./.env node dist/index.js
+The basic syntax of **envloadr** is as follows:
+```bash
+envloadr [<options>] <target-command>
 ```
 
-Each option that takes an argument requires an equals sign (`=`) to separate the argument from the option name. If the argument value is a string containing spaces, you must use quotation marks (`'...'` or `"..."`) around the argument. For options that accept a list of values as an argument, the values must be separated by commas (`,`).
+- **options**: These are optional flags you can use to configure **envloadr**. Options that take an argument require an equals sign (`=`) to separate the option name from the argument. For list arguments, separate values with commas (`,`). If the argument contains spaces, enclose it in quotation marks (`'...'` or `"..."`).
+
+- **target-command**: The command to run once the environment variables are loaded. This is **required**.
+
+### Basic usage
+
+To use **envloadr**, you can add it to your `package.json` scripts like this:
+```json
+{
+  "scripts": {
+    "start": "envloadr -- node app.js"
+  }
+}
+```
+
+This will automatically load the environment variables from the `./.env` file and run the provided command with those variables set. Alternatively, you can specify a different file by using the `--file` option (or its alias `-f`) like this:
+```json
+{
+  "scripts": {
+    "start": "envloadr --file=.env.prod -- node app.js"
+  }
+}
+```
 
 ## ⚙️ Available command line options
 
