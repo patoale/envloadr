@@ -68,7 +68,7 @@ This will automatically load the environment variables from the `./.env` file an
 }
 ```
 
-## ⚙️ Available command line options
+## ⚙️ Available options
 
 You can use the following command line options to override the default configuration settings
 
