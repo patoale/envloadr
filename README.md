@@ -72,7 +72,7 @@ This will automatically load the environment variables from the `./.env` file an
 
 You can use the following command line options to override the default configuration settings
 
-#### `--file=<env-file-path>[,<env-file-path>]*` or `-f=<env-file-path>[,<env-file-path>]*`
+#### `--file=<file-path>[,<file-path>...]` or `-f=<file-path>[,<file-path>...]`
 Specifies the source file(s) from which variables will be loaded into the runtime environment. By default, if this option is not used, the `./.env` file will be loaded.
 
 ```sh
@@ -81,10 +81,10 @@ $ envloadr --file=.env,.env.prod node dist/index.js
 
 This option follows a defined loading order: the specified files are read sequentially from left to right, and the variables within each file are processed sequentially from top to bottom.
 
-#### `--no-override`
+#### `--no-override[=true|false]`
 By default, **envloadr** overwrites the value of variables that are defined multiple times. This option prevents overwriting, causing repeated variables to retain their first associated value.
 
-#### `--verbose` or `-v`
+#### `--verbose[=true|false]` or `-v[=true|false]`
 Enables detailed output in the console about the process of loading environment variables, which can be helpful for debugging.
 
 #### `--help` or `-h`
