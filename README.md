@@ -50,7 +50,13 @@ envloadr [<options>] <target-command>
 
 ### Basic usage
 
-To use **envloadr**, you can add it to your `package.json` scripts like this:
+First, create a `.env` file in the root of your project:
+```env
+API_KEY="your_api_key_here"
+API_PORT=4000
+```
+
+Next, add **envloadr** to your `package.json` scripts like this:
 ```json
 {
   "scripts": {
@@ -58,8 +64,16 @@ To use **envloadr**, you can add it to your `package.json` scripts like this:
   }
 }
 ```
+This will automatically load the environment variables from the `./.env` file and run the provided command with those variables set.
 
-This will automatically load the environment variables from the `./.env` file and run the provided command with those variables set. Alternatively, you can specify a different file by using the `--file` option (or its alias `-f`) like this:
+Now, you can access the keys and values you defined in your `.env` file through `process.env`, like this:
+```js
+express.listen(process.env.API_PORT, () => {
+  console.log(`[API] Service is up & ready!`);
+});
+```
+
+Alternatively, you can specify a different file using the `--file` option (or its alias `-f`):
 ```json
 {
   "scripts": {
