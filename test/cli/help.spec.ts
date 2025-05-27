@@ -67,7 +67,7 @@ describe('buildHelp', () => {
     const expectedMessage = [
       'Usage: envloadr [<options>] <target-command>',
       '\nOptions:',
-      `\t${CLI_FLAG_LONG_PREFIX}flag${CLI_FLAG_VALUE_SEPARATOR}<value${CLI_OPTION_VALUES_SEPARATOR}value${CLI_OPTION_VALUES_SEPARATOR}...>`,
+      `\t${CLI_FLAG_LONG_PREFIX}flag${CLI_FLAG_VALUE_SEPARATOR}<value>[${CLI_OPTION_VALUES_SEPARATOR}<value>...]`,
       '\t\tOption description',
     ].join('\n');
 
@@ -148,7 +148,7 @@ describe('buildHelp', () => {
       const expectedMessage = [
         'Usage: envloadr [<options>] <target-command>',
         '\nOptions:',
-        `\t${CLI_FLAG_LONG_PREFIX}flag${CLI_FLAG_VALUE_SEPARATOR}<value${CLI_OPTION_VALUES_SEPARATOR}value${CLI_OPTION_VALUES_SEPARATOR}...>, ${CLI_FLAG_SHORT_PREFIX}f${CLI_FLAG_VALUE_SEPARATOR}<value${CLI_OPTION_VALUES_SEPARATOR}value${CLI_OPTION_VALUES_SEPARATOR}...>`,
+        `\t${CLI_FLAG_LONG_PREFIX}flag${CLI_FLAG_VALUE_SEPARATOR}<value>[${CLI_OPTION_VALUES_SEPARATOR}<value>...], ${CLI_FLAG_SHORT_PREFIX}f${CLI_FLAG_VALUE_SEPARATOR}<value>[${CLI_OPTION_VALUES_SEPARATOR}<value>...]`,
         '\t\tOption description',
       ].join('\n');
 
@@ -210,7 +210,7 @@ describe('buildHelp', () => {
       '\nOptions:',
       `\t${CLI_FLAG_LONG_PREFIX}flagA[${CLI_FLAG_VALUE_SEPARATOR}true|false], ${CLI_FLAG_SHORT_PREFIX}fa[${CLI_FLAG_VALUE_SEPARATOR}true|false]`,
       '\t\tOption A description',
-      `\t${CLI_FLAG_LONG_PREFIX}flagB${CLI_FLAG_VALUE_SEPARATOR}<valueB${CLI_OPTION_VALUES_SEPARATOR}valueB${CLI_OPTION_VALUES_SEPARATOR}...>, ${CLI_FLAG_SHORT_PREFIX}fb${CLI_FLAG_VALUE_SEPARATOR}<valueB${CLI_OPTION_VALUES_SEPARATOR}valueB${CLI_OPTION_VALUES_SEPARATOR}...>`,
+      `\t${CLI_FLAG_LONG_PREFIX}flagB${CLI_FLAG_VALUE_SEPARATOR}<valueB>[${CLI_OPTION_VALUES_SEPARATOR}<valueB>...], ${CLI_FLAG_SHORT_PREFIX}fb${CLI_FLAG_VALUE_SEPARATOR}<valueB>[${CLI_OPTION_VALUES_SEPARATOR}<valueB>...]`,
       '\t\tOption B description',
       `\t${CLI_FLAG_LONG_PREFIX}flagC${CLI_FLAG_VALUE_SEPARATOR}<valueC>`,
       '\t\tOption C description',
