@@ -15,7 +15,7 @@ function buildParamPlaceholder(param: OptionSpecParam) {
 
   return type === 'string'
     ? `${CLI_FLAG_VALUE_SEPARATOR}<${alias}>`
-    : `${CLI_FLAG_VALUE_SEPARATOR}<${alias}${CLI_OPTION_VALUES_SEPARATOR}${alias}${CLI_OPTION_VALUES_SEPARATOR}...>`;
+    : `${CLI_FLAG_VALUE_SEPARATOR}<${alias}>[${CLI_OPTION_VALUES_SEPARATOR}<${alias}>...]`;
 }
 
 export function buildHelp(schema: SpecSchema) {
