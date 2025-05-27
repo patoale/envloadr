@@ -19,7 +19,7 @@ function buildParamPlaceholder(param: OptionSpecParam) {
 }
 
 export function buildHelp(schema: SpecSchema) {
-  const result = ['Usage: envloadr [<options>] <target-command> [<args>]'];
+  const result = ['Usage: envloadr [<options>] <target-command>'];
 
   const specs = Object.values(schema);
   if (specs.length === 0) return result.toString();
