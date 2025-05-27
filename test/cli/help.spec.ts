@@ -9,8 +9,7 @@ import { buildHelp } from '@/cli/help';
 describe('buildHelp', () => {
   it('should return only the tool usage without any options when the options schema is empty', () => {
     const schema = {};
-    const expectedhelp =
-      'Usage: envloadr [<options>] <target-command> [<args>]';
+    const expectedhelp = 'Usage: envloadr [<options>] <target-command>';
 
     expect(buildHelp(schema)).toBe(expectedhelp);
   });
@@ -24,7 +23,7 @@ describe('buildHelp', () => {
       },
     } as const;
     const expectedMessage = [
-      'Usage: envloadr [<options>] <target-command> [<args>]',
+      'Usage: envloadr [<options>] <target-command>',
       '\nOptions:',
       `\t${CLI_FLAG_LONG_PREFIX}flag[${CLI_FLAG_VALUE_SEPARATOR}true|false]`,
       '\t\tOption description',
@@ -45,7 +44,7 @@ describe('buildHelp', () => {
       },
     } as const;
     const expectedMessage = [
-      'Usage: envloadr [<options>] <target-command> [<args>]',
+      'Usage: envloadr [<options>] <target-command>',
       '\nOptions:',
       `\t${CLI_FLAG_LONG_PREFIX}flag${CLI_FLAG_VALUE_SEPARATOR}<value>`,
       '\t\tOption description',
@@ -66,7 +65,7 @@ describe('buildHelp', () => {
       },
     } as const;
     const expectedMessage = [
-      'Usage: envloadr [<options>] <target-command> [<args>]',
+      'Usage: envloadr [<options>] <target-command>',
       '\nOptions:',
       `\t${CLI_FLAG_LONG_PREFIX}flag${CLI_FLAG_VALUE_SEPARATOR}<value${CLI_OPTION_VALUES_SEPARATOR}value${CLI_OPTION_VALUES_SEPARATOR}...>`,
       '\t\tOption description',
@@ -83,7 +82,7 @@ describe('buildHelp', () => {
       },
     } as const;
     const expectedMessage = [
-      'Usage: envloadr [<options>] <target-command> [<args>]',
+      'Usage: envloadr [<options>] <target-command>',
       '\nOptions:',
       `\t${CLI_FLAG_LONG_PREFIX}flag`,
       '\t\tOption description',
@@ -103,7 +102,7 @@ describe('buildHelp', () => {
         },
       } as const;
       const expectedMessage = [
-        'Usage: envloadr [<options>] <target-command> [<args>]',
+        'Usage: envloadr [<options>] <target-command>',
         '\nOptions:',
         `\t${CLI_FLAG_LONG_PREFIX}flag[${CLI_FLAG_VALUE_SEPARATOR}true|false], ${CLI_FLAG_SHORT_PREFIX}f[${CLI_FLAG_VALUE_SEPARATOR}true|false]`,
         '\t\tOption description',
@@ -125,7 +124,7 @@ describe('buildHelp', () => {
         },
       } as const;
       const expectedMessage = [
-        'Usage: envloadr [<options>] <target-command> [<args>]',
+        'Usage: envloadr [<options>] <target-command>',
         '\nOptions:',
         `\t${CLI_FLAG_LONG_PREFIX}flag${CLI_FLAG_VALUE_SEPARATOR}<value>, ${CLI_FLAG_SHORT_PREFIX}f${CLI_FLAG_VALUE_SEPARATOR}<value>`,
         '\t\tOption description',
@@ -147,7 +146,7 @@ describe('buildHelp', () => {
         },
       } as const;
       const expectedMessage = [
-        'Usage: envloadr [<options>] <target-command> [<args>]',
+        'Usage: envloadr [<options>] <target-command>',
         '\nOptions:',
         `\t${CLI_FLAG_LONG_PREFIX}flag${CLI_FLAG_VALUE_SEPARATOR}<value${CLI_OPTION_VALUES_SEPARATOR}value${CLI_OPTION_VALUES_SEPARATOR}...>, ${CLI_FLAG_SHORT_PREFIX}f${CLI_FLAG_VALUE_SEPARATOR}<value${CLI_OPTION_VALUES_SEPARATOR}value${CLI_OPTION_VALUES_SEPARATOR}...>`,
         '\t\tOption description',
@@ -165,7 +164,7 @@ describe('buildHelp', () => {
         },
       } as const;
       const expectedMessage = [
-        'Usage: envloadr [<options>] <target-command> [<args>]',
+        'Usage: envloadr [<options>] <target-command>',
         '\nOptions:',
         `\t${CLI_FLAG_LONG_PREFIX}flag, ${CLI_FLAG_SHORT_PREFIX}f`,
         '\t\tOption description',
@@ -207,7 +206,7 @@ describe('buildHelp', () => {
       },
     } as const;
     const expectedMessage = [
-      'Usage: envloadr [<options>] <target-command> [<args>]',
+      'Usage: envloadr [<options>] <target-command>',
       '\nOptions:',
       `\t${CLI_FLAG_LONG_PREFIX}flagA[${CLI_FLAG_VALUE_SEPARATOR}true|false], ${CLI_FLAG_SHORT_PREFIX}fa[${CLI_FLAG_VALUE_SEPARATOR}true|false]`,
       '\t\tOption A description',
