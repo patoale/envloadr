@@ -106,3 +106,54 @@ Enables detailed output in the console about the process of loading environment 
 
 #### `--help` or `-h`
 Displays help information about the library, including a list of available options and their usage. This is useful for understanding how to use the library and its commands.
+
+## 📚 Examples
+
+> [!NOTE]
+> Although the examples use `npm`, you can use any npm-compatible package manager such as `yarn` or `pnpm` with the same commands.
+
+### Using from the terminal
+
+#### Load from default `.env` file
+```bash
+envloadr npm start
+```
+
+#### Load multiple `.env` files
+```bash
+envloadr --file=.env,.env.prod node server.js
+```
+
+#### Prevent overwriting existing variables
+```bash
+envloadr --no-override node app.js
+```
+
+#### Show detailed output of loaded variables
+```bash
+envloadr --verbose=true npm run dev
+```
+
+#### Combine multiple options
+```bash
+envloadr -f=.env.prod,.env.secret --no-override -v npm run build
+```
+
+### Using in `package.json` scripts
+```json
+{
+  "scripts": {
+    "db:migrate": "sequelize db:migrate",
+    "start": "envloadr -f=.env.prod npm run -- db:migrate && envloadr -f=.env.prod node dist/index.js",
+    "dev": "envloadr -v npm run -- db:migrate && envloadr -v node src/index.js",
+    "build": "envloadr --file=.env.prod webpack",
+    "test": "envloadr -f=.env,.env.test --verbose --no-override jest"
+  }
+}
+```
+
+Then run scripts as usual:
+
+```bash
+npm run build && npm start
+```
