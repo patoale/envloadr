@@ -88,13 +88,6 @@ You can use the following command line options to override the default configura
 
 #### `--file=<file-path>[,<file-path>...]` or `-f=<file-path>[,<file-path>...]`
 Specifies the source file(s) from which variables will be loaded into the runtime environment. By default, if this option is not used, the `./.env` file will be loaded.
-```json
-{
-  "scripts": {
-    "start": "envloadr --file=.env,.env.prod node app.js"
-  }
-}
-```
 
 This option follows a defined loading order: the specified files are read sequentially from left to right, and the variables within each file are processed sequentially from top to bottom.
 
