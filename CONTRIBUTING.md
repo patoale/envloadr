@@ -38,3 +38,10 @@ If you find something similar, consider commenting or adding a reaction instead 
 ## 🚀 Submitting Pull Requests
 
 We welcome code contributions! Please follow the steps below to ensure a smooth review process and increase the chances of your pull request being accepted.
+
+### 1. Fork the Repository
+
+Go to the [envloadr GitHub page](https://github.com/patoale/envloadr) and click the **Fork** button at the top right.  
+
+> [!TIP]
+> You probably only need to copy the default branch (`develop`). If you skip this, all branches will be copied into your fork.
