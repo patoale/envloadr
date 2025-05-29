@@ -6,6 +6,7 @@ Thank you for considering contributing to this project! We welcome contributions
 
 - [Discussions](#-discussions-for-non-issue-topics)
 - [Issues and Feature Requests](#-issues-and-feature-requests)
+- [Pull Requests](#-submitting-pull-requests)
 
 ## 💬 Discussions for Non-Issue Topics
 
@@ -33,3 +34,7 @@ If you find something similar, consider commenting or adding a reaction instead 
 - **Explain the context**: what you were doing, what you expected, and what actually happened.
 - **Provide reproduction steps** or logs if helpful.
 - **Tag appropriately** (e.g., `bug`, `enhancement`) if you have permissions.
+
+## 🚀 Submitting Pull Requests
+
+We welcome code contributions! Please follow the steps below to ensure a smooth review process and increase the chances of your pull request being accepted.
