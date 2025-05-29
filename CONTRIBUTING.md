@@ -157,3 +157,11 @@ git rebase upstream/develop
 ```
 
 This ensures that your branch is up to date with the latest changes from `patoale/envloadr`'s `develop` branch.
+
+### 9. Push Your Branch
+
+Once your commits are ready, push your branch to your fork on GitHub to start the pull request process:
+
+```bash
+git push origin my-branch
+```
