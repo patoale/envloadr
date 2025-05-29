@@ -116,3 +116,13 @@ Now you can edit or add files under the `/src` directory, write tests under `/te
 The project uses automated tools to assist you and help maintain a consistent code style across all contributions.
 
 _For more details on the code style, see the [Code Style](#) section._
+
+### 6. Run Tests
+
+Before committing, make sure all tests pass:
+
+```bash
+pnpm test
+```
+
+If any tests fail, address the issues before committing your changes.
