@@ -56,3 +56,22 @@ cd envloadr
 git remote add upstream https://github.com/patoale/envloadr.git
 git fetch upstream
 ```
+
+### 3. Install Dependencies
+
+This project uses [`pnpm`](https://pnpm.io) as the package manager.
+
+If you don't have it installed, you can install it globally:
+
+```bash
+npm install -g pnpm
+```
+
+Then install the project dependencies:
+
+```bash
+pnpm install
+```
+
+> [!WARNING]
+> Please do not use npm or yarn, as it may break the dependency structure.
