@@ -126,3 +126,23 @@ pnpm test
 ```
 
 If any tests fail, address the issues before committing your changes.
+
+### 7. Commit Your Changes
+
+Group related changes logically into separate commits. This makes it easier to review changes when they are divided into smaller, focused commits. There's no limit to the number of commits in a pull request.
+
+#### Commit Message Guidelines
+
+We follow the [semantic commit messages](https://conventionalcommits.org) convention, which includes specific prefixes to categorize commits. Here are some examples:
+- `feat(cli): add RC file option`
+- `fix: resolve duplicated env vars issue`
+- `docs: update README "Available options" section`
+
+_For a full list of semantic prefixes and their meanings, see the previous [semantic prefix convention](#semantic-prefix-naming-convention)._
+
+When writing commit messages, please follow these guidelines:
+1. The first line should:
+    - Be a concise description of the change (no more than 72 characters).
+    - Use lowercase, except for proper nouns and code elements (e.g., functions, variables).
+2. If you add a body, leave the second line blank.
+3. Wrap all lines in the body to 100 characters.
