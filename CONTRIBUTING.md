@@ -189,3 +189,9 @@ Once your pull request is open, the project maintainers will review your changes
 - **Resolve merge conflicts**: If the code in your branch conflicts with changes made to the main repository while the PR is under review, be calm. you’ll need to resolve these conflicts.
 - **Keep communication open**: Once changes are made, notify the reviewers that you’ve updated the pull request and are ready for another review.
 - **Celebrate your contributions**: Every pull request, whether merged or not, is a valuable step in your journey as a contributor. Keep improving and contributing!
+
+### 12. Merge the Pull Request
+
+Before your changes get merged into the main repository, they’ll need to be approved by at least one **envloadr** maintainer and pass CI checks. After that, if no contributors have objections, we can go ahead and merge it.
+
+Congrats and thanks for contributing!
