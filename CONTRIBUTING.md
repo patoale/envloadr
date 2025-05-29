@@ -103,3 +103,16 @@ Here’s a list of available prefixes and their meanings:
 - `refactor`: Code changes that don't add a feature or fix a bug (e.g., renaming a variable, simplifying a function, etc.).
 - `style`: Code style changes that don't affect functionality (e.g., formatting, missing semicolons, etc.).
 - `test`: Adding new tests or updating existing ones.
+
+### 5. Make Your Changes
+
+Now you can edit or add files under the `/src` directory, write tests under `/tests`, or update documentation.
+
+> [!NOTE]
+> If you’ve added a new feature or fixed a bug, don't forget to add or update the relevant tests. See the [tests](#) guide for more information.
+>
+> If your changes affect how the project is used, make sure to update the documentation.
+
+The project uses automated tools to assist you and help maintain a consistent code style across all contributions.
+
+_For more details on the code style, see the [Code Style](#) section._
