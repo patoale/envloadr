@@ -146,3 +146,14 @@ When writing commit messages, please follow these guidelines:
     - Use lowercase, except for proper nouns and code elements (e.g., functions, variables).
 2. If you add a body, leave the second line blank.
 3. Wrap all lines in the body to 100 characters.
+
+### 8. Rebase Your Branch
+
+Once you've committed your changes, it's a good idea to rebase (not merge) your branch to synchronize your work with the main repository:
+
+```bash
+git fetch upstream
+git rebase upstream/develop
+```
+
+This ensures that your branch is up to date with the latest changes from `patoale/envloadr`'s `develop` branch.
