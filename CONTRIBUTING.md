@@ -45,3 +45,14 @@ Go to the [envloadr GitHub page](https://github.com/patoale/envloadr) and click 
 
 > [!TIP]
 > You probably only need to copy the default branch (`develop`). If you skip this, all branches will be copied into your fork.
+
+### 2. Clone Your Fork Locally
+
+Use the following command, replacing `YOUR-USERNAME` with your GitHub username:
+
+```bash
+git clone git@github.com:YOUR-USERNAME/envloadr.git
+cd envloadr
+git remote add upstream https://github.com/patoale/envloadr.git
+git fetch upstream
+```
