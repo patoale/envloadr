@@ -165,3 +165,15 @@ Once your commits are ready, push your branch to your fork on GitHub to start th
 ```bash
 git push origin my-branch
 ```
+
+### 10. Open a Pull Request
+
+Go to your fork on GitHub and click **Compare & pull request**. A new pull request template will appear for you to fill out.
+
+#### Guidelines for Creating Pull Requests
+
+- If there is **only one commit**, use the **same title as the commit message** for the pull request.
+- If the pull request contains **multiple commits**, keep the **title concise and focused** following the previous [commit message guidelines](#commit-message-guidelines).
+- If the PR addresses an issue for a bug, reference the related issue with `Fixes #<issue-number>` in the description.
+- If the PR addresses an issue for a requested feature, reference the related issue with `Closes #<issue-number>` in the description.
+- Ensure **CI checks pass** (lint, tests) before submitting the pull request.
