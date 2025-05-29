@@ -177,3 +177,15 @@ Go to your fork on GitHub and click **Compare & pull request**. A new pull reque
 - If the PR addresses an issue for a bug, reference the related issue with `Fixes #<issue-number>` in the description.
 - If the PR addresses an issue for a requested feature, reference the related issue with `Closes #<issue-number>` in the description.
 - Ensure **CI checks pass** (lint, tests) before submitting the pull request.
+
+### 11. Review and Discuss the Pull Request
+
+Once your pull request is open, the project maintainers will review your changes. They may leave comments or request modifications. Here's how to handle the review process with a positive and productive mindset:
+
+- **Embrace feedback**: Feedback is meant to improve the project and help you grow. Use it as a chance to learn and refine your contributions.
+- **Address requested changes**: If a reviewer asks for changes, don’t feel discouraged. Implement the changes and push them to the same branch. The pull request will update automatically.
+- **Engage constructively**: If you disagree with feedback, discuss it respectfully. Provide your reasoning and listen to the reviewer’s perspective. Healthy conversations lead to better solutions.
+- **Update the pull request**: As you address feedback, make sure to update the description of the pull request to reflect any changes, particularly if the scope of your changes evolves.
+- **Resolve merge conflicts**: If the code in your branch conflicts with changes made to the main repository while the PR is under review, be calm. you’ll need to resolve these conflicts.
+- **Keep communication open**: Once changes are made, notify the reviewers that you’ve updated the pull request and are ready for another review.
+- **Celebrate your contributions**: Every pull request, whether merged or not, is a valuable step in your journey as a contributor. Keep improving and contributing!
