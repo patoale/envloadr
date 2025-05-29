@@ -75,3 +75,31 @@ pnpm install
 
 > [!WARNING]
 > Please do not use npm or yarn, as it may break the dependency structure.
+
+### 4. Create a New Branch
+
+Create a feature branch using the following format:
+
+```bash
+git checkout -b <prefix>/<concise-description>
+```
+
+This format uses a semantic prefix to describe the type of change you're making. Here are some examples of what the branch name could look like:
+- `feat/add-support-for-custom-env-files`
+- `fix/missing-error-on-invalid-path`
+- `docs/update-contributing-guide`
+- `chore/upgrade-dependencies`
+
+#### Semantic Prefix Naming Convention
+
+Here’s a list of available prefixes and their meanings:
+- `build`: Changes that affect the build system (e.g., updates to pnpm or build scripts).
+- `chore`: Tasks that don't affect functionality (e.g., updating dependencies, modifying configuration files, etc.).
+- `ci`: Changes related to continuous integration.
+- `docs`: Documentation-only changes.
+- `feat`: A new feature.
+- `fix`: A bug fix.
+- `perf`: Improvements related to performance.
+- `refactor`: Code changes that don't add a feature or fix a bug (e.g., renaming a variable, simplifying a function, etc.).
+- `style`: Code style changes that don't affect functionality (e.g., formatting, missing semicolons, etc.).
+- `test`: Adding new tests or updating existing ones.
