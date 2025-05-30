@@ -2,6 +2,15 @@
 
 **envloadr** is a simple, lightweight, and zero-dependency library for Node.js that simplifies the process of loading environment variables from files into the runtime environment of an application.
 
+## Table of Contents
+
+- 💡 [Why This Project](#-why-this-project)
+- ⌨️ [How to Use](#-how-to-use)
+- ⚙️ [Options](#-options)
+- 📚 [Examples](#-examples)
+- 🤝 [Contributing](#-contributing)
+- 📄 [License](#-license)
+
 ## 💡 Why This Project
 - **For simplicity**. In many projects, environment variables are distributed across multiple files (e.g., `.env`, `.env.dev`, `.env.prod`, etc.), requiring loading each file one by one manually.
 ```json
