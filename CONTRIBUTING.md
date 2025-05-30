@@ -7,6 +7,7 @@ Thank you for considering contributing to this project! We welcome contributions
 - [Discussions](#-discussions-for-non-issue-topics)
 - [Issues and Feature Requests](#-issues-and-feature-requests)
 - [Pull Requests](#-submitting-pull-requests)
+- [Code Style](#-code-style)
 
 ## 💬 Discussions for Non-Issue Topics
 
@@ -115,7 +116,7 @@ Now you can edit or add files under the `/src` directory, write tests under `/te
 
 The project uses automated tools to assist you and help maintain a consistent code style across all contributions.
 
-_For more details on the code style, see the [Code Style](#) section._
+_For more details on the code style, see the [Code Style](#-code-style) section._
 
 ### 6. Run Tests
 
@@ -195,3 +196,23 @@ Once your pull request is open, the project maintainers will review your changes
 Before your changes get merged into the main repository, they’ll need to be approved by at least one **envloadr** maintainer and pass CI checks. After that, if no contributors have objections, we can go ahead and merge it.
 
 Congrats and thanks for contributing!
+
+## 🧑‍🎨 Code Style
+
+This project enforces a consistent code style using **ESLint** for linting and **Prettier** for formatting. The linting rules are defined in `/eslint.config.mjs`, while formatting options are specified in `/prettier.config.mjs`.
+
+### Manual Linting and Formatting
+
+You can manually check if the code style is valid by running the linter with the following command:
+```bash
+pnpm lint
+```
+
+Or, you can fix the issues that the linter can resolve by running:
+```bash
+pnpm lint:fix
+```
+
+### Automated Formatting
+
+To ensure code consistency, the project uses **Husky** pre-commit hooks to automatically lint and format your code before each commit.
