@@ -12,38 +12,58 @@
 - 📄 [License](#-license)
 
 ## 💡 Why This Project
-- **For simplicity**. In many projects, environment variables are distributed across multiple files (e.g., `.env`, `.env.dev`, `.env.prod`, etc.), requiring loading each file one by one manually.
-```json
-"start": "node --env-file=.env --env-file=.env.prod --env-file=.env.local start.js"
-```
-With the `--file` option (or its alias `-f`), you can directly specify a list of file paths, simplifying commands and improving readability.
-```json
-"start": "envloadr -f=.env,.env.prod,.env.local start.js"
+
+- **For simplicity**. In many projects, environment variables are distributed across multiple files (e.g., `.env`, `.env.dev`, `.env.prod`, etc.), requiring you to load each file individually, one by one:
+```bash
+node --env-file=.env --env-file=.env.prod --env-file=.env.local start.js
 ```
 
-- **For convenience**. In some scenarios, a script may internally execute other scripts that require the same environment variables.
-```json
-"build": "node --env-file=.env.prod check-env.js && node --env-file=.env.prod build.js",
-"deploy": "npm run -- build && node deploy.js"
-```
-**envloadr** propagates environment variables from the parent to child processes. This eliminates the need to manually reload the same `.env` files in each subprocess, reducing repetition, simplifying execution, and minimizing errors.
-```json
-"build": "node check-env.js && node build.js",
-"deploy": "envloadr -f=.env.prod npm run -- build && node deploy.js"
+With the `--file` option (or its alias `-f`), you can specify a list of file paths, simplifying commands and improving readability:
+```bash
+envloadr -f=.env,.env.prod,.env.local start.js
 ```
 
-- **For efficiency**. In workflows where the same script needs to run with different environment variables (e.g., development vs production)
+- **For convenience**. In some cases, script in your `package.json` may internally execute other scripts that depend on the same environment variables, requiring the same `.env` file to be loaded multiple times:
 ```json
-"db:up:dev": "node --env-file=.env.dev database.js",
-"db:up:prod": "node --env-file=.env.prod database.js",
-"dev": "npm run -- db:up:dev && node --env-file=.env.dev dev.js",
-"start": "npm run -- db:up:prod && node --env-file=.env.prod start.js",
+{
+  "scripts": {
+    "build": "node --env-file=.env.prod check-env.js && node --env-file=.env.prod build.js",
+    "deploy": "npm run -- build && node deploy.js"
+  }
+}
 ```
-Since **envloadr** loads environment variables in the parent process, child scripts can be abstracted from the environment they run in. This reduces the need to duplicate scripts, promoting cleaner, more reusable, and maintainable code.
+
+**envloadr** propagates environment variables from parent to child processes, so you don't need to reload the same `.env` files in each child script, reducing repetition and minimizing errors:
 ```json
-"db:up": "node database.js",
-"dev": "envloadr --file=.env.dev db:up && node --env-file=.env.dev dev.js",
-"start": "envloadr --file=.env.prod db:up && node --env-file=.env.prod start.js",
+{
+  "scripts": {
+    "build": "node check-env.js && node build.js",
+    "deploy": "envloadr -f=.env.prod npm run -- build && node deploy.js"
+  }
+}
+```
+
+- **For efficiency**. There are scenarios in the `package.json` where the same script needs to run with different environment variables depending on the context (e.g., development vs production), leading to script duplication:
+```json
+{
+  "scripts": {
+    "db:up:dev": "node --env-file=.env.dev database.js",
+    "db:up:prod": "node --env-file=.env.prod database.js",
+    "dev": "npm run -- db:up:dev && node --env-file=.env.dev dev.js",
+    "start": "npm run -- db:up:prod && node --env-file=.env.prod start.js"
+  }
+}
+```
+
+Since **envloadr** loads environment variables in parent processes, child scripts can be abstracted from the context they run in, reducing duplicate scripts and promoting more reusable and maintainable code:
+```json
+{
+  "scripts": {
+    "db:up": "node database.js",
+    "dev": "envloadr --file=.env.dev db:up && node --env-file=.env.dev dev.js",
+    "start": "envloadr --file=.env.prod db:up && node --env-file=.env.prod start.js"
+  }
+}
 ```
 
 ## ⌨️ How to Use
