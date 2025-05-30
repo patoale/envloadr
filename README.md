@@ -2,7 +2,7 @@
 
 **envloadr** is a simple, lightweight, and zero-dependency library for Node.js that simplifies the process of loading environment variables from files into the runtime environment of an application.
 
-## 💡 Why
+## 💡 Why This Project
 - **For simplicity**. In many projects, environment variables are distributed across multiple files (e.g., `.env`, `.env.dev`, `.env.prod`, etc.), requiring loading each file one by one manually.
 ```json
 "start": "node --env-file=.env --env-file=.env.prod --env-file=.env.local start.js"
@@ -37,7 +37,7 @@ Since **envloadr** loads environment variables in the parent process, child scri
 "start": "envloadr --file=.env.prod db:up && node --env-file=.env.prod start.js",
 ```
 
-## ⌨️ How to use
+## ⌨️ How to Use
 
 The basic syntax of **envloadr** is as follows:
 ```bash
@@ -48,7 +48,7 @@ envloadr [<options>] <target-command>
 
 - **target-command**: The command to run once the environment variables are loaded. This is **required**.
 
-### Basic usage
+### Basic Usage
 
 First, create a `.env` file in the root of your project:
 ```env
@@ -82,7 +82,7 @@ Alternatively, you can specify a different file using the `--file` option (or it
 }
 ```
 
-## ⚙️ Available options
+## ⚙️ Options
 
 You can use the following command line options to override the default configuration settings
 
@@ -105,7 +105,7 @@ Displays help information about the library, including a list of available optio
 > [!NOTE]
 > Although the examples use `npm`, you can use any npm-compatible package manager such as `yarn` or `pnpm` with the same commands.
 
-### Using from the terminal
+### Using from the Terminal
 
 #### Load from default `.env` file
 ```bash
@@ -132,7 +132,7 @@ envloadr --verbose=true npm run dev
 envloadr -f=.env.prod,.env.secret --no-override -v npm run build
 ```
 
-### Using in `package.json` scripts
+### Using in `package.json` Scripts
 ```json
 {
   "scripts": {
