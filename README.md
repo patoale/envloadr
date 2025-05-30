@@ -116,32 +116,33 @@ Displays help information about the library, including a list of available optio
 
 ### Using from the Terminal
 
-#### Load from default `.env` file
+- **Load from default `.env` file:**
 ```bash
 envloadr npm start
 ```
 
-#### Load multiple `.env` files
+- **Load multiple `.env` files:**
 ```bash
 envloadr --file=.env,.env.prod node server.js
 ```
 
-#### Prevent overwriting existing variables
+- **Prevent overwriting existing variables:**
 ```bash
 envloadr --no-override node app.js
 ```
 
-#### Show detailed output of loaded variables
+- **Show detailed output of loaded variables:**
 ```bash
 envloadr --verbose=true npm run dev
 ```
 
-#### Combine multiple options
+- **Combine multiple options:**
 ```bash
 envloadr -f=.env.prod,.env.secret --no-override -v npm run build
 ```
 
 ### Using in `package.json` Scripts
+
 ```json
 {
   "scripts": {
@@ -155,7 +156,6 @@ envloadr -f=.env.prod,.env.secret --no-override -v npm run build
 ```
 
 Then run scripts as usual:
-
 ```bash
 npm run build && npm start
 ```
