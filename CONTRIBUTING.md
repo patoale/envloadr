@@ -4,11 +4,11 @@ Thank you for considering contributing to this project! We welcome contributions
 
 ## Table of Contents
 
-- [Discussions](#-discussions-for-non-issue-topics)
-- [Issues and Feature Requests](#-issues-and-feature-requests)
-- [Pull Requests](#-submitting-pull-requests)
-- [Code Style](#-code-style)
-- [Tests](#-tests)
+- 💬 [Discussions](#-discussions-for-non-issue-topics)
+- 📝 [Issues and Feature Requests](#-issues-and-feature-requests)
+- 🚀 [Pull Requests](#-submitting-pull-requests)
+- 🧑‍🎨 [Code Style](#-code-style)
+- ✅ [Tests](#-tests)
 
 ## 💬 Discussions for Non-Issue Topics
 
