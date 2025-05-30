@@ -8,6 +8,7 @@ Thank you for considering contributing to this project! We welcome contributions
 - [Issues and Feature Requests](#-issues-and-feature-requests)
 - [Pull Requests](#-submitting-pull-requests)
 - [Code Style](#-code-style)
+- [Tests](#-tests)
 
 ## 💬 Discussions for Non-Issue Topics
 
@@ -110,7 +111,7 @@ Here’s a list of available prefixes and their meanings:
 Now you can edit or add files under the `/src` directory, write tests under `/tests`, or update documentation.
 
 > [!NOTE]
-> If you’ve added a new feature or fixed a bug, don't forget to add or update the relevant tests. See the [tests](#) guide for more information.
+> If you’ve added a new feature or fixed a bug, don't forget to add or update the relevant tests. See the [tests](#-tests) guide for more information.
 >
 > If your changes affect how the project is used, make sure to update the documentation.
 
@@ -216,3 +217,41 @@ pnpm lint:fix
 ### Automated Formatting
 
 To ensure code consistency, the project uses **Husky** pre-commit hooks to automatically lint and format your code before each commit.
+
+## ✅ Tests
+
+To ensure the reliability and stability of the project, we use **Jest** as the testing framework. It's essential to follow a few guidelines when writing tests for your changes.
+
+- **Where to add tests**: All tests should be added under the `/tests` directory, mirroring the structure of the `/src` directory. For example, if you're testing a file at `/src/utils/helpers.js`, the corresponding test file should be located at `/tests/utils/helpers.spec.js.`
+- **Isolated function tests**: Each function should be tested inside a `describe` block, where the name of the `describe` block should match the name of the function being tested. For example:
+```typescript
+describe('myFunction', () => {
+  it('should do something when...', () => {
+    // test code
+  });
+});
+```
+- **Test naming convention**: Test names must follow the convention `should... when...`, clearly describing the expected behavior under certain conditions. For example:
+```typescript
+it('should return the correct result when input is valid', () => {
+  // test code
+});
+```
+- **Grouping tests**: If you need to group a subset of tests for a particular function, you can nest `describe` blocks within each other:
+```typescript
+describe('myFunction', () => {
+  describe('if called with valid input', () => {
+    it('should return the expected result when options are valid', () => {
+      // test code
+    });
+    
+    it('should not throw errors when options are empty', () => {
+      // test code
+    });
+  });
+
+  it('should throw an error when input is invalid', () => {
+    // test code
+  });
+});
+```
