@@ -162,7 +162,7 @@ npm run build && npm start
 
 ## 🤝 Contributing
 
-Want to contribute? Awesome! Please check out the [CONTRIBUTING.md](./CONTRIBUTING.md) file for guidelines on how to get started.
+Want to contribute? Awesome! Please check out the [CONTRIBUTING.md](CONTRIBUTING.md) file for guidelines on how to get started.
 
 ## 📄 License
 
