@@ -19,7 +19,7 @@ function normalizeOptions(options: Options<typeof schema> | undefined) {
   return { files, override, verbose };
 }
 
-function run() {
+export function run() {
   const args = process.argv.slice(2);
 
   const { command, options } = parse(args, schema);
@@ -33,5 +33,3 @@ function run() {
     env: override ? { ...process.env, ...env } : { ...env, ...process.env },
   });
 }
-
-run();
