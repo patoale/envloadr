@@ -23,7 +23,10 @@ export function run() {
   const args = process.argv.slice(2);
 
   const { command, options } = parse(args, schema);
-  if (options?.help !== undefined) console.log(buildHelp(schema));
+  if (options?.help !== undefined) {
+    console.log(buildHelp(schema));
+    return;
+  }
 
   const { files, override, verbose } = normalizeOptions(options);
   const env = parseEnvFiles(files, { override, verbose });
