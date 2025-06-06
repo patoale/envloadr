@@ -7,6 +7,22 @@ import { DEFAULT_ENV_FILE_PATH } from '@/config';
 
 describe('run', () => {
   const originalArgv = process.argv;
+  let parseEnvFilesSpy: jest.SpyInstance;
+  let spawnSpy: jest.SpyInstance;
+
+  beforeAll(() => {
+    // Testing these functions is not the objective of this suite,
+    // so they can be mocked throughout the process
+    parseEnvFilesSpy = jest
+      .spyOn(envFile, 'parseEnvFiles')
+      .mockImplementation();
+    spawnSpy = jest.spyOn(childProcess, 'spawn').mockImplementation();
+  });
+
+  afterAll(() => {
+    parseEnvFilesSpy.mockRestore();
+    spawnSpy.mockRestore();
+  });
 
   afterEach(() => {
     process.argv = originalArgv;
@@ -29,30 +45,15 @@ describe('run', () => {
   });
 
   it('should stop execution after printing help message when help option is enabled', () => {
-    const parseEnvFilesSpy = jest
-      .spyOn(envFile, 'parseEnvFiles')
-      .mockImplementation();
-    const spawnSpy = jest.spyOn(childProcess, 'spawn').mockImplementation();
-
     process.argv = ['node', 'envloadr', '-h', 'node', 'start.js'];
 
-    try {
-      run();
+    run();
 
-      expect(parseEnvFilesSpy).not.toHaveBeenCalled();
-      expect(spawnSpy).not.toHaveBeenCalled();
-    } finally {
-      spawnSpy.mockRestore();
-      parseEnvFilesSpy.mockRestore();
-    }
+    expect(parseEnvFilesSpy).not.toHaveBeenCalled();
+    expect(spawnSpy).not.toHaveBeenCalled();
   });
 
   it(`should load env vars from ${DEFAULT_ENV_FILE_PATH} when the input does not include the file option`, () => {
-    const parseEnvFilesSpy = jest
-      .spyOn(envFile, 'parseEnvFiles')
-      .mockImplementation();
-    const spawnSpy = jest.spyOn(childProcess, 'spawn').mockImplementation();
-
     process.argv = [
       'node',
       'envloadr',
@@ -65,16 +66,11 @@ describe('run', () => {
     const expectedPathnames = [DEFAULT_ENV_FILE_PATH];
     const expectedOptions = { override: false, verbose: true };
 
-    try {
-      run();
+    run();
 
-      expect(parseEnvFilesSpy).toHaveBeenCalledWith(
-        expectedPathnames,
-        expectedOptions,
-      );
-    } finally {
-      spawnSpy.mockRestore();
-      parseEnvFilesSpy.mockRestore();
-    }
+    expect(parseEnvFilesSpy).toHaveBeenCalledWith(
+      expectedPathnames,
+      expectedOptions,
+    );
   });
 });
