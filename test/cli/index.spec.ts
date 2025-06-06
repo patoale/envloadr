@@ -3,6 +3,7 @@ import { run } from '@/cli';
 import { buildHelp } from '@/cli/help';
 import schema from '@/cli/schema';
 import * as envFile from '@/envFile';
+import { DEFAULT_ENV_FILE_PATH } from '@/config';
 
 describe('run', () => {
   const originalArgv = process.argv;
@@ -40,6 +41,37 @@ describe('run', () => {
 
       expect(parseEnvFilesSpy).not.toHaveBeenCalled();
       expect(spawnSpy).not.toHaveBeenCalled();
+    } finally {
+      spawnSpy.mockRestore();
+      parseEnvFilesSpy.mockRestore();
+    }
+  });
+
+  it(`should load env vars from ${DEFAULT_ENV_FILE_PATH} when the input does not include the file option`, () => {
+    const parseEnvFilesSpy = jest
+      .spyOn(envFile, 'parseEnvFiles')
+      .mockImplementation();
+    const spawnSpy = jest.spyOn(childProcess, 'spawn').mockImplementation();
+
+    process.argv = [
+      'node',
+      'envloadr',
+      '--no-override',
+      '-v',
+      'node',
+      'start.js',
+    ];
+
+    const expectedPathnames = [DEFAULT_ENV_FILE_PATH];
+    const expectedOptions = { override: false, verbose: true };
+
+    try {
+      run();
+
+      expect(parseEnvFilesSpy).toHaveBeenCalledWith(
+        expectedPathnames,
+        expectedOptions,
+      );
     } finally {
       spawnSpy.mockRestore();
       parseEnvFilesSpy.mockRestore();
