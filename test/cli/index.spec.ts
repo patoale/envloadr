@@ -1,9 +1,9 @@
 import childProcess from 'child_process';
+import { DEFAULT_ENV_FILE_PATH, DEFAULT_OVERRIDE } from '@/config';
 import { run } from '@/cli';
 import { buildHelp } from '@/cli/help';
 import schema from '@/cli/schema';
 import * as envFile from '@/envFile';
-import { DEFAULT_ENV_FILE_PATH } from '@/config';
 
 describe('run', () => {
   const originalArgv = process.argv;
@@ -65,6 +65,20 @@ describe('run', () => {
 
     const expectedPathnames = [DEFAULT_ENV_FILE_PATH];
     const expectedOptions = { override: false, verbose: true };
+
+    run();
+
+    expect(parseEnvFilesSpy).toHaveBeenCalledWith(
+      expectedPathnames,
+      expectedOptions,
+    );
+  });
+
+  it(`should use override=${DEFAULT_OVERRIDE} when the input does not include the override option`, () => {
+    process.argv = ['node', 'envloadr', '-f=.env', '-v', 'node', 'start.js'];
+
+    const expectedPathnames = ['.env'];
+    const expectedOptions = { override: DEFAULT_OVERRIDE, verbose: true };
 
     run();
 
