@@ -5,8 +5,13 @@ import * as envFile from '@/envFile';
 import childProcess from 'child_process';
 
 describe('run', () => {
+  const originalArgv = process.argv;
+
+  afterEach(() => {
+    process.argv = originalArgv;
+  });
+
   it('should print help message when help option is enabled', () => {
-    const originalArgv = process.argv;
     const consoleLogSpy = jest.spyOn(console, 'log').mockImplementation();
 
     process.argv = ['node', 'envloadr', '-h', 'node', 'start.js'];
@@ -19,12 +24,10 @@ describe('run', () => {
       expect(console.log).toHaveBeenCalledWith(expectedHelpMessage);
     } finally {
       consoleLogSpy.mockRestore();
-      process.argv = originalArgv;
     }
   });
 
   it('should stop execution after printing help message when help option is enabled', () => {
-    const originalArgv = process.argv;
     const parseEnvFilesSpy = jest
       .spyOn(envFile, 'parseEnvFile')
       .mockImplementation();
@@ -40,7 +43,6 @@ describe('run', () => {
     } finally {
       spawnSpy.mockRestore();
       parseEnvFilesSpy.mockRestore();
-      process.argv = originalArgv;
     }
   });
 });
