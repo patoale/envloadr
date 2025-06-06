@@ -1,5 +1,7 @@
 import childProcess from 'child_process';
 import {
+  CLI_FLAG_LONG_PREFIX,
+  CLI_FLAG_VALUE_SEPARATOR,
   DEFAULT_ENV_FILE_PATH,
   DEFAULT_OVERRIDE,
   DEFAULT_VERBOSE,
@@ -35,7 +37,13 @@ describe('run', () => {
   it('should print help message when help option is enabled', () => {
     const consoleLogSpy = jest.spyOn(console, 'log').mockImplementation();
 
-    process.argv = ['node', 'envloadr', '-h', 'node', 'start.js'];
+    process.argv = [
+      'node',
+      'envloadr',
+      `${CLI_FLAG_LONG_PREFIX}${schema.help.longFlag}`,
+      'node',
+      'start.js',
+    ];
 
     try {
       const expectedHelpMessage = buildHelp(schema);
@@ -49,7 +57,13 @@ describe('run', () => {
   });
 
   it('should stop execution after printing help message when help option is enabled', () => {
-    process.argv = ['node', 'envloadr', '-h', 'node', 'start.js'];
+    process.argv = [
+      'node',
+      'envloadr',
+      `${CLI_FLAG_LONG_PREFIX}${schema.help.longFlag}`,
+      'node',
+      'start.js',
+    ];
 
     run();
 
@@ -61,8 +75,8 @@ describe('run', () => {
     process.argv = [
       'node',
       'envloadr',
-      '--no-override',
-      '-v',
+      `${CLI_FLAG_LONG_PREFIX}${schema.noOverride.longFlag}`,
+      `${CLI_FLAG_LONG_PREFIX}${schema.verbose.longFlag}`,
       'node',
       'start.js',
     ];
@@ -79,7 +93,14 @@ describe('run', () => {
   });
 
   it(`should use override=${DEFAULT_OVERRIDE} when the input does not include the override option`, () => {
-    process.argv = ['node', 'envloadr', '-f=.env', '-v', 'node', 'start.js'];
+    process.argv = [
+      'node',
+      'envloadr',
+      `${CLI_FLAG_LONG_PREFIX}${schema.files.longFlag}${CLI_FLAG_VALUE_SEPARATOR}.env`,
+      `${CLI_FLAG_LONG_PREFIX}${schema.verbose.longFlag}`,
+      'node',
+      'start.js',
+    ];
 
     const expectedPathnames = ['.env'];
     const expectedOptions = { override: DEFAULT_OVERRIDE, verbose: true };
@@ -96,8 +117,8 @@ describe('run', () => {
     process.argv = [
       'node',
       'envloadr',
-      '-f=.env',
-      '--no-override',
+      `${CLI_FLAG_LONG_PREFIX}${schema.files.longFlag}${CLI_FLAG_VALUE_SEPARATOR}.env`,
+      `${CLI_FLAG_LONG_PREFIX}${schema.noOverride.longFlag}`,
       'node',
       'start.js',
     ];
