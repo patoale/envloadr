@@ -1,8 +1,8 @@
+import childProcess from 'child_process';
 import { run } from '@/cli';
 import { buildHelp } from '@/cli/help';
 import schema from '@/cli/schema';
 import * as envFile from '@/envFile';
-import childProcess from 'child_process';
 
 describe('run', () => {
   const originalArgv = process.argv;
