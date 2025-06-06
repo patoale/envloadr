@@ -29,7 +29,7 @@ describe('run', () => {
 
   it('should stop execution after printing help message when help option is enabled', () => {
     const parseEnvFilesSpy = jest
-      .spyOn(envFile, 'parseEnvFile')
+      .spyOn(envFile, 'parseEnvFiles')
       .mockImplementation();
     const spawnSpy = jest.spyOn(childProcess, 'spawn').mockImplementation();
 
