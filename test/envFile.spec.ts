@@ -2,7 +2,7 @@ import fs from 'fs';
 import { ENV_FILE_COMMENT_PREFIX, KEY_VALUE_SEPARATOR } from '@/config';
 import { parseEnvFile, parseEnvFiles } from '@/envFile';
 
-describe('Environment file parser', () => {
+describe('parseEnvFile', () => {
   let readFileSyncSpy: jest.SpyInstance;
 
   beforeEach(() => {
