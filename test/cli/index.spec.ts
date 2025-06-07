@@ -50,7 +50,7 @@ describe('run', () => {
 
       run();
 
-      expect(console.log).toHaveBeenCalledWith(expectedHelpMessage);
+      expect(consoleLogSpy).toHaveBeenCalledWith(expectedHelpMessage);
     } finally {
       consoleLogSpy.mockRestore();
     }
