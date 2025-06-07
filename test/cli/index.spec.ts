@@ -133,4 +133,21 @@ describe('run', () => {
       expectedOptions,
     );
   });
+
+  it(`should use the default values for options when the input does not contain any options`, () => {
+    process.argv = ['node', 'envloadr', 'node', 'start.js'];
+
+    const expectedPathnames = [DEFAULT_ENV_FILE_PATH];
+    const expectedOptions = {
+      override: DEFAULT_OVERRIDE,
+      verbose: DEFAULT_VERBOSE,
+    };
+
+    run();
+
+    expect(parseEnvFilesSpy).toHaveBeenCalledWith(
+      expectedPathnames,
+      expectedOptions,
+    );
+  });
 });
