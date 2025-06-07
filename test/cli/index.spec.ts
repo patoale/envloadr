@@ -136,32 +136,39 @@ describe('run', () => {
     );
   });
 
-  it(`should overwrite process.env vars when there is a conflict with the var names of env files and override option is enabled`, () => {
+  describe('If the names of process.env vars conflict with those in the env files', () => {
     const originalEnv = process.env;
 
-    const expectedOptions = {
-      env: {
-        KEY_1: 'value1_b',
+    beforeAll(() => {
+      process.env = {
+        KEY_1: 'value1_a',
         KEY_2: 'value2',
+      };
+
+      parseEnvFilesSpy.mockReturnValue({
+        KEY_1: 'value1_b',
         KEY_3: 'value3',
-      },
-      stdio: 'inherit',
-    };
+      });
+    });
 
-    process.env = {
-      KEY_1: 'value1_a',
-      KEY_2: 'value2',
-    };
+    afterAll(() => {
+      process.env = originalEnv;
+      parseEnvFilesSpy.mockClear();
+    });
 
-    try {
+    it(`should overwrite process.env vars when override option is enabled`, () => {
+      const expectedOptions = {
+        env: {
+          KEY_1: 'value1_b',
+          KEY_2: 'value2',
+          KEY_3: 'value3',
+        },
+        stdio: 'inherit',
+      };
+
       cliParseSpy.mockReturnValueOnce({
         command: { name: 'node', args: ['start.js'] },
         options: { noOverride: false },
-      });
-
-      parseEnvFilesSpy.mockReturnValueOnce({
-        KEY_1: 'value1_b',
-        KEY_3: 'value3',
       });
 
       run();
@@ -171,8 +178,30 @@ describe('run', () => {
         ['start.js'],
         expectedOptions,
       );
-    } finally {
-      process.env = originalEnv;
-    }
+    });
+
+    it(`should preserve process.env vars when override option is disabled`, () => {
+      const expectedOptions = {
+        env: {
+          KEY_1: 'value1_a',
+          KEY_2: 'value2',
+          KEY_3: 'value3',
+        },
+        stdio: 'inherit',
+      };
+
+      cliParseSpy.mockReturnValueOnce({
+        command: { name: 'node', args: ['start.js'] },
+        options: { noOverride: true },
+      });
+
+      run();
+
+      expect(spawnSpy).toHaveBeenCalledWith(
+        'node',
+        ['start.js'],
+        expectedOptions,
+      );
+    });
   });
 });
