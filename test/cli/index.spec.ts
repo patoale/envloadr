@@ -175,4 +175,44 @@ describe('run', () => {
       process.env = originalEnv;
     }
   });
+
+  it(`should preserve process.env vars when there is a conflict with the var names of env files and override option is disabled`, () => {
+    const originalEnv = process.env;
+
+    const expectedOptions = {
+      env: {
+        KEY_1: 'value1_a',
+        KEY_2: 'value2',
+        KEY_3: 'value3',
+      },
+      stdio: 'inherit',
+    };
+
+    process.env = {
+      KEY_1: 'value1_a',
+      KEY_2: 'value2',
+    };
+
+    try {
+      cliParseSpy.mockReturnValueOnce({
+        command: { name: 'node', args: ['start.js'] },
+        options: { noOverride: true },
+      });
+
+      parseEnvFilesSpy.mockReturnValueOnce({
+        KEY_1: 'value1_b',
+        KEY_3: 'value3',
+      });
+
+      run();
+
+      expect(spawnSpy).toHaveBeenCalledWith(
+        'node',
+        ['start.js'],
+        expectedOptions,
+      );
+    } finally {
+      process.env = originalEnv;
+    }
+  });
 });
