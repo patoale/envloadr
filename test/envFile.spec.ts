@@ -13,7 +13,7 @@ describe('parseEnvFile', () => {
     readFileSyncSpy.mockRestore();
   });
 
-  // Genral format validation
+  // General format validation
 
   it('should read env vars correctly when key-value pairs are well-formed', () => {
     const fileContent = [
