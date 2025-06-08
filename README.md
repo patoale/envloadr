@@ -8,6 +8,7 @@
 ## Table of Contents
 
 - 💡 [Why This Project](#-why-this-project)
+- 🌱 [Installing](#-installing)
 - ⌨️ [How to Use](#-how-to-use)
 - ⚙️ [Options](#-options)
 - 📚 [Examples](#-examples)
@@ -67,6 +68,28 @@ Since **envloadr** loads environment variables in parent processes, child script
     "start": "envloadr --file=.env.prod db:up && node --env-file=.env.prod start.js"
   }
 }
+```
+
+## 🌱 Installing
+
+To install **envloadr**, you can use **npm**, **yarn**, or **pnpm**.
+
+### Using npm:
+
+```bash
+npm install envloadr
+```
+
+### Using yarn:
+
+```bash
+yarn add envloadr
+```
+
+### Using pnpm:
+
+```bash
+pnpm add envloadr
 ```
 
 ## ⌨️ How to Use
