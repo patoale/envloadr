@@ -14,6 +14,8 @@
     "lint:fix": "pnpm lint --fix",
     "prepare": "husky",
     "test": "jest",
+    "test:coverage:export": "pnpm test --coverage --coverageReporters=lcovonly",
+    "test:coverage:print": "pnpm test --coverage --coverageReporters=text",
     "ts:check": "tsc"
   },
   "devDependencies": {
