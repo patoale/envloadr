@@ -6,7 +6,7 @@
 /** @type {import('ts-jest').JestConfigWithTsJest} **/
 export default {
   clearMocks: true,
-  collectCoverage: true,
+  collectCoverage: false,
   collectCoverageFrom: ['<rootDir>/src/**/*.ts'],
   coverageProvider: 'v8',
   coverageReporters: ['text'],
