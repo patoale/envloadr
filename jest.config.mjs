@@ -6,10 +6,11 @@
 /** @type {import('ts-jest').JestConfigWithTsJest} **/
 export default {
   clearMocks: true,
-  collectCoverage: true,
+  collectCoverage: false,
   collectCoverageFrom: ['<rootDir>/src/**/*.ts'],
+  coverageDirectory: 'coverage',
   coverageProvider: 'v8',
-  coverageReporters: ['text'],
+  coverageReporters: ['lcovonly', 'text'],
   moduleNameMapper: {
     '^@/(.*)$': '<rootDir>/src/$1',
     '^@test/(.*)$': '<rootDir>/test/$1',

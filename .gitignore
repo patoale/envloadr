@@ -6,5 +6,8 @@
 # production
 /dist
 
+# testing
+/coverage
+
 # VS Code
 .vscode
