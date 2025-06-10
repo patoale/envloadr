@@ -3,6 +3,7 @@
 [![CI](https://github.com/patoale/envloadr/actions/workflows/ci.yml/badge.svg)](https://github.com/patoale/envloadr/actions/workflows/ci.yml)
 [![codecov](https://codecov.io/gh/patoale/envloadr/graph/badge.svg?token=TBJGQ4LBYE)](https://codecov.io/gh/patoale/envloadr)
 [![NPM Version](https://img.shields.io/npm/v/envloadr?logo=npm&logoColor=%23CB3837)](https://www.npmjs.com/package/envloadr)
+[![NPM License](https://img.shields.io/npm/l/envloadr?logo=opensourceinitiative&logoColor=%23FFFFFF)](https://www.npmjs.com/package/envloadr)
 
 **envloadr** is a simple, lightweight, and zero-dependency library for Node.js that simplifies the process of loading environment variables from files into the runtime environment of an application.
 
