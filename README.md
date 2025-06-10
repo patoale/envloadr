@@ -1,6 +1,7 @@
 # envloadr
 
 [![CI](https://github.com/patoale/envloadr/actions/workflows/ci.yml/badge.svg)](https://github.com/patoale/envloadr/actions/workflows/ci.yml)
+[![codecov](https://codecov.io/gh/patoale/envloadr/graph/badge.svg?token=TBJGQ4LBYE)](https://codecov.io/gh/patoale/envloadr)
 
 
 **envloadr** is a simple, lightweight, and zero-dependency library for Node.js that simplifies the process of loading environment variables from files into the runtime environment of an application.
