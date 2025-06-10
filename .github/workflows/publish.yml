@@ -9,6 +9,9 @@ permissions:
 
 jobs:
   publish-npm:
+    # prevents this action from running on forks
+    if: github.repository == 'patoale/envloadr'
+    
     runs-on: ubuntu-latest
 
     steps:
