@@ -1,0 +1,456 @@
+import {
+  CLI_FLAG_LONG_PREFIX,
+  CLI_FLAG_SHORT_PREFIX,
+  CLI_FLAG_VALUE_SEPARATOR,
+  CLI_OPTION_VALUES_SEPARATOR,
+} from '@/config';
+import { parse } from '@/cli/parser';
+
+const schema = {
+  flagA: {
+    description: 'Option A',
+    longFlag: 'flagA',
+    shortFlag: 'fa',
+    param: 'boolean',
+  },
+  flagB: {
+    description: 'Option B',
+    longFlag: 'flagB',
+    shortFlag: 'fb',
+    param: {
+      alias: 'strs',
+      type: 'stringArray',
+    },
+  },
+  flagC: {
+    description: 'Option C',
+    longFlag: 'flagC',
+    param: {
+      alias: 'str',
+      type: 'string',
+    },
+  },
+  flagD: {
+    description: 'Option D',
+    longFlag: 'flagD',
+    shortFlag: 'fd',
+  },
+} as const;
+
+describe('parse', () => {
+  // Target command validation
+
+  it('should throw an error when the input does not contain the target command', () => {
+    const input: string[] = [];
+
+    expect(() => parse(input, schema)).toThrow(
+      'Error parsing CLI input: Missing target command',
+    );
+  });
+
+  it('should return an empty list of target command args when the input contains the target command without any args', () => {
+    const input = ['command-target'];
+
+    expect(parse(input, schema).command.args).toHaveLength(0);
+  });
+
+  it('should return a list with the target command args when the input includes the target command with args', () => {
+    const input = [
+      'target-command',
+      'target-command-arg1',
+      'target-command-arg2',
+      'target-command-arg3',
+    ];
+    const expectedCommandArgs = [
+      'target-command-arg1',
+      'target-command-arg2',
+      'target-command-arg3',
+    ];
+
+    expect(parse(input, schema).command.args).toEqual(expectedCommandArgs);
+  });
+
+  it('should throw an error when the target command is a blank string', () => {
+    const input: string[] = ['    '];
+
+    expect(() => parse(input, schema)).toThrow(
+      'Error parsing CLI input: Invalid target command',
+    );
+  });
+
+  // Handling options
+
+  it('should not return any option when the input does not contain any option', () => {
+    const input = ['target-command'];
+
+    expect(parse(input, schema).options).toBeUndefined();
+  });
+
+  it('should return the correct option when the input contains only one option', () => {
+    const input = [`${CLI_FLAG_LONG_PREFIX}flagA`, 'command-target'];
+    const expectedOptions = {
+      flagA: true,
+    };
+
+    expect(parse(input, schema).options).toEqual(expectedOptions);
+  });
+
+  it('should return the correct options when the input contains multiple options', () => {
+    const input = [
+      `${CLI_FLAG_LONG_PREFIX}flagA`,
+      `${CLI_FLAG_LONG_PREFIX}flagB${CLI_FLAG_VALUE_SEPARATOR}valueB`,
+      `${CLI_FLAG_LONG_PREFIX}flagC${CLI_FLAG_VALUE_SEPARATOR}valueC`,
+      'command-target',
+    ];
+    const expectedOptions = {
+      flagA: true,
+      flagB: ['valueB'],
+      flagC: 'valueC',
+    };
+
+    expect(parse(input, schema).options).toEqual(expectedOptions);
+  });
+
+  it('should return the same options for different inputs when both contain the same options, but in a different order', () => {
+    const inputA = [
+      `${CLI_FLAG_LONG_PREFIX}flagA`,
+      `${CLI_FLAG_LONG_PREFIX}flagC${CLI_FLAG_VALUE_SEPARATOR}value`,
+      'command-target',
+    ];
+    const inputB = [
+      `${CLI_FLAG_LONG_PREFIX}flagC${CLI_FLAG_VALUE_SEPARATOR}value`,
+      `${CLI_FLAG_LONG_PREFIX}flagA`,
+      'command-target',
+    ];
+    const expectedOptions = {
+      flagA: true,
+      flagC: 'value',
+    };
+
+    const { options: resultOptionsA } = parse(inputA, schema);
+    const { options: resultOptionsB } = parse(inputB, schema);
+
+    expect(resultOptionsA).toEqual(resultOptionsB);
+    expect(resultOptionsA).toEqual(expectedOptions);
+  });
+
+  it('should return the same options for different inputs when one uses long flags and the other uses short flags', () => {
+    const inputA = [
+      `${CLI_FLAG_LONG_PREFIX}flagA`,
+      `${CLI_FLAG_LONG_PREFIX}flagB${CLI_FLAG_VALUE_SEPARATOR}value`,
+      'command-target',
+    ];
+    const inputB = [
+      `${CLI_FLAG_SHORT_PREFIX}fa`,
+      `${CLI_FLAG_SHORT_PREFIX}fb${CLI_FLAG_VALUE_SEPARATOR}value`,
+      'command-target',
+    ];
+    const expectedOptions = {
+      flagA: true,
+      flagB: ['value'],
+    };
+
+    const { options: resultOptionsA } = parse(inputA, schema);
+    const { options: resultOptionsB } = parse(inputB, schema);
+
+    expect(resultOptionsA).toEqual(resultOptionsB);
+    expect(resultOptionsA).toEqual(expectedOptions);
+  });
+
+  it('should return the correct options when the input mixes long and short flags', () => {
+    const input = [
+      `${CLI_FLAG_SHORT_PREFIX}fa`,
+      `${CLI_FLAG_LONG_PREFIX}flagC${CLI_FLAG_VALUE_SEPARATOR}value`,
+      'command-target',
+    ];
+    const expectedOptions = {
+      flagA: true,
+      flagC: 'value',
+    };
+
+    expect(parse(input, schema).options).toEqual(expectedOptions);
+  });
+
+  it('should return the last value of an option when that option is repeated', () => {
+    const input = [
+      `${CLI_FLAG_SHORT_PREFIX}fa${CLI_FLAG_VALUE_SEPARATOR}true`,
+      `${CLI_FLAG_LONG_PREFIX}flagB${CLI_FLAG_VALUE_SEPARATOR}${['value1', 'value2', 'value3'].join(CLI_OPTION_VALUES_SEPARATOR)}`,
+      `${CLI_FLAG_SHORT_PREFIX}fb${CLI_FLAG_VALUE_SEPARATOR}value4`,
+      `${CLI_FLAG_LONG_PREFIX}flagA${CLI_FLAG_VALUE_SEPARATOR}false`,
+      `${CLI_FLAG_SHORT_PREFIX}fb${CLI_FLAG_VALUE_SEPARATOR}${['value5', 'value6'].join(CLI_OPTION_VALUES_SEPARATOR)}`,
+      'command-target',
+    ];
+    const expectedOptions = {
+      flagA: false,
+      flagB: ['value5', 'value6'],
+    };
+
+    expect(parse(input, schema).options).toEqual(expectedOptions);
+  });
+
+  // Errors and option validation
+
+  it('should throw an error when the input contains an unknown flag', () => {
+    const unknownFlag = 'flagZ';
+    const input = [
+      `${CLI_FLAG_SHORT_PREFIX}fa`,
+      `${CLI_FLAG_LONG_PREFIX}${unknownFlag}`,
+      'command-target',
+    ];
+
+    expect(() => parse(input, schema)).toThrow(
+      `Error parsing CLI input: Unknown option "${unknownFlag}"`,
+    );
+  });
+
+  it('should treat an option as the target command when the option has no flag prefix', () => {
+    const input = [
+      `${CLI_FLAG_SHORT_PREFIX}fa`,
+      `flagB${CLI_FLAG_VALUE_SEPARATOR}valueB`,
+      `${CLI_FLAG_LONG_PREFIX}flagC${CLI_FLAG_VALUE_SEPARATOR}valueC`,
+      'command-target',
+    ];
+    const expectedArgs = {
+      command: {
+        name: `flagB${CLI_FLAG_VALUE_SEPARATOR}valueB`,
+        args: [
+          `${CLI_FLAG_LONG_PREFIX}flagC${CLI_FLAG_VALUE_SEPARATOR}valueC`,
+          'command-target',
+        ],
+      },
+      options: {
+        flagA: true,
+      },
+    };
+
+    expect(parse(input, schema)).toEqual(expectedArgs);
+  });
+
+  it('should treat an option as the target command when the option has an invalid flag prefix', () => {
+    const input = [
+      `${CLI_FLAG_SHORT_PREFIX}fa`,
+      `++flagB${CLI_FLAG_VALUE_SEPARATOR}valueB`,
+      `${CLI_FLAG_LONG_PREFIX}flagC${CLI_FLAG_VALUE_SEPARATOR}valueC`,
+      'command-target',
+    ];
+    const expectedArgs = {
+      command: {
+        name: `++flagB${CLI_FLAG_VALUE_SEPARATOR}valueB`,
+        args: [
+          `${CLI_FLAG_LONG_PREFIX}flagC${CLI_FLAG_VALUE_SEPARATOR}valueC`,
+          'command-target',
+        ],
+      },
+      options: {
+        flagA: true,
+      },
+    };
+
+    expect(parse(input, schema)).toEqual(expectedArgs);
+  });
+
+  it('should throw an error when a option requires a value but the value is missing', () => {
+    const noValuedFlag = 'flagC';
+    const input = [`${CLI_FLAG_LONG_PREFIX}${noValuedFlag}`, 'command-target'];
+
+    expect(() => parse(input, schema)).toThrow(
+      `Error parsing CLI input: Expected value for option "${noValuedFlag}"`,
+    );
+  });
+
+  it('should throw an error when a value is provided to a non-valuable option', () => {
+    const valuedFlag = 'flagD';
+    const input = [
+      `${CLI_FLAG_LONG_PREFIX}${valuedFlag}${CLI_FLAG_VALUE_SEPARATOR}value`,
+      'command-target',
+    ];
+
+    expect(() => parse(input, schema)).toThrow(
+      `Error parsing CLI input: Unexpected value for option "${valuedFlag}"`,
+    );
+  });
+
+  it('should treat the combination of a flag and its value as a unique flag when the flag-value separator is missing', () => {
+    const unseparatedOption = 'flagCvalue';
+    const input = [
+      `${CLI_FLAG_LONG_PREFIX}${unseparatedOption}`,
+      'command-target',
+    ];
+
+    expect(() => parse(input, schema)).toThrow(
+      `Error parsing CLI input: Unknown option "${unseparatedOption}"`,
+    );
+  });
+
+  it('should treat the combination of a flag and its value as a unique flag when the flag-value separator is invalid', () => {
+    const invalidSeparatedOption = 'flagC:value';
+    const input = [
+      `${CLI_FLAG_LONG_PREFIX}${invalidSeparatedOption}`,
+      'command-target',
+    ];
+
+    expect(() => parse(input, schema)).toThrow(
+      `Error parsing CLI input: Unknown option "${invalidSeparatedOption}"`,
+    );
+  });
+
+  it('should throw an error when a flag is missing', () => {
+    const input = [
+      `${CLI_FLAG_LONG_PREFIX}${CLI_FLAG_VALUE_SEPARATOR}value`,
+      'command-target',
+    ];
+
+    expect(() => parse(input, schema)).toThrow(
+      'Error parsing CLI input: Missing option flag',
+    );
+  });
+
+  it('should throw an error when an option contains a blank flag', () => {
+    const input = [
+      `${CLI_FLAG_LONG_PREFIX}   ${CLI_FLAG_VALUE_SEPARATOR}value`,
+      'command-target',
+    ];
+
+    expect(() => parse(input, schema)).toThrow(
+      'Error parsing CLI input: Invalid option flag',
+    );
+  });
+
+  // Multi-valued options
+
+  it('should return an array containing multiple values for multi-valued options when multiple values are provided to those options', () => {
+    const input = [
+      `${CLI_FLAG_LONG_PREFIX}flagB${CLI_FLAG_VALUE_SEPARATOR}${['value1', 'value2', 'value3', 'value4'].join(CLI_OPTION_VALUES_SEPARATOR)}`,
+      'command-target',
+    ];
+
+    const { options: expectedOptions } = parse(input, schema);
+
+    expect(expectedOptions).toHaveProperty('flagB');
+    expect(Array.isArray(expectedOptions!.flagB)).toBe(true);
+    expect(expectedOptions!.flagB).toHaveLength(4);
+  });
+
+  it('should return an array containing a single value for multi-valued options when only one value is provided to those options', () => {
+    const input = [
+      `${CLI_FLAG_LONG_PREFIX}flagB${CLI_FLAG_VALUE_SEPARATOR}value`,
+      'command-target',
+    ];
+
+    const { options: expectedOptions } = parse(input, schema);
+
+    expect(expectedOptions).toHaveProperty('flagB');
+    expect(Array.isArray(expectedOptions!.flagB)).toBe(true);
+    expect(expectedOptions!.flagB).toHaveLength(1);
+  });
+
+  it('should treat the values of multi-valued options as single value when those values are not separated', () => {
+    const input = [
+      `${CLI_FLAG_LONG_PREFIX}flagB${CLI_FLAG_VALUE_SEPARATOR}${['value1', 'value2value3', 'value4'].join(CLI_OPTION_VALUES_SEPARATOR)}`,
+      'command-target',
+    ];
+    const expectedOptions = {
+      flagB: ['value1', 'value2value3', 'value4'],
+    };
+
+    expect(parse(input, schema).options).toEqual(expectedOptions);
+  });
+
+  it('should treat the values of multi-valued options as single values when those values have an invalid separator', () => {
+    const input = [
+      `${CLI_FLAG_LONG_PREFIX}flagB${CLI_FLAG_VALUE_SEPARATOR}value1;value2;value3${CLI_OPTION_VALUES_SEPARATOR}value4`,
+      'command-target',
+    ];
+    const expectedOptions = {
+      flagB: ['value1;value2;value3', 'value4'],
+    };
+
+    expect(parse(input, schema).options).toEqual(expectedOptions);
+  });
+
+  // Boolean option handling
+
+  it('should accept "true" as an option value when the option has a boolean type', () => {
+    const input = [
+      `${CLI_FLAG_LONG_PREFIX}flagA${CLI_FLAG_VALUE_SEPARATOR}true`,
+      'command-target',
+    ];
+    const expectedOptions = {
+      flagA: true,
+    };
+
+    expect(parse(input, schema).options).toEqual(expectedOptions);
+  });
+
+  it('should accept "false" as an option value when the option has a boolean type', () => {
+    const input = [
+      `${CLI_FLAG_LONG_PREFIX}flagA${CLI_FLAG_VALUE_SEPARATOR}false`,
+      'command-target',
+    ];
+    const expectedOptions = {
+      flagA: false,
+    };
+
+    expect(parse(input, schema).options).toEqual(expectedOptions);
+  });
+
+  it('should return "true" for boolean options when their values are omitted', () => {
+    const input = [`${CLI_FLAG_LONG_PREFIX}flagA`, 'command-target'];
+    const expectedOptions = {
+      flagA: true,
+    };
+
+    expect(parse(input, schema).options).toEqual(expectedOptions);
+  });
+
+  it('should throw an error when an invalid value is provided to a boolean option', () => {
+    const invalidBoolFlag = 'flagA';
+    const input = [
+      `${CLI_FLAG_LONG_PREFIX}${invalidBoolFlag}${CLI_FLAG_VALUE_SEPARATOR}value`,
+      'command-target',
+    ];
+
+    expect(() => parse(input, schema)).toThrow(
+      `Error parsing CLI input: Invalid value for boolean option "${invalidBoolFlag}"`,
+    );
+  });
+
+  // String option handling
+
+  it('should accept a string as an option value when the option has a "string" type', () => {
+    const input = [
+      `${CLI_FLAG_LONG_PREFIX}flagC${CLI_FLAG_VALUE_SEPARATOR}value`,
+      'command-target',
+    ];
+    const expectedOptions = {
+      flagC: 'value',
+    };
+
+    expect(parse(input, schema).options).toEqual(expectedOptions);
+  });
+
+  // String array option handling
+
+  it('should accept an array of strings as an option value when the option has a "stringArray" type', () => {
+    const input = [
+      `${CLI_FLAG_LONG_PREFIX}flagB${CLI_FLAG_VALUE_SEPARATOR}${['value1', 'value2', 'value3', 'value4'].join(CLI_OPTION_VALUES_SEPARATOR)}`,
+      'command-target',
+    ];
+    const expectedOptions = {
+      flagB: ['value1', 'value2', 'value3', 'value4'],
+    };
+
+    expect(parse(input, schema).options).toEqual(expectedOptions);
+  });
+
+  // Untyped option handling
+
+  it('should return "true" as an option value when the option has no type', () => {
+    const input = [`${CLI_FLAG_LONG_PREFIX}flagD`, 'command-target'];
+    const expectedOptions = {
+      flagD: true,
+    };
+
+    expect(parse(input, schema).options).toEqual(expectedOptions);
+  });
+});

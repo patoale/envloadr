@@ -1,4 +1,13 @@
 # See https://docs.github.com/get-started/git-basics/ignoring-files/ for more about ignoring files.
 
+# dependencies
+/node_modules
+
+# production
+/dist
+
+# testing
+/coverage
+
 # VS Code
 .vscode
