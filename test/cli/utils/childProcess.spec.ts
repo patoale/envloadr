@@ -7,6 +7,7 @@ describe('syncEvents', () => {
   const mockChildKill = jest.fn();
   const mockParentExit = jest.fn();
   const mockParentKill = jest.fn();
+  const mockParentRemoveListener = jest.fn();
 
   let child: ChildProcess;
   let parent: NodeJS.Process;
@@ -15,6 +16,7 @@ describe('syncEvents', () => {
     parent = Object.assign(new EventEmitter(), {
       exit: mockParentExit,
       kill: mockParentKill,
+      removeListener: mockParentRemoveListener,
     }) as unknown as NodeJS.Process;
 
     child = Object.assign(new EventEmitter(), {
@@ -77,5 +79,24 @@ describe('syncEvents', () => {
     parent.emit('SIGTERM');
 
     expect(mockChildKill).toHaveBeenCalledWith('SIGTERM');
+  });
+
+  it("should remove child's signal listeners from parent process when child exits", () => {
+    syncEvents(parent, child);
+
+    child.emit('exit', 0, null);
+
+    expect(mockParentRemoveListener).toHaveBeenCalledWith(
+      'SIGINT',
+      expect.any(Function),
+    );
+    expect(mockParentRemoveListener).toHaveBeenCalledWith(
+      'SIGTERM',
+      expect.any(Function),
+    );
+    expect(mockParentRemoveListener).toHaveBeenCalledWith(
+      'SIGHUP',
+      expect.any(Function),
+    );
   });
 });
