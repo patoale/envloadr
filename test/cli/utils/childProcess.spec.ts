@@ -5,6 +5,7 @@ import { EventEmitter } from 'events';
 
 describe('syncEvents', () => {
   const mockParentExit = jest.fn();
+  const mockParentKill = jest.fn();
 
   let child: ChildProcess;
   let parent: NodeJS.Process;
@@ -12,6 +13,7 @@ describe('syncEvents', () => {
   beforeEach(() => {
     parent = Object.assign(new EventEmitter(), {
       exit: mockParentExit,
+      kill: mockParentKill,
     }) as unknown as NodeJS.Process;
 
     child = new EventEmitter() as ChildProcess;
@@ -31,5 +33,13 @@ describe('syncEvents', () => {
     child.emit('exit', null, null);
 
     expect(mockParentExit).toHaveBeenCalledWith(1);
+  });
+
+  it('should terminate parent process with same signal when child is killed by signal', () => {
+    syncEvents(parent, child);
+
+    child.emit('exit', null, 'SIGTERM');
+
+    expect(mockParentKill).toHaveBeenCalledWith(parent.pid, 'SIGTERM');
   });
 });
