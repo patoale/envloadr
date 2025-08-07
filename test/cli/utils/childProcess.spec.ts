@@ -4,6 +4,7 @@ import { ChildProcess } from 'child_process';
 import { EventEmitter } from 'events';
 
 describe('syncEvents', () => {
+  const mockChildKill = jest.fn();
   const mockParentExit = jest.fn();
   const mockParentKill = jest.fn();
 
@@ -17,6 +18,7 @@ describe('syncEvents', () => {
     }) as unknown as NodeJS.Process;
 
     child = Object.assign(new EventEmitter(), {
+      kill: mockChildKill,
       spawnargs: ['node', 'example.js'],
     }) as unknown as ChildProcess;
   });
@@ -67,5 +69,13 @@ describe('syncEvents', () => {
     child.emit('error', new Error('Launch failed'));
 
     expect(mockParentExit).toHaveBeenCalledWith(1);
+  });
+
+  it('should terminate child process with same signal when parent is killed by signal', () => {
+    syncEvents(parent, child);
+
+    parent.emit('SIGTERM');
+
+    expect(mockChildKill).toHaveBeenCalledWith('SIGTERM');
   });
 });
