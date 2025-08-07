@@ -60,4 +60,12 @@ describe('syncEvents', () => {
       consoleErrorSpy.mockRestore();
     }
   });
+
+  it('should exit parent process with code 1 when child fails to launch', () => {
+    syncEvents(parent, child);
+
+    child.emit('error', new Error('Launch failed'));
+
+    expect(mockParentExit).toHaveBeenCalledWith(1);
+  });
 });
