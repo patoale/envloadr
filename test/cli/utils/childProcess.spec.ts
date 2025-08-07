@@ -24,4 +24,12 @@ describe('syncEvents', () => {
 
     expect(mockParentExit).toHaveBeenCalledWith(0);
   });
+
+  it('should exit parent process with code 1 when child exits with null code', () => {
+    syncEvents(parent, child);
+
+    child.emit('exit', null, null);
+
+    expect(mockParentExit).toHaveBeenCalledWith(1);
+  });
 });
