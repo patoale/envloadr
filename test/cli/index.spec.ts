@@ -1,4 +1,5 @@
 import childProcess from 'child_process';
+import EventEmitter from 'events';
 import {
   DEFAULT_ENV_FILE_PATH,
   DEFAULT_OVERRIDE,
@@ -27,6 +28,7 @@ describe('run', () => {
       .spyOn(envFile, 'parseEnvFiles')
       .mockImplementation();
     spawnSpy = jest.spyOn(childProcess, 'spawn').mockImplementation();
+    spawnSpy.mockReturnValue(new EventEmitter());
   });
 
   afterAll(() => {
