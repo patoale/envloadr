@@ -16,7 +16,9 @@ describe('syncEvents', () => {
       kill: mockParentKill,
     }) as unknown as NodeJS.Process;
 
-    child = new EventEmitter() as ChildProcess;
+    child = Object.assign(new EventEmitter(), {
+      spawnargs: ['node', 'example.js'],
+    }) as unknown as ChildProcess;
   });
 
   it("should exit parent process with child's exit code when child exits normally", () => {
@@ -41,5 +43,21 @@ describe('syncEvents', () => {
     child.emit('exit', null, 'SIGTERM');
 
     expect(mockParentKill).toHaveBeenCalledWith(parent.pid, 'SIGTERM');
+  });
+
+  it('should log error when child fails to launch', () => {
+    const consoleErrorSpy = jest.spyOn(console, 'error').mockImplementation();
+
+    try {
+      syncEvents(parent, child);
+
+      child.emit('error', new Error('Launch failed'));
+
+      expect(consoleErrorSpy).toHaveBeenCalledWith(
+        'Command "node example.js" failed to launch: Launch failed',
+      );
+    } finally {
+      consoleErrorSpy.mockRestore();
+    }
   });
 });
