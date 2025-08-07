@@ -8,6 +8,7 @@ import { run } from '@/cli';
 import { buildHelp } from '@/cli/help';
 import * as cliParser from '@/cli/parser';
 import schema from '@/cli/schema';
+import * as childProcessUtils from '@/cli/utils/childProcess';
 import * as envFile from '@/envFile';
 import type { Args, SpecSchema } from '@/cli/parser/types';
 
@@ -18,6 +19,7 @@ describe('run', () => {
   >;
   let parseEnvFilesSpy: jest.SpyInstance;
   let spawnSpy: jest.SpyInstance;
+  let syncEventsSpy: jest.SpyInstance;
 
   beforeAll(() => {
     // Testing these functions is not the objective of this suite,
@@ -27,12 +29,16 @@ describe('run', () => {
       .spyOn(envFile, 'parseEnvFiles')
       .mockImplementation();
     spawnSpy = jest.spyOn(childProcess, 'spawn').mockImplementation();
+    syncEventsSpy = jest
+      .spyOn(childProcessUtils, 'syncEvents')
+      .mockImplementation();
   });
 
   afterAll(() => {
     cliParseSpy.mockRestore();
     parseEnvFilesSpy.mockRestore();
     spawnSpy.mockRestore();
+    syncEventsSpy.mockRestore();
   });
 
   it('should print help message when help option is enabled', () => {
