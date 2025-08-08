@@ -28,14 +28,16 @@ type OptionType<T extends OptionSpecParam | undefined> = T extends BooleanType
     ? OptionSpecTypeMap[T['type']]
     : boolean;
 
+export type Command = {
+  name: string;
+  args: string[];
+};
+
 export type Options<T extends SpecSchema> = {
   [K in keyof T]?: OptionType<T[K]['param']>;
 };
 
 export type Args<T extends SpecSchema> = {
-  command: {
-    name: string;
-    args: string[];
-  };
+  command: Command;
   options?: Options<T>;
 };
